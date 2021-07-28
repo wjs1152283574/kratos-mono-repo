@@ -13,3 +13,10 @@
 
 * `/app` : 存放各个服务实现代码
     1. 生成模版 : `kratos proto server api/user/v1/user.proto -t app/user/service/internal/service`
+    
+
+* `Makefile` : `generate` 源文件
+    1.  `make help` 查看都有哪些命令
+    2. `make all` 时需要存在至少一个源文件
+    3. 自行查看`Makefile`，可以自己修改
+    4. 如果不修改项目结构，一般 `make all`即可

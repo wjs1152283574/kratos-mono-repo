@@ -1,0 +1,140 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/user/v1/user.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "User"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/myapp/user": {
+      "post": {
+        "operationId": "User_CreateUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateUserReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateUserReply": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/v1UserItem"
+        }
+      }
+    },
+    "v1CreateUserRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "age": {
+          "type": "string",
+          "format": "int64"
+        },
+        "score": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "v1DeleteUserReply": {
+      "type": "object"
+    },
+    "v1GetUserReply": {
+      "type": "object"
+    },
+    "v1ListUserReply": {
+      "type": "object"
+    },
+    "v1UpdateUserReply": {
+      "type": "object"
+    },
+    "v1UserItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "age": {
+          "type": "string",
+          "format": "int64"
+        },
+        "score": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    }
+  }
+}

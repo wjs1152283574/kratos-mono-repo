@@ -7,7 +7,7 @@ option go_package = "casso/api/user/v1;v1";
 service User {
     rpc CreateUser (CreateUserRequest) returns (CreateUserReply){
         option (google.api.http) = {
-            post: "myapp/user"
+            post: "/myapp/user"
             body: "*"
         };
     }
