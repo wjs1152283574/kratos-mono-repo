@@ -1,19 +1,19 @@
 package data
 
 import (
+	"casso/app/user/service/internal/conf"
+
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-
-	"github.com/go-kratos/beer-shop/app/order/service/internal/conf"
 
 	// init mysql driver
 	_ "github.com/go-sql-driver/mysql"
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewDB, NewOrderRepo)
+var ProviderSet = wire.NewSet(NewData, NewDB, NewUserRepo)
 
 // Data .
 type Data struct {
@@ -24,12 +24,12 @@ type Data struct {
 func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB {
 	log := log.NewHelper(log.With(logger, "module", "order-service/data/gorm"))
 
-	db, err := gorm.Open(mysql.Open(conf.Database.Source), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(conf.Database.Driver), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("failed opening connection to mysql: %v", err)
 	}
 
-	if err := db.AutoMigrate(&Order{}); err != nil {
+	if err := db.AutoMigrate(&User{}); err != nil {
 		log.Fatal(err)
 	}
 	return db

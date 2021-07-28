@@ -1,21 +1,15 @@
 package service
 
 import (
-    "context"
+	"context"
 
-    pb "casso/api/user/v1"
+	pb "casso/api/user/v1"
+	"casso/app/user/service/internal/biz"
 )
 
-type UserService struct {
-	pb.UnimplementedUserServer
-}
-
-func NewUserService() *UserService {
-	return &UserService{}
-}
-
 func (s *UserService) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserReply, error) {
-	return &pb.CreateUserReply{}, nil
+	_, err := s.uc.Create(ctx, &biz.User{})
+	return &pb.CreateUserReply{}, err
 }
 func (s *UserService) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb.UpdateUserReply, error) {
 	return &pb.UpdateUserReply{}, nil
