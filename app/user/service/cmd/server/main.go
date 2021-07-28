@@ -1,10 +1,9 @@
 package main
 
 import (
+	"casso/app/user/service/internal/conf"
 	"flag"
 	"os"
-
-	"github.com/go-kratos/beer-shop/app/order/service/internal/conf"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
@@ -15,7 +14,7 @@ import (
 	"go.opentelemetry.io/otel/exporters/jaeger"
 	"go.opentelemetry.io/otel/sdk/resource"
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
-	"go.opentelemetry.io/otel/semconv/v1.4.0"
+	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 	"gopkg.in/yaml.v2"
 )
 

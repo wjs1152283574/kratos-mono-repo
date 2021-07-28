@@ -6,11 +6,11 @@
 package main
 
 import (
-	"github.com/go-kratos/beer-shop/app/order/service/internal/biz"
-	"github.com/go-kratos/beer-shop/app/order/service/internal/conf"
-	"github.com/go-kratos/beer-shop/app/order/service/internal/data"
-	"github.com/go-kratos/beer-shop/app/order/service/internal/server"
-	"github.com/go-kratos/beer-shop/app/order/service/internal/service"
+	"casso/app/user/service/internal/biz"
+	"casso/app/user/service/internal/conf"
+	"casso/app/user/service/internal/data"
+	"casso/app/user/service/internal/server"
+	"casso/app/user/service/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"go.opentelemetry.io/otel/sdk/trace"
@@ -25,10 +25,10 @@ func initApp(confServer *conf.Server, registry *conf.Registry, confData *conf.Da
 	if err != nil {
 		return nil, nil, err
 	}
-	orderRepo := data.NewOrderRepo(dataData, logger)
-	orderUseCase := biz.NewOrderUseCase(orderRepo, logger)
-	orderService := service.NewOrderService(orderUseCase, logger)
-	grpcServer := server.NewGRPCServer(confServer, logger, tracerProvider, orderService)
+	userRepo := data.NewUserRepo(dataData, logger)
+	userUseCase := biz.NewUserUseCase(userRepo, logger)
+	userService := service.NewUserService(userUseCase, logger)
+	grpcServer := server.NewGRPCServer(confServer, logger, tracerProvider, userService)
 	registrar := server.NewRegistrar(registry)
 	app := newApp(logger, grpcServer, registrar)
 	return app, func() {
