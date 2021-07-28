@@ -13,10 +13,24 @@
 
 * `/app` : 存放各个服务实现代码
     1. 生成模版 : `kratos proto server api/user/v1/user.proto -t app/user/service/internal/service`
-    
+
+* `deploy` : 自动化配置脚本
+
+
+* `pkg`: 公用部分，多个服务多会用到的
+
+
+* `third_party`: 第三方依赖
 
 * `Makefile` : `generate` 源文件
     1.  `make help` 查看都有哪些命令
     2. `make all` 时需要存在至少一个源文件
     3. 自行查看`Makefile`，可以自己修改
     4. 如果不修改项目结构，一般 `make all`即可
+
+* 运行:
+    1. `go generate ./...` 生成所有proto源码、wire等等
+    2. kratos run
+    3. 运行之前需要注意配置好各个数据库以及注册中心的远程链接信息
+
+* [示例代码beer-shop](https://go-kratos.github.io/beer-shop/#/design)

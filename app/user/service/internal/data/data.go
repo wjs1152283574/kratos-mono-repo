@@ -2,6 +2,7 @@ package data
 
 import (
 	"casso/app/user/service/internal/conf"
+	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
@@ -22,12 +23,24 @@ type Data struct {
 }
 
 func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB {
-	log := log.NewHelper(log.With(logger, "module", "order-service/data/gorm"))
+	log := log.NewHelper(log.With(logger, "module", "user-service/data/gorm"))
+	log.Info(conf.Database.Source)
 
-	db, err := gorm.Open(mysql.Open(conf.Database.Driver), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open("root:password@tcp(182.92.186.214:3306)/goweb?parseTime=true"), &gorm.Config{})
+
 	if err != nil {
 		log.Fatalf("failed opening connection to mysql: %v", err)
 	}
+
+	sqlDB, err := db.DB() // 维护链接池
+	if err != nil {
+		db.Statement.ReflectValue.Close()
+		log.Fatalf("failed making connection-pool: %v", err)
+	}
+
+	sqlDB.SetMaxIdleConns(10)           // 空闲最大数量
+	sqlDB.SetMaxOpenConns(100)          // 最大链接数
+	sqlDB.SetConnMaxLifetime(time.Hour) // 最大可复用时间
 
 	if err := db.AutoMigrate(&User{}); err != nil {
 		log.Fatal(err)
@@ -37,7 +50,7 @@ func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB {
 
 // NewData .
 func NewData(db *gorm.DB, logger log.Logger) (*Data, func(), error) {
-	log := log.NewHelper(log.With(logger, "module", "order-service/data"))
+	log := log.NewHelper(log.With(logger, "module", "user-service/data"))
 
 	d := &Data{
 		db:  db,
