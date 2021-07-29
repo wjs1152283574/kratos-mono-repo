@@ -1,9 +1,9 @@
 package server
 
 import (
-	v1 "casso/api/user/v1/service"
-	"casso/app/user/service/internal/conf"
-	"casso/app/user/service/internal/service"
+	v1 "casso/api/shop/v1/admin"
+	"casso/app/shop/admin/internal/conf"
+	"casso/app/shop/admin/internal/service"
 
 	"github.com/go-kratos/kratos/v2/log"
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
@@ -15,7 +15,7 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvider, s *service.UserService) *grpc.Server {
+func NewGRPCServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvider, s *service.ShopAdmin) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
@@ -34,6 +34,6 @@ func NewGRPCServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
 	srv := grpc.NewServer(opts...)
-	v1.RegisterUserServer(srv, s)
+	v1.RegisterShopAdminServer(srv, s)
 	return srv
 }

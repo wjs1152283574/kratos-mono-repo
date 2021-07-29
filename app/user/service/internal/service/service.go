@@ -1,7 +1,7 @@
 package service
 
 import (
-	v1 "casso/api/user/v1"
+	v1 "casso/api/user/v1/service"
 	"casso/app/user/service/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"

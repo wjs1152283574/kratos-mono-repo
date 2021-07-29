@@ -1,7 +1,7 @@
 package data
 
 import (
-	"casso/app/user/service/internal/conf"
+	"casso/app/shop/admin/internal/conf"
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -14,7 +14,7 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewDB, NewUserRepo)
+var ProviderSet = wire.NewSet(NewData, NewDB, NewShopRepo)
 
 // Data .
 type Data struct {
@@ -22,8 +22,11 @@ type Data struct {
 	log *log.Helper
 }
 
+type Shop struct {
+}
+
 func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB {
-	log := log.NewHelper(log.With(logger, "module", "user-service/data/gorm"))
+	log := log.NewHelper(log.With(logger, "module", "Shop-service/data/gorm"))
 	db, err := gorm.Open(mysql.Open("root:password@tcp(182.92.186.214:3306)/goweb?parseTime=true"), &gorm.Config{})
 
 	if err != nil {
@@ -40,7 +43,7 @@ func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB {
 	sqlDB.SetMaxOpenConns(100)          // 最大链接数
 	sqlDB.SetConnMaxLifetime(time.Hour) // 最大可复用时间
 
-	if err := db.AutoMigrate(&User{}); err != nil {
+	if err := db.AutoMigrate(&Shop{}); err != nil {
 		log.Fatal(err)
 	}
 	return db
@@ -48,7 +51,7 @@ func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB {
 
 // NewData .
 func NewData(db *gorm.DB, logger log.Logger) (*Data, func(), error) {
-	log := log.NewHelper(log.With(logger, "module", "user-service/data"))
+	log := log.NewHelper(log.With(logger, "module", "Shop-service/data"))
 
 	d := &Data{
 		db:  db,

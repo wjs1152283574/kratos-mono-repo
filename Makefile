@@ -1,6 +1,6 @@
 GOPATH:=$(shell go env GOPATH)
 VERSION=$(shell git describe --tags --always)
-INTERNAL_PROTO_FILES=$(shell find app -name *.proto)
+INTERNAL_PROTO_FILES=$(shell find app/shop -name *.proto)
 API_PROTO_FILES=$(shell find api -name *.proto)
 
 .PHONY: init

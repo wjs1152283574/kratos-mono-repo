@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	pb "casso/api/user/v1"
+	pb "casso/api/user/v1/service"
 	"casso/app/user/service/internal/biz"
 )
 

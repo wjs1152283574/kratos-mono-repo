@@ -1,0 +1,102 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/shop/v1/admin/shop_admin.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Shop_admin"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v/shop": {
+      "post": {
+        "operationId": "Shop_admin_CreateShop_admin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateShop_adminReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateShop_adminRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Shop_admin"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateShop_adminReply": {
+      "type": "object"
+    },
+    "v1CreateShop_adminRequest": {
+      "type": "object"
+    },
+    "v1DeleteShop_adminReply": {
+      "type": "object"
+    },
+    "v1GetShop_adminReply": {
+      "type": "object"
+    },
+    "v1ListShop_adminReply": {
+      "type": "object"
+    },
+    "v1UpdateShop_adminReply": {
+      "type": "object"
+    }
+  }
+}

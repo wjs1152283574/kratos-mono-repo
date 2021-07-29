@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package api.shop.v1;
+import "google/api/annotations.proto";
+option go_package = "casso/api/shop/v1;v1";
+
+service Shop_admin {
+    rpc CreateShop_admin (CreateShop_adminRequest) returns (CreateShop_adminReply){
+        option (google.api.http) = {
+            post: "/admin/v/shop"
+            body: "*"
+        };
+    }
+    rpc UpdateShop_admin (UpdateShop_adminRequest) returns (UpdateShop_adminReply);
+    rpc DeleteShop_admin (DeleteShop_adminRequest) returns (DeleteShop_adminReply);
+    rpc GetShop_admin (GetShop_adminRequest) returns (GetShop_adminReply);
+    rpc ListShop_admin (ListShop_adminRequest) returns (ListShop_adminReply);
+}
+
+message CreateShop_adminRequest {}
+message CreateShop_adminReply {}
+
+message UpdateShop_adminRequest {}
+message UpdateShop_adminReply {}
+
+message DeleteShop_adminRequest {}
+message DeleteShop_adminReply {}
+
+message GetShop_adminRequest {}
+message GetShop_adminReply {}
+
+message ListShop_adminRequest {}
+message ListShop_adminReply {}
