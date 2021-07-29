@@ -34,3 +34,8 @@
     3. 运行之前需要注意配置好各个数据库以及注册中心的远程链接信息
 
 * [示例代码beer-shop](https://go-kratos.github.io/beer-shop/#/design)
+
+#### 设计思路：
+* 一般服务并不对外暴露http 接口，需要特定的BFF服务来提供http接口。内部服务间通过RPC通讯
+* BFF 维护二级缓存，具体服务维护一级缓存
+* 服务降级一般在BFF完成
