@@ -1,68 +1,23 @@
 version: '3'
 services:
-  web-shop:
-    image: go-kratos/beer-web-shop:0.1.0
+  shop_db:
+    restart: always
+    image: mysql:5.7.22
+    container_name: mysql_5.7
     ports:
-      - 80:80
-  web-admin:
-    image: go-kratos/beer-web-admin:0.1.0
-    ports:
-      - 80:80
-  user-service:
-    image: go-kratos/beer-user-service:0.1.0
-    hostname: user-service
-    depends_on:
-      - user-db
-  user-db:
-    image: mysql:8
-    hostname: user-db
+      - 3307:3306
     environment:
-      MYSQL_ROOT_PASSWORD: dangerous
-  catalog-service:
-    image: go-kratos/beer-catalog-service:0.1.0
-    hostname: catalog-service
-    depends_on:
-      - catalog-db
-  catalog-db:
-    image: mysql:8
-    hostname: catalog-db
-    environment:
-      MYSQL_ROOT_PASSWORD: dangerous
-  cart-service:
-    image: go-kratos/beer-cart-service:0.1.0
-    hostname: cart-service
-    depends_on:
-      - cart-db
-  cart-db:
-    image: mongo:4
-    hostname: cart-db
-    environment:
-      MONGO_INITDB_ROOT_PASSWORD: dangerous
-  order-service:
-    image: go-kratos/beer-cart-service:0.1.0
-    hostname: order-service
-    depends_on:
-      - order-db
-  order-db:
-    image: mysql:8
-    hostname: order-db
-    environment:
-      MYSQL_ROOT_PASSWORD: dangerous
-  payment-service:
-    image: go-kratos/beer-payment-service:0.1.0
-    hostname: cart-service
-  zookeeper:
-    image: docker.io/bitnami/zookeeper:3.7
-    ports:
-      - "2181:2181"
-    environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
-  kafka:
-    image: docker.io/bitnami/kafka:2
-    ports:
-      - "9092:9092"
-    environment:
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-      - ALLOW_PLAINTEXT_LISTENER=yes
-    depends_on:
-      - zookeeper
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: "password"   # defaultUser : root
+      MYSQL_DATABASE: "goweb"
+    command:
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+      --max_allowed_packet=128M
+      --skip-name-resolve
+      --sql-mode="STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO"
+    volumes:
+      - ./docker-db:/var/lib/mysql
+  

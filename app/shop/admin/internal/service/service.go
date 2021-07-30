@@ -25,10 +25,9 @@ func NewShopAdmin(uc *biz.ShopUseCase, logger log.Logger) *ShopAdmin {
 }
 
 func (s *ShopAdmin) ListShopAdmin(ctx context.Context, in *v1.ListShopAdminRequest) (*v1.ListShopAdminReply, error) {
-	s.log.Info("duinlaimu============")
 	return &v1.ListShopAdminReply{
-		Id:   1,
-		Name: "casso",
-		Age:  23,
+		Code: 20000,
+		Msg:  "操作成功！",
+		Data: &v1.ListShopAdminReply_Data{Id: 1, Name: "casso", Age: 23},
 	}, nil
 }

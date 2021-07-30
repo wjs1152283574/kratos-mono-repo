@@ -24,7 +24,7 @@ type Data struct {
 
 func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB {
 	log := log.NewHelper(log.With(logger, "module", "user-service/data/gorm"))
-	db, err := gorm.Open(mysql.Open("root:password@tcp(182.92.186.214:3306)/goweb?parseTime=true"), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(conf.Database.Source), &gorm.Config{})
 
 	if err != nil {
 		log.Fatalf("failed opening connection to mysql: %v", err)

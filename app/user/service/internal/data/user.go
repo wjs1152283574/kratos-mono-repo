@@ -3,7 +3,6 @@ package data
 import (
 	"casso/app/user/service/internal/biz"
 	"context"
-	"time"
 
 	"github.com/go-kratos/beer-shop/pkg/util/pagination"
 	"gorm.io/gorm"
@@ -20,10 +19,8 @@ type UserRepo struct {
 
 type User struct {
 	gorm.Model
-	Name      string
-	Age       int64
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Name string
+	Age  int64
 }
 
 func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {

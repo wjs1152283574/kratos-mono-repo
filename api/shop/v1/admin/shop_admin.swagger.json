@@ -40,6 +40,22 @@
     }
   },
   "definitions": {
+    "ListShop_adminReplyData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "age": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -73,16 +89,15 @@
     "v1ListShop_adminReply": {
       "type": "object",
       "properties": {
-        "id": {
+        "code": {
           "type": "integer",
           "format": "int32"
         },
-        "name": {
+        "msg": {
           "type": "string"
         },
-        "age": {
-          "type": "integer",
-          "format": "int32"
+        "data": {
+          "$ref": "#/definitions/ListShop_adminReplyData"
         }
       }
     }

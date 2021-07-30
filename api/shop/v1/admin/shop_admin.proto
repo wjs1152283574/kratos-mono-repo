@@ -26,7 +26,12 @@ message GetShop_adminReply {}
 
 message ListShop_adminRequest {}
 message ListShop_adminReply {
-    int32 id = 1;
-    string name =2;
-    int32 age = 3;
+    int32 code = 1;
+    string msg = 2;
+    message Data {
+        int32 id = 1;
+        string name =2;
+        int32 age = 3;
+    }
+    Data data = 3;
 }
