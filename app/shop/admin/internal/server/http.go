@@ -19,8 +19,7 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
-			tracing.Server(
-				tracing.WithTracerProvider(tp)),
+			tracing.Server(tracing.WithTracerProvider(tp)),
 			logging.Server(logger),
 		),
 	}

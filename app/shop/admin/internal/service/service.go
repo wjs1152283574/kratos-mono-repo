@@ -3,6 +3,7 @@ package service
 import (
 	v1 "casso/api/shop/v1/admin"
 	"casso/app/shop/admin/internal/biz"
+	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
@@ -19,6 +20,15 @@ type ShopAdmin struct {
 
 func NewShopAdmin(uc *biz.ShopUseCase, logger log.Logger) *ShopAdmin {
 	return &ShopAdmin{
-		log: log.NewHelper(log.With(logger, "module", "service/interface")),
+		log: log.NewHelper(log.With(logger, "module", "service/shopadmin")),
 	}
+}
+
+func (s *ShopAdmin) ListShopAdmin(ctx context.Context, in *v1.ListShopAdminRequest) (*v1.ListShopAdminReply, error) {
+	s.log.Info("duinlaimu============")
+	return &v1.ListShopAdminReply{
+		Id:   1,
+		Name: "casso",
+		Age:  23,
+	}, nil
 }

@@ -16,14 +16,14 @@
     "application/json"
   ],
   "paths": {
-    "/admin/v/shop": {
-      "post": {
-        "operationId": "Shop_admin_CreateShop_admin",
+    "/admin/v1/shop/list": {
+      "get": {
+        "operationId": "Shop_admin_ListShopAdmin",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1CreateShop_adminReply"
+              "$ref": "#/definitions/v1ListShop_adminReply"
             }
           },
           "default": {
@@ -33,16 +33,6 @@
             }
           }
         },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1CreateShop_adminRequest"
-            }
-          }
-        ],
         "tags": [
           "Shop_admin"
         ]
@@ -80,23 +70,21 @@
         }
       }
     },
-    "v1CreateShop_adminReply": {
-      "type": "object"
-    },
-    "v1CreateShop_adminRequest": {
-      "type": "object"
-    },
-    "v1DeleteShop_adminReply": {
-      "type": "object"
-    },
-    "v1GetShop_adminReply": {
-      "type": "object"
-    },
     "v1ListShop_adminReply": {
-      "type": "object"
-    },
-    "v1UpdateShop_adminReply": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "age": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
     }
   }
 }

@@ -28,8 +28,9 @@ func initApp(confServer *conf.Server, registry *conf.Registry, confData *conf.Da
 	shopRepo := data.NewShopRepo(dataData, logger)
 	shopUseCase := biz.NewShopUseCase(shopRepo, logger)
 	shopAdmin := service.NewShopAdmin(shopUseCase, logger)
+	httpServer := server.NewHTTPServer(confServer, logger, tracerProvider, shopAdmin)
 	grpcServer := server.NewGRPCServer(confServer, logger, tracerProvider, shopAdmin)
-	app := newApp(logger, grpcServer)
+	app := newApp(logger, httpServer, grpcServer)
 	return app, func() {
 		cleanup()
 	}, nil

@@ -18,10 +18,6 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ShopAdminClient interface {
-	CreateShopAdmin(ctx context.Context, in *CreateShopAdminRequest, opts ...grpc.CallOption) (*CreateShopAdminReply, error)
-	UpdateShopAdmin(ctx context.Context, in *UpdateShopAdminRequest, opts ...grpc.CallOption) (*UpdateShopAdminReply, error)
-	DeleteShopAdmin(ctx context.Context, in *DeleteShopAdminRequest, opts ...grpc.CallOption) (*DeleteShopAdminReply, error)
-	GetShopAdmin(ctx context.Context, in *GetShopAdminRequest, opts ...grpc.CallOption) (*GetShopAdminReply, error)
 	ListShopAdmin(ctx context.Context, in *ListShopAdminRequest, opts ...grpc.CallOption) (*ListShopAdminReply, error)
 }
 
@@ -33,45 +29,9 @@ func NewShopAdminClient(cc grpc.ClientConnInterface) ShopAdminClient {
 	return &shopAdminClient{cc}
 }
 
-func (c *shopAdminClient) CreateShopAdmin(ctx context.Context, in *CreateShopAdminRequest, opts ...grpc.CallOption) (*CreateShopAdminReply, error) {
-	out := new(CreateShopAdminReply)
-	err := c.cc.Invoke(ctx, "/api.shop.v1.Shop_admin/CreateShop_admin", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *shopAdminClient) UpdateShopAdmin(ctx context.Context, in *UpdateShopAdminRequest, opts ...grpc.CallOption) (*UpdateShopAdminReply, error) {
-	out := new(UpdateShopAdminReply)
-	err := c.cc.Invoke(ctx, "/api.shop.v1.Shop_admin/UpdateShop_admin", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *shopAdminClient) DeleteShopAdmin(ctx context.Context, in *DeleteShopAdminRequest, opts ...grpc.CallOption) (*DeleteShopAdminReply, error) {
-	out := new(DeleteShopAdminReply)
-	err := c.cc.Invoke(ctx, "/api.shop.v1.Shop_admin/DeleteShop_admin", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *shopAdminClient) GetShopAdmin(ctx context.Context, in *GetShopAdminRequest, opts ...grpc.CallOption) (*GetShopAdminReply, error) {
-	out := new(GetShopAdminReply)
-	err := c.cc.Invoke(ctx, "/api.shop.v1.Shop_admin/GetShop_admin", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *shopAdminClient) ListShopAdmin(ctx context.Context, in *ListShopAdminRequest, opts ...grpc.CallOption) (*ListShopAdminReply, error) {
 	out := new(ListShopAdminReply)
-	err := c.cc.Invoke(ctx, "/api.shop.v1.Shop_admin/ListShop_admin", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.shop.v1.Shop_admin/ListShopAdmin", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -82,10 +42,6 @@ func (c *shopAdminClient) ListShopAdmin(ctx context.Context, in *ListShopAdminRe
 // All implementations must embed UnimplementedShopAdminServer
 // for forward compatibility
 type ShopAdminServer interface {
-	CreateShopAdmin(context.Context, *CreateShopAdminRequest) (*CreateShopAdminReply, error)
-	UpdateShopAdmin(context.Context, *UpdateShopAdminRequest) (*UpdateShopAdminReply, error)
-	DeleteShopAdmin(context.Context, *DeleteShopAdminRequest) (*DeleteShopAdminReply, error)
-	GetShopAdmin(context.Context, *GetShopAdminRequest) (*GetShopAdminReply, error)
 	ListShopAdmin(context.Context, *ListShopAdminRequest) (*ListShopAdminReply, error)
 	mustEmbedUnimplementedShopAdminServer()
 }
@@ -94,18 +50,6 @@ type ShopAdminServer interface {
 type UnimplementedShopAdminServer struct {
 }
 
-func (UnimplementedShopAdminServer) CreateShopAdmin(context.Context, *CreateShopAdminRequest) (*CreateShopAdminReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateShopAdmin not implemented")
-}
-func (UnimplementedShopAdminServer) UpdateShopAdmin(context.Context, *UpdateShopAdminRequest) (*UpdateShopAdminReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateShopAdmin not implemented")
-}
-func (UnimplementedShopAdminServer) DeleteShopAdmin(context.Context, *DeleteShopAdminRequest) (*DeleteShopAdminReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteShopAdmin not implemented")
-}
-func (UnimplementedShopAdminServer) GetShopAdmin(context.Context, *GetShopAdminRequest) (*GetShopAdminReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetShopAdmin not implemented")
-}
 func (UnimplementedShopAdminServer) ListShopAdmin(context.Context, *ListShopAdminRequest) (*ListShopAdminReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListShopAdmin not implemented")
 }
@@ -122,78 +66,6 @@ func RegisterShopAdminServer(s grpc.ServiceRegistrar, srv ShopAdminServer) {
 	s.RegisterService(&ShopAdmin_ServiceDesc, srv)
 }
 
-func _ShopAdmin_CreateShopAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateShopAdminRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ShopAdminServer).CreateShopAdmin(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.shop.v1.Shop_admin/CreateShop_admin",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShopAdminServer).CreateShopAdmin(ctx, req.(*CreateShopAdminRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ShopAdmin_UpdateShopAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateShopAdminRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ShopAdminServer).UpdateShopAdmin(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.shop.v1.Shop_admin/UpdateShop_admin",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShopAdminServer).UpdateShopAdmin(ctx, req.(*UpdateShopAdminRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ShopAdmin_DeleteShopAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteShopAdminRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ShopAdminServer).DeleteShopAdmin(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.shop.v1.Shop_admin/DeleteShop_admin",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShopAdminServer).DeleteShopAdmin(ctx, req.(*DeleteShopAdminRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ShopAdmin_GetShopAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetShopAdminRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ShopAdminServer).GetShopAdmin(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.shop.v1.Shop_admin/GetShop_admin",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShopAdminServer).GetShopAdmin(ctx, req.(*GetShopAdminRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _ShopAdmin_ListShopAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListShopAdminRequest)
 	if err := dec(in); err != nil {
@@ -204,7 +76,7 @@ func _ShopAdmin_ListShopAdmin_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.shop.v1.Shop_admin/ListShop_admin",
+		FullMethod: "/api.shop.v1.Shop_admin/ListShopAdmin",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ShopAdminServer).ListShopAdmin(ctx, req.(*ListShopAdminRequest))
@@ -220,23 +92,7 @@ var ShopAdmin_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ShopAdminServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateShop_admin",
-			Handler:    _ShopAdmin_CreateShopAdmin_Handler,
-		},
-		{
-			MethodName: "UpdateShop_admin",
-			Handler:    _ShopAdmin_UpdateShopAdmin_Handler,
-		},
-		{
-			MethodName: "DeleteShop_admin",
-			Handler:    _ShopAdmin_DeleteShopAdmin_Handler,
-		},
-		{
-			MethodName: "GetShop_admin",
-			Handler:    _ShopAdmin_GetShopAdmin_Handler,
-		},
-		{
-			MethodName: "ListShop_admin",
+			MethodName: "ListShopAdmin",
 			Handler:    _ShopAdmin_ListShopAdmin_Handler,
 		},
 	},

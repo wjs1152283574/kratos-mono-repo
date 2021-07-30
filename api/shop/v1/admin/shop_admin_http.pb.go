@@ -18,35 +18,35 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 type ShopAdminHTTPServer interface {
-	CreateShopAdmin(context.Context, *CreateShopAdminRequest) (*CreateShopAdminReply, error)
+	ListShopAdmin(context.Context, *ListShopAdminRequest) (*ListShopAdminReply, error)
 }
 
 func RegisterShopAdminHTTPServer(s *http.Server, srv ShopAdminHTTPServer) {
 	r := s.Route("/")
-	r.POST("/admin/v/shop", _ShopAdmin_CreateShopAdmin0_HTTP_Handler(srv))
+	r.GET("/admin/v1/shop/list", _ShopAdmin_ListShopAdmin0_HTTP_Handler(srv))
 }
 
-func _ShopAdmin_CreateShopAdmin0_HTTP_Handler(srv ShopAdminHTTPServer) func(ctx http.Context) error {
+func _ShopAdmin_ListShopAdmin0_HTTP_Handler(srv ShopAdminHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in CreateShopAdminRequest
-		if err := ctx.Bind(&in); err != nil {
+		var in ListShopAdminRequest
+		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/api.shop.v1.Shop_admin/CreateShopAdmin")
+		http.SetOperation(ctx, "/api.shop.v1.Shop_admin/ListShopAdmin")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.CreateShopAdmin(ctx, req.(*CreateShopAdminRequest))
+			return srv.ListShopAdmin(ctx, req.(*ListShopAdminRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*CreateShopAdminReply)
+		reply := out.(*ListShopAdminReply)
 		return ctx.Result(200, reply)
 	}
 }
 
 type ShopAdminHTTPClient interface {
-	CreateShopAdmin(ctx context.Context, req *CreateShopAdminRequest, opts ...http.CallOption) (rsp *CreateShopAdminReply, err error)
+	ListShopAdmin(ctx context.Context, req *ListShopAdminRequest, opts ...http.CallOption) (rsp *ListShopAdminReply, err error)
 }
 
 type ShopAdminHTTPClientImpl struct {
@@ -57,13 +57,13 @@ func NewShopAdminHTTPClient(client *http.Client) ShopAdminHTTPClient {
 	return &ShopAdminHTTPClientImpl{client}
 }
 
-func (c *ShopAdminHTTPClientImpl) CreateShopAdmin(ctx context.Context, in *CreateShopAdminRequest, opts ...http.CallOption) (*CreateShopAdminReply, error) {
-	var out CreateShopAdminReply
-	pattern := "/admin/v/shop"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation("/api.shop.v1.Shop_admin/CreateShopAdmin"))
+func (c *ShopAdminHTTPClientImpl) ListShopAdmin(ctx context.Context, in *ListShopAdminRequest, opts ...http.CallOption) (*ListShopAdminReply, error) {
+	var out ListShopAdminReply
+	pattern := "/admin/v1/shop/list"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/api.shop.v1.Shop_admin/ListShopAdmin"))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

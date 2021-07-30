@@ -23,6 +23,8 @@ type Data struct {
 }
 
 type Shop struct {
+	gorm.Model
+	UID int
 }
 
 func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB {
