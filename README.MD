@@ -71,6 +71,14 @@
     2. 可以观察`/service/cmd/server/wire_gen.go` 中的代码。 看到各个依赖之间的调用顺序
 
 ##### 模块权责
+* `.vscode`
+    1. 个人配置喜好，已经添加到`.gitignore`，只上传首次 
+
+* `/api`
+    1. 与`app`目录的服务想对应，维护各个服务的`proto`文件与生成的源码
+    2. 内部服务一般只需定义`rpc`接口，BFF 服务则需要定义`option (google.api.http)`
+    3. 也可以去掉`/api`目录，就像`kratos`提供的单例服务`layout`一样，将`api/`放到`app`目录内独立维护
+
 * `/app/${server_name}/service/internel/`
     1. 需要在不同模块中注入不同的依赖(`ProviderSet`)
     2. `BIZ`， 业务组装，供`Service`层调用
@@ -79,11 +87,6 @@
     5. `Server`，服务注册，提供服务初始化依赖注入
     6. `Service`，实现GRPC接口，调用`BIZ`组装好的用例
     7. 各个模块互相独立，不能乱跨模块调用（破坏架构层级以及弃用依赖注入）
-
-* `/api`
-    1. 与`app`目录的服务想对应，维护各个服务的`proto`文件与生成的源码
-    2. 内部服务一般只需定义`rpc`接口，BFF 服务则需要定义`option (google.api.http)`
-    3. 也可以去掉`/api`目录，就像`kratos`提供的单例服务`layout`一样，将`api/`放到`app`目录内独立维护
 
 * `/deploy`
     1. 存放一些自动话脚本
