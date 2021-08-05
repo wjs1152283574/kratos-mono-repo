@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package api.user.service.v1;
+import "validate/validate.proto";
+option go_package = "cars/api/user/service/v1;v1";
+
+service User {
+    rpc CreateUser (CreateUserRequest) returns (CreateUserReply);
+    rpc UpdateUser (UpdateUserRequest) returns (UpdateUserReply);
+    rpc DeleteUser (DeleteUserRequest) returns (DeleteUserReply);
+    rpc GetUser (GetUserRequest) returns (GetUserReply);
+    rpc ListUser (ListUserRequest) returns (ListUserReply);
+    rpc GetToken (GetTokenRequest) returns (GetTokenReply);
+}
+
+message CreateUserRequest {
+    string mobile = 1 [(validate.rules).string.len = 11];
+    string pass = 2 [(validate.rules).string.min_len =  18];
+    string nick_name = 3 [(validate.rules).string.min_len =  10];
+    int64 age = 4 [(validate.rules).int64 = {gt:0, lte: 120}];
+}
+message CreateUserReply {
+    int64 id = 1;
+    string mobile = 2;
+    string nick_name = 3;
+    int64 age = 4;
+}
+
+message UpdateUserRequest {
+    int64 id = 1;
+    string mobile = 2 [(validate.rules).string.len = 11];
+    string nick_name = 3 [(validate.rules).string.min_len =  10];
+    int64 age = 4 [(validate.rules).int64 = {gt:0, lte: 120}];
+}
+message UpdateUserReply {
+    string mobile = 1;
+    string nick_name = 2;
+    int64 age = 3;
+}
+
+message DeleteUserRequest {
+    int64 id = 1;
+}
+message DeleteUserReply {
+    bool ok = 1;
+}
+
+message GetUserRequest {
+    int64 id = 1;
+}
+message GetUserReply {
+    int64 id = 1;
+    string mobile = 2;
+    string nick_name = 3;
+    int64 age = 4;
+}
+
+message ListUserRequest {
+    int64 page = 1;
+    int64 limit = 2;
+}
+message ListUserReply {
+     message User {
+        int64 id = 1;
+        string mobile = 2;
+        string nick_name = 3;
+    }
+    repeated User users = 1;
+}
+
+message GetTokenRequest {
+    string mobile = 1;
+    string pass = 2;
+}
+message GetTokenReply {
+    string token = 1;
+}

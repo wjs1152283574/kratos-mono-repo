@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package api.ws.service.v1;
+
+option go_package = "casso/api/ws/service/v1;v1";
+import "google/api/annotations.proto";
+
+service Ws {
+    rpc Chat (ChatRequest) returns (ChatReply){
+        option (google.api.http) = {
+            get: "/admin/v1/shop/list"
+        };
+    }
+}
+
+message ChatRequest {}
+message ChatReply {}

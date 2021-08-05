@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package api.order.service.v1;
+
+option go_package = "casso/api/order/service/v1;v1";
+
+service Order {
+    rpc CreateOrder (CreateOrderRequest) returns (CreateOrderReply);
+    rpc DeleteOrder (DeleteOrderRequest) returns (DeleteOrderReply);
+    rpc GetOrder (GetOrderRequest) returns (GetOrderReply);
+    rpc ListOrder (ListOrderRequest) returns (ListOrderReply);
+}
+
+message CreateOrderRequest {
+    message ProList {
+        int64 id = 1;
+        float price = 2;
+    }
+    repeated ProList pro_list = 1;
+    int64 uid = 2;
+}
+message CreateOrderReply {
+    string order_no = 1;
+}
+
+message DeleteOrderRequest {
+    int64 id = 1;
+}
+message DeleteOrderReply {}
+
+message GetOrderRequest {
+    int64 id = 1;
+}
+message GetOrderReply {
+    message ProList {
+        int64 id = 1;
+        float price = 2;
+    }
+    repeated ProList pro_list = 1;
+    int64 oid = 2;
+}
+
+message ListOrderRequest {
+    int64 page = 1;
+    int64 limit = 2;
+    int64 uid = 3;
+}
+message ListOrderReply {
+    repeated OrderList list = 1;
+}
+
+message OrderList {
+    message ProList {
+        int64 id = 1;
+        string name = 2;
+        string banner = 3;
+        int64 price = 4;
+    }
+    repeated ProList proList = 1;
+    string order_no = 2;
+    int64 status = 3;
+}

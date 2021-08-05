@@ -1,7 +1,7 @@
 package server
 
 import (
-	v1 "casso/api/user/v1/service"
+	v1 "casso/api/user/service/v1"
 	"casso/app/user/service/internal/conf"
 	"casso/app/user/service/internal/service"
 

@@ -1,51 +1,108 @@
-## kratos monorepo
+### cars-shop-microservice
+
+#### 服务拆分 （按照业务拆分，每个服务需要实现前后端的BFF）
+
+* 用户服务: user（核心服务）
+1. 创建用户
+2. 删除用户
+3. 修改用户
+4. 查询用户
+5. 用户列表
+6. 登陆验证
+
+* 商品服务 : product
+1. 增加目录
+2. 删除目录
+3. 目录列表
+4. 修改目录
+5. 增加商品
+6. 删除商品
+7. 商品列表
+8. 修改商品
+
+
+* 订单服务: order
+1. 下单
+2. 订单列表
+
+
+* 支付服务: payment
+1. 支付
+2. 支付历史
+
+
+* 用户收藏服务: colection
+1. 收藏
+2. 收藏列表
+3. 删除收藏
+
+
+* 购物车服务: shopcar
+1. 加入购物车
+2. 购物车列表
+3. 移除购物车
+4. 清空购物车
+
+
+* 前端BFF : shop（负责Call 其他rpc服务并给前端暴露合适接口）
+1. 注册
+2. 登陆
+3. 商品目录列表
+4. 商品列表，根据全部或者分类获取
+5. 加入购物车
+6. 移除购物车
+7. 清空购物车
+8. 下单
+9. 订单列表
+10. 支付
+
+* 后台管理系统BFF : admin（负责Call 其他rpc服务并给前端暴露合适接口）
+1. 用户列表
+
+
+* IM服务: ws
+
+## 以上是`Demo`功能列表（没有全部实现）
 ---
 
-#### 目录
+##### 设计指导思想：
+* 依赖倒置 
+    1. 使用`wire`维护依赖注入 (`/service/cmd/server/wire.go`)
+    2. 可以观察`/service/cmd/server/wire_gen.go` 中的代码。 看到各个依赖之间的调用顺序
 
-* `/api` : 存放`proto`文件及 `generate` 源码，每个服务目录区分
-    1. 使用命令：`kratos proto add api/user/service/v1/user.proto` 添加模版文件
-    2. 需要支持`http`需要引入:`import "google/api/annotations.proto";`;
-    3. 只有指定`http option` 才会生成对应的源码
-    4. 生成源码：`kratos proto client api/user/service/v1/user.proto`
-    5. `go mod tidy` 下载依赖 
+##### 模块权责
+* `/app/${server_name}/service/internel/`
+    1. 需要在不同模块中注入不同的依赖(`ProviderSet`)
+    2. `BIZ`， 业务组装，供`Service`层调用
+    3. `Data`，实现数据库/缓存等能力，供`BIZ`层调用
+    4. `Conf`，解析`../../configs`内的`yaml`配置文件，供`Data  Server`使用（这两个目录会进行一些服务初始化需要用到配置信息）
+    5. `Server`，服务注册，提供服务初始化依赖注入
+    6. `Service`，实现GRPC接口，调用`BIZ`组装好的用例
+    7. 各个模块互相独立，不能乱跨模块调用（破坏架构层级以及弃用依赖注入）
 
+* `/api`
+    1. 与`app`目录的服务想对应，维护各个服务的`proto`文件与生成的源码
+    2. 内部服务一般只需定义`rpc`接口，BFF 服务则需要定义`option (google.api.http)`
+    3. 也可以去掉`/api`目录，就像`kratos`提供的单例服务`layout`一样，将`api/`放到`app`目录内独立维护
 
-* `/app` : 存放各个服务实现代码
-    1. 生成模版 : `kratos proto server api/user/service/v1/user.proto -t app/user/service/internal/service`
+* `/deploy`
+    1. 存放一些自动话脚本
+    2. 本地测试使用起来挺方便
 
-* `deploy` : 自动化配置脚本
+* `pkg`
+    1. 存放项目下所有服务均可使用的公共代码，这也是集中式管理的好处之一
+    2. 在这里添加公共代码需要按照规范分好目录层级（语意化），不能一坨放一起
 
+* `third_party`
+    1. 存放三方依赖，目前是一些`proto`文件
 
-* `pkg`: 公用部分，多个服务多会用到的
+* `app_makefile`
+    1. `app`目录下每个服务根路径都会有一个`Makefile`文件，内部 `include ../../../app_makefile`
+    2. 最好不要私自改动`app_makefile`,需要添加功能可以在自己维护的服务内的`Makefile`中添加
 
+* `Makefile`
+    1. 整个项目根目录的`Makefile`
+    2. 维护一些全局的`Makefile` 命令，很实用
 
-* `third_party`: 第三方依赖
-
-* `Makefile` : `generate` 源文件
-    1.  `make help` 查看都有哪些命令
-    2. `make all` 时需要存在至少一个源文件
-    3. 自行查看`Makefile`，可以自己修改
-    4. 如果不修改项目结构，一般 `make all`即可
-
-* 运行:
-    1. `go generate ./...` 生成所有proto源码、wire等等
-    2. kratos run
-    3. 运行之前需要注意配置好各个数据库以及注册中心的远程链接信息
-
-* [示例代码beer-shop](https://go-kratos.github.io/beer-shop/#/design)
-
-#### 设计思路：
-* 一般服务并不对外暴露http 接口，需要特定的BFF服务来提供http接口。内部服务间通过RPC通讯
-* BFF 维护二级缓存，具体服务维护一级缓存
-* 服务降级一般在BFF完成
-
-
-#### 使用：
-* 创建新的服务：`kratos proto add api/{server}/service/v1/{server}.proto`
-    1. 生成`proto`模版
-    2. 手动定义好接口再往下执行
-
-* 生成源码：`kratos proto client api/{server}/service/v1/{server}.proto`
-
-* 生成`service` 模版: `kratos proto server api/{service}/service/v1/{service}.proto -t app/{service}/service/internal/service`
+## 其他目录自行了解
+---

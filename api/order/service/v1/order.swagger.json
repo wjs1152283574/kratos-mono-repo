@@ -1,0 +1,151 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/order/service/v1/order.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Order"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {},
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateOrderReply": {
+      "type": "object",
+      "properties": {
+        "orderNo": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CreateOrderRequestProList": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "v1DeleteOrderReply": {
+      "type": "object"
+    },
+    "v1GetOrderReply": {
+      "type": "object",
+      "properties": {
+        "proList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1GetOrderReplyProList"
+          }
+        },
+        "oid": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1GetOrderReplyProList": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "v1ListOrderReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1OrderList"
+          }
+        }
+      }
+    },
+    "v1OrderList": {
+      "type": "object",
+      "properties": {
+        "proList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1OrderListProList"
+          }
+        },
+        "orderNo": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1OrderListProList": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "banner": {
+          "type": "string"
+        },
+        "price": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    }
+  }
+}

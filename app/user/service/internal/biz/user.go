@@ -7,8 +7,15 @@ import (
 )
 
 type User struct {
+	ID   int
 	Name string
 	Age  int64
+}
+
+type UserForToken struct {
+	Mobile string
+	Pass   string
+	ID     int
 }
 
 type UserRepo interface {
@@ -17,6 +24,7 @@ type UserRepo interface {
 	UpdateUser(ctx context.Context, c *User) (*User, error)
 	DeleteUser(ctx context.Context, c *User) (*User, error)
 	ListUser(ctx context.Context, pageNum, pageSize int64) ([]*User, error)
+	GetToken(ctx context.Context, u *UserForToken) (token string, err error)
 }
 
 type UserUseCase struct {
@@ -46,4 +54,8 @@ func (uc *UserUseCase) Update(ctx context.Context, u *User) (*User, error) {
 
 func (uc *UserUseCase) List(ctx context.Context, pageNum, pageSize int64) ([]*User, error) {
 	return uc.repo.ListUser(ctx, pageNum, pageSize)
+}
+
+func (uc *UserUseCase) Login(ctx context.Context, u *UserForToken) (token string, err error) {
+	return uc.repo.GetToken(ctx, u)
 }

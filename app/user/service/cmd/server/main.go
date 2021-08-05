@@ -9,6 +9,7 @@ import (
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"go.opentelemetry.io/otel/exporters/jaeger"
 	"go.opentelemetry.io/otel/sdk/resource"
@@ -31,7 +32,7 @@ func init() {
 	flag.StringVar(&flagconf, "conf", "../../configs", "config path, eg: -conf config.yaml")
 }
 
-func newApp(logger log.Logger, gs *grpc.Server) *kratos.App {
+func newApp(logger log.Logger, gs *grpc.Server, rr registry.Registrar) *kratos.App {
 	return kratos.New(
 		kratos.Name(Name),
 		kratos.Version(Version),
@@ -40,12 +41,12 @@ func newApp(logger log.Logger, gs *grpc.Server) *kratos.App {
 		kratos.Server(
 			gs,
 		),
-		// kratos.Registrar(rr),
+		kratos.Registrar(rr),
 	)
 }
 
 func main() {
-	flag.Parse()
+	flag.Parse() // 获取终端命令
 	logger := log.With(log.NewStdLogger(os.Stdout),
 		"service.name", Name,
 		"service.version", Version,
@@ -65,12 +66,12 @@ func main() {
 		panic(err)
 	}
 
-	var bc conf.Bootstrap
+	var bc conf.Bootstrap // config.yaml
 	if err := c.Scan(&bc); err != nil {
 		panic(err)
 	}
 
-	var rc conf.Registry
+	var rc conf.Registry // registry.yaml
 	if err := c.Scan(&rc); err != nil {
 		panic(err)
 	}
@@ -87,6 +88,7 @@ func main() {
 	)
 
 	app, cleanup, err := initApp(bc.Server, &rc, bc.Data, logger, tp)
+	// app, cleanup, err := initApp(bc.Server, &rc, bc.Data, logger)
 	if err != nil {
 		panic(err)
 	}

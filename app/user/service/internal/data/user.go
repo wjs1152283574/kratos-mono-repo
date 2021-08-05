@@ -2,12 +2,12 @@ package data
 
 import (
 	"casso/app/user/service/internal/biz"
+	"casso/app/user/service/internal/pkg/utill/token"
+	"casso/pkg/util/pagination"
 	"context"
 
-	"github.com/go-kratos/beer-shop/pkg/util/pagination"
-	"gorm.io/gorm"
-
 	"github.com/go-kratos/kratos/v2/log"
+	"gorm.io/gorm"
 )
 
 var _ biz.UserRepo = (*UserRepo)(nil)
@@ -19,8 +19,9 @@ type UserRepo struct {
 
 type User struct {
 	gorm.Model
-	Name string
-	Age  int64
+	Mobile string
+	Name   string
+	Age    int64
 }
 
 func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
@@ -94,4 +95,22 @@ func (r *UserRepo) ListUser(ctx context.Context, pageNum, pageSize int64) ([]*bi
 		})
 	}
 	return rv, nil
+}
+
+// GetToken check user exit and return token
+func (r *UserRepo) GetToken(ctx context.Context, u *biz.UserForToken) (string, error) {
+	var user *biz.User
+	result := r.data.db.WithContext(ctx).Where("mobile = ?", u.Mobile).First(&user)
+	if result.Error != nil {
+		return "", result.Error
+	}
+	t, err := token.NewJWT().CreateToken(token.CustomClaims{
+		Mobile:   u.Mobile,
+		ID:       user.ID,
+		Password: u.Pass,
+	})
+	if err != nil {
+		return "", err
+	}
+	return t, nil
 }

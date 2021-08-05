@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package api.shop.service.v1;
+import "validate/validate.proto";
+import "google/api/annotations.proto";
+
+option go_package = "casso/api/shop/service/v1;v1";
+
+service Shop {
+    rpc Login (LoginRequest) returns (LoginReply){
+        option (google.api.http) = {
+            post: "/login",
+            body:"*"
+        };
+    }
+}
+
+message LoginRequest {
+    string mobile = 1 [(validate.rules).string.len = 11];
+    string pass = 2 [(validate.rules).string = {min_len: 6, max_len: 18}];
+}
+message LoginReply {
+    string token = 1;
+}
+

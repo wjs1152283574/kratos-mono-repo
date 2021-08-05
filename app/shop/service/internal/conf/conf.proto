@@ -1,0 +1,54 @@
+syntax = "proto3";
+package shop.api;
+
+option go_package = "casso/app/shop/service/internal/conf;conf";
+
+import "google/protobuf/duration.proto";
+
+message Bootstrap {
+    Trace trace = 1;
+    Server server = 2;
+    Data data = 3;
+}
+
+message Trace {
+    string endpoint = 1;
+}
+
+message Server {
+  message HTTP {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  message GRPC {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  HTTP http = 1;
+  GRPC grpc = 2;
+}
+
+message Data {
+  message Database {
+    string driver = 1;
+    string source = 2;
+  }
+  message Redis {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration read_timeout = 3;
+    google.protobuf.Duration write_timeout = 4;
+  }
+  Database database = 1;
+}
+
+message Discovery {
+  Nacos nacos = 1;
+}
+
+message Nacos {
+    string address = 1;
+    int64 port = 2;
+}

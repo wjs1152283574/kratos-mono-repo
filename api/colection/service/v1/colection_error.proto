@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package api.colection.service.v1;
+import "errors/errors.proto";
+
+option go_package = "casso/api/colection/service/v1;v1";
+
+enum ColectionServiceErrorReason {
+    option (errors.default_code) = 500;
+
+    RECORD_NOT_FOUND = 0 [(errors.code) = 404];
+    CONTENT_MISSING = 1 [(errors.code) = 400];
+}

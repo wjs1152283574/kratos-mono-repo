@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package api.product.service.v1;
+import "validate/validate.proto";
+
+option go_package = "casso/api/product/service/v1;v1";
+
+service Product {
+    rpc CreateProduct (CreateProductRequest) returns (CreateProductReply);
+    rpc UpdateProduct (UpdateProductRequest) returns (UpdateProductReply);
+    rpc DeleteProduct (DeleteProductRequest) returns (DeleteProductReply);
+    rpc GetProduct (GetProductRequest) returns (GetProductReply);
+    rpc ListProduct (ListProductRequest) returns (ListProductReply);
+
+    rpc CreateCatalog (CreateCatalogRequest) returns (CreateCatalogReply);
+    rpc UpdateCatalog (UpdateCatalogRequest) returns (UpdateCatalogReply);
+    rpc DeleteCatalog (DeleteCatalogRequest) returns (DeleteCatalogReply);
+    rpc ListCatalog (ListCatalogRequest) returns (ListCatalogReply);
+}
+
+message CreateProductRequest {
+    int64 catalog_id = 1;
+    string name = 2 [(validate.rules).string.min_len =  10];
+    string desc = 3;
+    string banner = 4;
+    int64 price = 5 [(validate.rules).int64 = {gt:0, lte: 12000}];
+}
+message CreateProductReply {
+    string name = 1;
+    string banner = 2;
+}
+
+message UpdateProductRequest {
+    int64 id = 1;
+    int64 catalog_id = 2;
+    string name = 3 [(validate.rules).string.min_len =  10];
+    string desc = 4;
+    string banner = 5;
+    int64 price = 6 [(validate.rules).int64 = {gt:0, lte: 12000}];
+}
+message UpdateProductReply {
+
+}
+
+message DeleteProductRequest {
+    int64 id = 1;
+}
+message DeleteProductReply {}
+
+message GetProductRequest {
+    int64 id = 1;
+}
+message GetProductReply {
+    int64 id = 1;
+    string name = 2;
+    string desc = 3;
+    string banner = 4;
+    int64 price = 5;
+}
+
+message ListProductRequest {
+    int64 page =1;
+    int64 limit =2;
+}
+message ListProductReply {
+    message Pro {
+        int64 id = 1;
+        string name = 2;
+        string desc = 3;
+        string banner = 4;
+        int64 price = 5;
+    }
+    repeated Pro pro_list = 1;
+}
+
+
+message CreateCatalogRequest {
+    string name =1;
+}
+message CreateCatalogReply {}
+
+message UpdateCatalogRequest {
+    int64 id = 1;
+    string name = 2;
+}
+message UpdateCatalogReply {}
+
+message DeleteCatalogRequest {
+    int64 id = 1;
+}
+message DeleteCatalogReply {}
+
+message ListCatalogRequest {
+    int64 page =1;
+    int64 limit =2;
+}
+message ListCatalogReply {
+    message Catalog {
+        int64 id = 1;
+        string name = 2;
+    }
+    repeated Catalog list = 1;
+}

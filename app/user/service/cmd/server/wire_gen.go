@@ -29,7 +29,8 @@ func initApp(confServer *conf.Server, registry *conf.Registry, confData *conf.Da
 	userUseCase := biz.NewUserUseCase(userRepo, logger)
 	userService := service.NewUserService(userUseCase, logger)
 	grpcServer := server.NewGRPCServer(confServer, logger, tracerProvider, userService)
-	app := newApp(logger, grpcServer)
+	registrar := server.NewRegistrar(registry)
+	app := newApp(logger, grpcServer, registrar)
 	return app, func() {
 		cleanup()
 	}, nil
