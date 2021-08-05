@@ -106,3 +106,45 @@
 
 ## 其他目录自行了解
 ---
+
+#### Commit 规范
+
+* 由于开发人员有限,可直接在master分支开发;建议自建本地分支
+* 各位开人人员,提交代码前先拉取,
+
+###### 格式如下
+
+* 例：`fead(type)`:本次提交概述
+* `type`: 本次 commit 的类型，诸如 bugfix docs style 等，参考如下:   
+
+    * `fead`：添加新功能
+    * `fix`：修补缺陷
+    * `docs`：修改文档
+    * `style`：修改格式
+    * `refactor`：重构
+    * `perf`：优化
+    * `test`：增加测试
+    * `chore`：构建过程或辅助工具的变动
+    * `revert`：回滚到上一个版本
+    * `merge`：合并
+
+* `scope`: 本次 `commit` 波及的范围
+* `subject`: 简明扼要的阐述下本次 `commit` 的主旨，在原文中特意强调了几点：
+
+    1. 使用祈使句
+    2. 首字母不要大写
+    3. 结尾无需添加标点
+
+
+##### 分支记录
+* `dev`：开发 `pro`：发布
+* 命令记录：
+```
+git checkout -b dev  // 新建分支
+git push origin dev  // 推送新分支到线上
+git branch -d dev  // 删除本地分支
+git push origin :dev // 删除远程分支,需要设置权限
+
+git checkout pro // 切换到发布分支
+git  merge dev  // 再合并开发分支
+```
