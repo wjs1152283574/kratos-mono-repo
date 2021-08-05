@@ -8,8 +8,13 @@ import (
 )
 
 func (s *UserService) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserReply, error) {
-	_, err := s.uc.Create(ctx, &biz.User{})
-	return &pb.CreateUserReply{}, err
+	res, err := s.uc.Create(ctx, &biz.User{Mobile: req.Mobile, Pass: req.Pass, Name: req.NickName, Age: req.Age})
+	return &pb.CreateUserReply{
+		Id:       res.ID,
+		Mobile:   res.Mobile,
+		NickName: res.Name,
+		Age:      res.Age,
+	}, err
 }
 func (s *UserService) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb.UpdateUserReply, error) {
 	return &pb.UpdateUserReply{}, nil

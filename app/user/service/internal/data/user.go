@@ -2,9 +2,11 @@ package data
 
 import (
 	"casso/app/user/service/internal/biz"
+	"casso/app/user/service/internal/pkg/utill/passmd5"
 	"casso/app/user/service/internal/pkg/utill/token"
 	"casso/pkg/util/pagination"
 	"context"
+	"errors"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"gorm.io/gorm"
@@ -19,7 +21,8 @@ type UserRepo struct {
 
 type User struct {
 	gorm.Model
-	Mobile string
+	Mobile string `gorm:"unique"`
+	Pass   string
 	Name   string
 	Age    int64
 }
@@ -31,11 +34,14 @@ func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
 	}
 }
 
-func (r *UserRepo) CreateUser(ctx context.Context, b *biz.User) (*biz.User, error) {
-	o := User{Name: b.Name, Age: b.Age}
-	result := r.data.db.WithContext(ctx).Create(o)
-	return &biz.User{
-		Name: o.Name,
+func (r *UserRepo) CreateUser(ctx context.Context, b *biz.User) (*biz.UserReply, error) {
+	o := &User{Name: b.Name, Age: b.Age, Mobile: b.Mobile, Pass: passmd5.Base64Md5(b.Pass)}
+	result := r.data.db.WithContext(ctx).Create(o).First(o)
+	return &biz.UserReply{
+		Name:   o.Name,
+		Mobile: o.Mobile,
+		Age:    o.Age,
+		ID:     int64(o.ID),
 	}, result.Error
 }
 
@@ -104,9 +110,12 @@ func (r *UserRepo) GetToken(ctx context.Context, u *biz.UserForToken) (string, e
 	if result.Error != nil {
 		return "", result.Error
 	}
+	if user.Pass != passmd5.Base64Md5(u.Pass) {
+		return "", errors.New("密码错误")
+	}
 	t, err := token.NewJWT().CreateToken(token.CustomClaims{
 		Mobile:   u.Mobile,
-		ID:       user.ID,
+		ID:       1,
 		Password: u.Pass,
 	})
 	if err != nil {

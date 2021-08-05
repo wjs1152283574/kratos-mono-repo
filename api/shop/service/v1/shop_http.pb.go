@@ -19,11 +19,32 @@ const _ = http.SupportPackageIsVersion1
 
 type ShopHTTPServer interface {
 	Login(context.Context, *LoginRequest) (*LoginReply, error)
+	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 }
 
 func RegisterShopHTTPServer(s *http.Server, srv ShopHTTPServer) {
 	r := s.Route("/")
+	r.POST("/register", _Shop_Register0_HTTP_Handler(srv))
 	r.POST("/login", _Shop_Login0_HTTP_Handler(srv))
+}
+
+func _Shop_Register0_HTTP_Handler(srv ShopHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in RegisterRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/api.shop.service.v1.Shop/Register")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.Register(ctx, req.(*RegisterRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*RegisterResponse)
+		return ctx.Result(200, reply)
+	}
 }
 
 func _Shop_Login0_HTTP_Handler(srv ShopHTTPServer) func(ctx http.Context) error {
@@ -47,6 +68,7 @@ func _Shop_Login0_HTTP_Handler(srv ShopHTTPServer) func(ctx http.Context) error 
 
 type ShopHTTPClient interface {
 	Login(ctx context.Context, req *LoginRequest, opts ...http.CallOption) (rsp *LoginReply, err error)
+	Register(ctx context.Context, req *RegisterRequest, opts ...http.CallOption) (rsp *RegisterResponse, err error)
 }
 
 type ShopHTTPClientImpl struct {
@@ -62,6 +84,19 @@ func (c *ShopHTTPClientImpl) Login(ctx context.Context, in *LoginRequest, opts .
 	pattern := "/login"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/api.shop.service.v1.Shop/Login"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *ShopHTTPClientImpl) Register(ctx context.Context, in *RegisterRequest, opts ...http.CallOption) (*RegisterResponse, error) {
+	var out RegisterResponse
+	pattern := "/register"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/api.shop.service.v1.Shop/Register"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

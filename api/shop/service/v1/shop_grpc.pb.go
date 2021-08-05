@@ -18,6 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ShopClient interface {
+	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error)
 }
 
@@ -27,6 +28,15 @@ type shopClient struct {
 
 func NewShopClient(cc grpc.ClientConnInterface) ShopClient {
 	return &shopClient{cc}
+}
+
+func (c *shopClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error) {
+	out := new(RegisterResponse)
+	err := c.cc.Invoke(ctx, "/api.shop.service.v1.Shop/Register", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *shopClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error) {
@@ -42,6 +52,7 @@ func (c *shopClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.C
 // All implementations must embed UnimplementedShopServer
 // for forward compatibility
 type ShopServer interface {
+	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginReply, error)
 	mustEmbedUnimplementedShopServer()
 }
@@ -50,6 +61,9 @@ type ShopServer interface {
 type UnimplementedShopServer struct {
 }
 
+func (UnimplementedShopServer) Register(context.Context, *RegisterRequest) (*RegisterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
+}
 func (UnimplementedShopServer) Login(context.Context, *LoginRequest) (*LoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
@@ -64,6 +78,24 @@ type UnsafeShopServer interface {
 
 func RegisterShopServer(s grpc.ServiceRegistrar, srv ShopServer) {
 	s.RegisterService(&Shop_ServiceDesc, srv)
+}
+
+func _Shop_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShopServer).Register(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.shop.service.v1.Shop/Register",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShopServer).Register(ctx, req.(*RegisterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Shop_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -91,6 +123,10 @@ var Shop_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "api.shop.service.v1.Shop",
 	HandlerType: (*ShopServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Register",
+			Handler:    _Shop_Register_Handler,
+		},
 		{
 			MethodName: "Login",
 			Handler:    _Shop_Login_Handler,

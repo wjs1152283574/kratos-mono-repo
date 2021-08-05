@@ -24,6 +24,10 @@ func NewShopUseCase(repo ShopRepo, logger log.Logger, uc v1.UserClient) *ShopUse
 	return &ShopUseCase{repo: repo, log: log.NewHelper(log.With(logger, "module", "usecase/shop")), uc: uc}
 }
 
+func (s *ShopUseCase) Register(ctx context.Context, req *v1.CreateUserRequest) (*v1.CreateUserReply, error) {
+	return s.uc.CreateUser(ctx, req)
+}
+
 func (s *ShopUseCase) Login(ctx context.Context, req *v1.GetTokenRequest) (*v1.GetTokenReply, error) {
 	return s.uc.GetToken(ctx, req)
 }

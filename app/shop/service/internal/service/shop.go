@@ -22,15 +22,28 @@ func NewShopService(sc *biz.ShopUseCase, logger log.Logger) *ShopService {
 		log: log.NewHelper(log.With(logger, "module", "service/shop"))}
 }
 
+func (s *ShopService) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterResponse, error) {
+	u, err := s.sc.Register(ctx, &v1.CreateUserRequest{Mobile: req.Mobile, Pass: req.Pass, Age: req.Age, NickName: req.NickName})
+	if err != nil {
+		return &pb.RegisterResponse{}, pb.ErrorDuplicateEntry(err.Error())
+	}
+	return &pb.RegisterResponse{
+		Id:       u.Id,
+		Mobile:   u.Mobile,
+		NickName: u.NickName,
+		Age:      u.Age,
+	}, nil
+}
+
 func (s *ShopService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
 	token, err := s.sc.Login(ctx, &v1.GetTokenRequest{
-		Mobile: "17620439807",
-		Pass:   "casso",
+		Mobile: req.Mobile,
+		Pass:   req.Pass,
 	})
 	if err != nil {
 		return &pb.LoginReply{
 			Token: "错误、",
-		}, v1.ErrorRecordNotFound("用户不存在！")
+		}, v1.ErrorRecordNotFound(err.Error())
 	}
 	return &pb.LoginReply{
 		Token: token.Token,

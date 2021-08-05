@@ -7,9 +7,13 @@ import (
 )
 
 type User struct {
-	ID   int
-	Name string
-	Age  int64
+	Name, Mobile, Pass string
+	Age                int64
+}
+
+type UserReply struct {
+	Name, Mobile string
+	Age, ID      int64
 }
 
 type UserForToken struct {
@@ -19,7 +23,7 @@ type UserForToken struct {
 }
 
 type UserRepo interface {
-	CreateUser(ctx context.Context, c *User) (*User, error)
+	CreateUser(ctx context.Context, c *User) (*UserReply, error)
 	GetUser(ctx context.Context, id int64) (*User, error)
 	UpdateUser(ctx context.Context, c *User) (*User, error)
 	DeleteUser(ctx context.Context, c *User) (*User, error)
@@ -36,7 +40,7 @@ func NewUserUseCase(repo UserRepo, logger log.Logger) *UserUseCase {
 	return &UserUseCase{repo: repo, log: log.NewHelper(log.With(logger, "module", "usecase/user"))}
 }
 
-func (uc *UserUseCase) Create(ctx context.Context, u *User) (*User, error) {
+func (uc *UserUseCase) Create(ctx context.Context, u *User) (*UserReply, error) {
 	return uc.repo.CreateUser(ctx, u)
 }
 

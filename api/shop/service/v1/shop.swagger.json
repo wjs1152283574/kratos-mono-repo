@@ -47,6 +47,38 @@
           "Shop"
         ]
       }
+    },
+    "/register": {
+      "post": {
+        "operationId": "Shop_Register",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RegisterResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1RegisterRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Shop"
+        ]
+      }
     }
   },
   "definitions": {
@@ -96,6 +128,44 @@
         },
         "pass": {
           "type": "string"
+        }
+      }
+    },
+    "v1RegisterRequest": {
+      "type": "object",
+      "properties": {
+        "mobile": {
+          "type": "string"
+        },
+        "pass": {
+          "type": "string"
+        },
+        "nickName": {
+          "type": "string"
+        },
+        "age": {
+          "type": "string",
+          "format": "int64"
+        }
+      },
+      "title": "[(validate.rules).string.email = true]"
+    },
+    "v1RegisterResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "mobile": {
+          "type": "string"
+        },
+        "nickName": {
+          "type": "string"
+        },
+        "age": {
+          "type": "string",
+          "format": "int64"
         }
       }
     }

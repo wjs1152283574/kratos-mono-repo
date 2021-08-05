@@ -10,4 +10,5 @@ enum ShopServiceErrorReason {
 
     RECORD_NOT_FOUND = 0 [(errors.code) = 404];
     CONTENT_MISSING = 1 [(errors.code) = 400];
+    DUPLICATE_ENTRY = 2 [(errors.code) = 400];
 }

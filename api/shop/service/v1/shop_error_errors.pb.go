@@ -28,3 +28,12 @@ func IsContentMissing(err error) bool {
 func ErrorContentMissing(format string, args ...interface{}) *errors.Error {
 	return errors.New(400, ShopServiceErrorReason_CONTENT_MISSING.String(), fmt.Sprintf(format, args...))
 }
+
+func IsDuplicateEntry(err error) bool {
+	e := errors.FromError(err)
+	return e.Reason == ShopServiceErrorReason_DUPLICATE_ENTRY.String() && e.Code == 400
+}
+
+func ErrorDuplicateEntry(format string, args ...interface{}) *errors.Error {
+	return errors.New(400, ShopServiceErrorReason_DUPLICATE_ENTRY.String(), fmt.Sprintf(format, args...))
+}
