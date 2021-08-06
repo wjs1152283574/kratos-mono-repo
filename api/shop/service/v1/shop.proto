@@ -43,6 +43,10 @@ message LoginRequest {
     string pass = 2 [(validate.rules).string = {min_len: 6, max_len: 18}];
 }
 message LoginReply {
-    string token = 1;
+    int64 code = 1;
+    message Data {
+        string token = 1;
+    }
+    Data data = 2;
 }
 

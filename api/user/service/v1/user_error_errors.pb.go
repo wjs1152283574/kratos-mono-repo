@@ -20,6 +20,15 @@ func ErrorRecordNotFound(format string, args ...interface{}) *errors.Error {
 	return errors.New(404, UserServiceErrorReason_RECORD_NOT_FOUND.String(), fmt.Sprintf(format, args...))
 }
 
+func IsInvalidPass(err error) bool {
+	e := errors.FromError(err)
+	return e.Reason == UserServiceErrorReason_INVALID_PASS.String() && e.Code == 400
+}
+
+func ErrorInvalidPass(format string, args ...interface{}) *errors.Error {
+	return errors.New(400, UserServiceErrorReason_INVALID_PASS.String(), fmt.Sprintf(format, args...))
+}
+
 func IsContentMissing(err error) bool {
 	e := errors.FromError(err)
 	return e.Reason == UserServiceErrorReason_CONTENT_MISSING.String() && e.Code == 400
@@ -27,4 +36,13 @@ func IsContentMissing(err error) bool {
 
 func ErrorContentMissing(format string, args ...interface{}) *errors.Error {
 	return errors.New(400, UserServiceErrorReason_CONTENT_MISSING.String(), fmt.Sprintf(format, args...))
+}
+
+func IsMakeTokenError(err error) bool {
+	e := errors.FromError(err)
+	return e.Reason == UserServiceErrorReason_MAKE_TOKEN_ERROR.String() && e.Code == 500
+}
+
+func ErrorMakeTokenError(format string, args ...interface{}) *errors.Error {
+	return errors.New(500, UserServiceErrorReason_MAKE_TOKEN_ERROR.String(), fmt.Sprintf(format, args...))
 }

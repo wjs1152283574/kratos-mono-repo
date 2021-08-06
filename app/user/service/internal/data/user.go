@@ -1,13 +1,14 @@
 package data
 
 import (
+	v1 "casso/api/user/service/v1"
 	"casso/app/user/service/internal/biz"
+	"casso/app/user/service/internal/pkg/utill/errreason"
 	"casso/app/user/service/internal/pkg/utill/passmd5"
 	"casso/app/user/service/internal/pkg/utill/token"
 	"casso/pkg/util/pagination"
 	"context"
 
-	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 	"gorm.io/gorm"
 )
@@ -105,21 +106,22 @@ func (r *UserRepo) ListUser(ctx context.Context, pageNum, pageSize int64) ([]*bi
 
 // GetToken check user exit and return token
 func (r *UserRepo) GetToken(ctx context.Context, u *biz.UserForToken) (string, error) {
-	var user *biz.User
+	var user User
 	result := r.data.db.WithContext(ctx).Where("mobile = ?", u.Mobile).First(&user)
 	if result.Error != nil {
-		return "", result.Error
+		return "", v1.ErrorRecordNotFound(errreason.USER_NOT_EXIT)
 	}
 	if user.Pass != passmd5.Base64Md5(u.Pass) {
-		return "", errors.New(200, "INVALID_PASS", "用户名或密码错误")
+		// return "", errors.New(400, "INVALID_PARAMS", errreason.INVALID_PARAMS) // EOF
+		return "", v1.ErrorInvalidPass(errreason.INVALID_PASS) // PASS
 	}
 	t, err := token.NewJWT().CreateToken(token.CustomClaims{
 		Mobile:   u.Mobile,
-		ID:       1,
+		ID:       int(user.ID),
 		Password: u.Pass,
 	})
 	if err != nil {
-		return "", err
+		return "", v1.ErrorMakeTokenError(errreason.MAKE_TOKEN_ERROR)
 	}
 	return t, nil
 }

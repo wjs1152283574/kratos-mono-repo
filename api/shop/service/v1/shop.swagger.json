@@ -115,6 +115,18 @@
     "v1LoginReply": {
       "type": "object",
       "properties": {
+        "code": {
+          "type": "string",
+          "format": "int64"
+        },
+        "data": {
+          "$ref": "#/definitions/v1LoginReplyData"
+        }
+      }
+    },
+    "v1LoginReplyData": {
+      "type": "object",
+      "properties": {
         "token": {
           "type": "string"
         }

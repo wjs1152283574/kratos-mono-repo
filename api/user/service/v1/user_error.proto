@@ -9,5 +9,7 @@ enum UserServiceErrorReason {
     option (errors.default_code) = 500;
 
     RECORD_NOT_FOUND = 0[(errors.code) = 404];
-    CONTENT_MISSING = 1 [(errors.code) = 400];
+    INVALID_PASS = 1 [(errors.code) = 400];
+    CONTENT_MISSING = 2 [(errors.code) = 400];
+    MAKE_TOKEN_ERROR = 3 [(errors.code) = 500];
 }

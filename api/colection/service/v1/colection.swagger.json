@@ -17,21 +17,6 @@
   ],
   "paths": {},
   "definitions": {
-    "ListColectionReplyData": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        },
-        "banner": {
-          "type": "string"
-        }
-      }
-    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -71,8 +56,23 @@
         "list": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ListColectionReplyData"
+            "$ref": "#/definitions/v1ListColectionReplyData"
           }
+        }
+      }
+    },
+    "v1ListColectionReplyData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "banner": {
+          "type": "string"
         }
       }
     }
