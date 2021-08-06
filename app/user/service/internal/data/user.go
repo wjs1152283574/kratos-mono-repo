@@ -6,8 +6,8 @@ import (
 	"casso/app/user/service/internal/pkg/utill/token"
 	"casso/pkg/util/pagination"
 	"context"
-	"errors"
 
+	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 	"gorm.io/gorm"
 )
@@ -111,7 +111,7 @@ func (r *UserRepo) GetToken(ctx context.Context, u *biz.UserForToken) (string, e
 		return "", result.Error
 	}
 	if user.Pass != passmd5.Base64Md5(u.Pass) {
-		return "", errors.New("密码错误")
+		return "", errors.New(200, "INVALID_PASS", "用户名或密码错误")
 	}
 	t, err := token.NewJWT().CreateToken(token.CustomClaims{
 		Mobile:   u.Mobile,

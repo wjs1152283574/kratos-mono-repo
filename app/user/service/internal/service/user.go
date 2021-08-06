@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	pb "casso/api/user/service/v1"
 	"casso/app/user/service/internal/biz"
@@ -32,6 +33,7 @@ func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserRequest) (*p
 func (s *UserService) GetToken(ctx context.Context, req *pb.GetTokenRequest) (*pb.GetTokenReply, error) {
 	token, err := s.uc.Login(ctx, &biz.UserForToken{Mobile: req.Mobile, Pass: req.Pass, ID: 2})
 	if err != nil {
+		fmt.Printf("USER_SERVICE ==> err_type:=%#T\n", err)
 		return &pb.GetTokenReply{}, err
 	}
 	return &pb.GetTokenReply{Token: token}, nil

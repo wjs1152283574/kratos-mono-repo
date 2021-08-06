@@ -5,7 +5,9 @@ import (
 	v1 "casso/api/user/service/v1"
 	"casso/app/shop/service/internal/biz"
 	"context"
+	"fmt"
 
+	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -41,9 +43,11 @@ func (s *ShopService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Logi
 		Pass:   req.Pass,
 	})
 	if err != nil {
+		fmt.Printf("SHOP_SERVICE ==> err_type:=%#T\n,%#v\n", err, err)
+		e := errors.FromError(err)
 		return &pb.LoginReply{
 			Token: "错误、",
-		}, v1.ErrorRecordNotFound(err.Error())
+		}, errors.New(int(e.Code), e.Reason, e.Message)
 	}
 	return &pb.LoginReply{
 		Token: token.Token,
