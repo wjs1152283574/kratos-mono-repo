@@ -12,6 +12,7 @@ import (
 	"github.com/go-kratos/kratos/v2/config/file"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/jaeger"
 	"go.opentelemetry.io/otel/sdk/resource"
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
@@ -83,8 +84,14 @@ func main() {
 	}
 	tp := tracesdk.NewTracerProvider(
 		tracesdk.WithBatcher(exp),
-		tracesdk.WithResource(resource.NewSchemaless(
-			semconv.ServiceNameKey.String(Name),
+		// tracesdk.WithResource(resource.NewSchemaless(
+		// 	semconv.ServiceNameKey.String(Name),
+		// )),
+		tracesdk.WithResource(resource.NewWithAttributes(
+			semconv.SchemaURL,
+			semconv.ServiceNameKey.String("casso"),
+			attribute.String("environment", "stage"),
+			attribute.Int64("ID", 2222),
 		)),
 	)
 
