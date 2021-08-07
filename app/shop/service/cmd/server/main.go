@@ -84,14 +84,9 @@ func main() {
 	}
 	tp := tracesdk.NewTracerProvider(
 		tracesdk.WithBatcher(exp),
-		// tracesdk.WithResource(resource.NewSchemaless(
-		// 	semconv.ServiceNameKey.String(Name),
-		// )),
-		tracesdk.WithResource(resource.NewWithAttributes(
-			semconv.SchemaURL,
-			semconv.ServiceNameKey.String("casso"),
-			attribute.String("environment", "stage"),
-			attribute.Int64("ID", 2222),
+		tracesdk.WithResource(resource.NewSchemaless(
+			semconv.ServiceNameKey.String(Name),
+			attribute.String("service", "user/service"),
 		)),
 	)
 
