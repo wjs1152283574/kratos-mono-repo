@@ -5,7 +5,7 @@ import (
 
 	pb "casso/api/user/service/v1"
 	"casso/app/user/service/internal/biz"
-	"casso/app/user/service/internal/pkg/utill/errreason"
+	"casso/pkg/util/errreason"
 )
 
 func (s *UserService) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserReply, error) {

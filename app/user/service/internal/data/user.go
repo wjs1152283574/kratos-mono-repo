@@ -3,10 +3,10 @@ package data
 import (
 	v1 "casso/api/user/service/v1"
 	"casso/app/user/service/internal/biz"
-	"casso/app/user/service/internal/pkg/utill/errreason"
 	"casso/app/user/service/internal/pkg/utill/passmd5"
-	"casso/app/user/service/internal/pkg/utill/token"
+	"casso/pkg/util/errreason"
 	"casso/pkg/util/pagination"
+	"casso/pkg/util/token"
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
