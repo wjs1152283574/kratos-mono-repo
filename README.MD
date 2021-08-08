@@ -71,6 +71,15 @@
 ---
 
 ##### 设计指导思想：
+```
+对于外网的请求来说，我们通常在 API Gateway 
+进行统一的认证拦截，一旦认证成功，我们会使
+用 JWT 方式通过 RPC 元数据传递的方式带到
+BFF 层，BFF 校验 Token 完整性后把身份信息
+注入到应用的 Context 中，BFF 到其他下层的微
+服务，建议是直接在 RPC Request 中带入用户
+身份信息(UserID)请求服务。
+```
 * 依赖倒置 
     1. 使用`wire`维护依赖注入 (`/service/cmd/server/wire.go`)
     2. 可以观察`/service/cmd/server/wire_gen.go` 中的代码。 看到各个依赖之间的调用顺序
