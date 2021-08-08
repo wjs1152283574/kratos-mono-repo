@@ -2,7 +2,6 @@ package token
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -66,7 +65,6 @@ func (j *JWT) ParseToken(tokenString string) (*CustomClaims, error) {
 		return j.SigningKey, nil
 	})
 	if err != nil {
-		fmt.Println(err)
 		if ve, ok := err.(*jwt.ValidationError); ok {
 			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
 				return nil, TokenMalformed

@@ -5,6 +5,7 @@ import (
 	v1 "casso/api/user/service/v1"
 	"casso/app/shop/service/internal/biz"
 	"context"
+	"fmt"
 
 	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
@@ -37,6 +38,7 @@ func (s *ShopService) Register(ctx context.Context, req *pb.RegisterRequest) (*p
 }
 
 func (s *ShopService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
+	fmt.Println(ctx.Value("uid"), "测试获取 UID ")
 	token, err := s.sc.Login(ctx, &v1.GetTokenRequest{
 		Mobile: req.Mobile,
 		Pass:   req.Pass,
