@@ -3,7 +3,7 @@
     "editor.detectIndentation": true,
     "editor.tabSize": 4,
     // "editor.wordWrap":"bounded",
-    "editor.fontSize": 19,
+    "editor.fontSize": 18,
     "workbench.tree.indent": 20,
     "editor.autoIndent":"full",
     "files.autoSave": "onFocusChange",
@@ -29,7 +29,7 @@
     "workbench.colorTheme": "One Dark Pro",
     "workbench.iconTheme": "vscode-icons",
     
-    "eslint.autoFixOnSave": true,
+    // "eslint.autoFixOnSave": true,
     "eslint.validate": [
       "javascript",
       "javascriptreact",
