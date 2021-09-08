@@ -2,7 +2,6 @@
     "breadcrumbs.enabled": true,
     "editor.detectIndentation": true,
     "editor.tabSize": 4,
-    // "editor.wordWrap":"bounded",
     "editor.fontSize": 18,
     "workbench.tree.indent": 20,
     "editor.autoIndent":"full",
@@ -16,7 +15,6 @@
     "extensions.autoUpdate": false,
     "files.insertFinalNewline": true,
     "git.autofetch": false,
-    "git.path": "F:\\Program Files\\Git\\cmd\\git.exe",
     "search.exclude": {
       "**/node_modules": true,
       "**/dist": true
