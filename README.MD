@@ -89,7 +89,7 @@ BFF 层，BFF 校验 Token 完整性后把身份信息
     1. 个人配置喜好，已经添加到`.gitignore`，只上传首次 
 
 * `/api`
-    1. 与`app`目录的服务想对应，维护各个服务的`proto`文件与生成的源码
+    1. 与`app`目录的服务一一对应，维护各个服务的`proto`文件与生成的源码
     2. 内部服务一般只需定义`rpc`接口，BFF 服务则需要定义`option (google.api.http)`
     3. 也可以去掉`/api`目录，就像`kratos`提供的单例服务`layout`一样，将`api/`放到`app`目录内独立维护
 
@@ -160,11 +160,11 @@ BFF 层，BFF 校验 Token 完整性后把身份信息
 * `dev`：开发版 `prod`：发布版 `stage`：稳定版
 * 命令记录：
 ```
-git checkout -b dev  // 新建分支
-git push origin dev  // 推送新分支到线上
-git branch -d dev  // 删除本地分支
-git push origin :dev // 删除远程分支,需要设置权限
+git checkout -b dev   // 新建分支
+git push origin dev   // 推送新分支到线上
+git branch -d dev     // 删除本地分支
+git push origin :dev  // 删除远程分支,需要设置权限
 
 git checkout pro // 切换到发布分支
-git  merge dev  // 再合并开发分支
+git  merge dev   // 再合并开发分支
 ```
