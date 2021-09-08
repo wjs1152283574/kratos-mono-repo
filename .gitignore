@@ -128,11 +128,7 @@ fabric.properties
 .idea/codestream.xml
 
 ### vscode ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode
 *.code-workspace
 standalone-logs
 
