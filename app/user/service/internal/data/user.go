@@ -116,9 +116,8 @@ func (r *UserRepo) GetToken(ctx context.Context, u *biz.UserForToken) (string, e
 		return "", v1.ErrorInvalidPass(errreason.INVALID_PASS) // PASS
 	}
 	t, err := token.NewJWT().CreateToken(token.CustomClaims{
-		Mobile:   u.Mobile,
-		ID:       int(user.ID),
-		Password: u.Pass,
+		Mobile: u.Mobile,
+		ID:     int(user.ID),
 	})
 	if err != nil {
 		return "", v1.ErrorMakeTokenError(errreason.MAKE_TOKEN_ERROR)
