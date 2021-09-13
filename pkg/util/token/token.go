@@ -25,11 +25,10 @@ type JWT struct {
 
 // CustomClaims 载荷，可以加一些自己需要的信息
 type CustomClaims struct {
-	ID       int    `json:"id"`
-	Mobile   string `json:"mobile"`
-	Password string `json:"pass"`
-	AppCode  string `json:"app_code"` // 区分app用户
-	TimeStr  string `json:"timestr"`
+	ID      int    `json:"id"`
+	Mobile  string `json:"mobile"`
+	AppCode string `json:"app_code"` // 区分app用户
+	TimeStr string `json:"timestr"`
 	jwt.StandardClaims
 }
 
