@@ -24,7 +24,11 @@ func (s *UserService) DeleteUser(ctx context.Context, req *pb.DeleteUserRequest)
 	return &pb.DeleteUserReply{}, nil
 }
 func (s *UserService) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserReply, error) {
-	return &pb.GetUserReply{}, nil
+	res, _ := s.uc.Get(ctx, req.Id)
+
+	return &pb.GetUserReply{
+		NickName: res.Name,
+	}, nil
 }
 func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserRequest) (*pb.ListUserReply, error) {
 	return &pb.ListUserReply{}, nil

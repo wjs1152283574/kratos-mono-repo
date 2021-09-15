@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 type ShopClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error)
+	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserReply, error)
 }
 
 type shopClient struct {
@@ -48,12 +49,22 @@ func (c *shopClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.C
 	return out, nil
 }
 
+func (c *shopClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserReply, error) {
+	out := new(GetUserReply)
+	err := c.cc.Invoke(ctx, "/api.shop.service.v1.Shop/GetUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ShopServer is the server API for Shop service.
 // All implementations must embed UnimplementedShopServer
 // for forward compatibility
 type ShopServer interface {
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginReply, error)
+	GetUser(context.Context, *GetUserRequest) (*GetUserReply, error)
 	mustEmbedUnimplementedShopServer()
 }
 
@@ -66,6 +77,9 @@ func (UnimplementedShopServer) Register(context.Context, *RegisterRequest) (*Reg
 }
 func (UnimplementedShopServer) Login(context.Context, *LoginRequest) (*LoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedShopServer) GetUser(context.Context, *GetUserRequest) (*GetUserReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
 func (UnimplementedShopServer) mustEmbedUnimplementedShopServer() {}
 
@@ -116,6 +130,24 @@ func _Shop_Login_Handler(srv interface{}, ctx context.Context, dec func(interfac
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Shop_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShopServer).GetUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.shop.service.v1.Shop/GetUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShopServer).GetUser(ctx, req.(*GetUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Shop_ServiceDesc is the grpc.ServiceDesc for Shop service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -130,6 +162,10 @@ var Shop_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Login",
 			Handler:    _Shop_Login_Handler,
+		},
+		{
+			MethodName: "GetUser",
+			Handler:    _Shop_GetUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

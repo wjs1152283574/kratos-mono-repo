@@ -31,3 +31,7 @@ func (s *ShopUseCase) Register(ctx context.Context, req *v1.CreateUserRequest) (
 func (s *ShopUseCase) Login(ctx context.Context, req *v1.GetTokenRequest) (*v1.GetTokenReply, error) {
 	return s.uc.GetToken(ctx, req)
 }
+
+func (s *ShopUseCase) GetUser(ctx context.Context, req *v1.GetUserRequest) (*v1.GetUserReply, error) {
+	return s.uc.GetUser(ctx, req)
+}

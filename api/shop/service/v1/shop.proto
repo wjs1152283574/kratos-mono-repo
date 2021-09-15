@@ -10,15 +10,21 @@ service Shop {
 
     rpc Register (RegisterRequest) returns (RegisterResponse){
         option (google.api.http) = {
-            post: "/register",
+            post: "/v1/register",
             body:"*"
         };
     }
 
     rpc Login (LoginRequest) returns (LoginReply){
         option (google.api.http) = {
-            post: "/login",
+            post: "/v1/login",
             body:"*"
+        };
+    }
+
+    rpc GetUser (GetUserRequest) returns (GetUserReply){
+        option (google.api.http) = {
+            get: "/v1/me"
         };
     }
 }
@@ -52,3 +58,13 @@ message LoginReply {
     Data data = 2;
 }
 
+message GetUserRequest {
+}
+
+message GetUserReply {
+    int64 code = 1;
+    message Data {
+        string Name = 1;
+    }
+    Data data = 2;
+}

@@ -18,14 +18,16 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 type ShopHTTPServer interface {
+	GetUser(context.Context, *GetUserRequest) (*GetUserReply, error)
 	Login(context.Context, *LoginRequest) (*LoginReply, error)
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 }
 
 func RegisterShopHTTPServer(s *http.Server, srv ShopHTTPServer) {
 	r := s.Route("/")
-	r.POST("/register", _Shop_Register0_HTTP_Handler(srv))
-	r.POST("/login", _Shop_Login0_HTTP_Handler(srv))
+	r.POST("/v1/register", _Shop_Register0_HTTP_Handler(srv))
+	r.POST("/v1/login", _Shop_Login0_HTTP_Handler(srv))
+	r.GET("/v1/me", _Shop_GetUser0_HTTP_Handler(srv))
 }
 
 func _Shop_Register0_HTTP_Handler(srv ShopHTTPServer) func(ctx http.Context) error {
@@ -66,7 +68,27 @@ func _Shop_Login0_HTTP_Handler(srv ShopHTTPServer) func(ctx http.Context) error 
 	}
 }
 
+func _Shop_GetUser0_HTTP_Handler(srv ShopHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetUserRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/api.shop.service.v1.Shop/GetUser")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetUser(ctx, req.(*GetUserRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*GetUserReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type ShopHTTPClient interface {
+	GetUser(ctx context.Context, req *GetUserRequest, opts ...http.CallOption) (rsp *GetUserReply, err error)
 	Login(ctx context.Context, req *LoginRequest, opts ...http.CallOption) (rsp *LoginReply, err error)
 	Register(ctx context.Context, req *RegisterRequest, opts ...http.CallOption) (rsp *RegisterResponse, err error)
 }
@@ -79,9 +101,22 @@ func NewShopHTTPClient(client *http.Client) ShopHTTPClient {
 	return &ShopHTTPClientImpl{client}
 }
 
+func (c *ShopHTTPClientImpl) GetUser(ctx context.Context, in *GetUserRequest, opts ...http.CallOption) (*GetUserReply, error) {
+	var out GetUserReply
+	pattern := "/v1/me"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/api.shop.service.v1.Shop/GetUser"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
 func (c *ShopHTTPClientImpl) Login(ctx context.Context, in *LoginRequest, opts ...http.CallOption) (*LoginReply, error) {
 	var out LoginReply
-	pattern := "/login"
+	pattern := "/v1/login"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/api.shop.service.v1.Shop/Login"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -94,7 +129,7 @@ func (c *ShopHTTPClientImpl) Login(ctx context.Context, in *LoginRequest, opts .
 
 func (c *ShopHTTPClientImpl) Register(ctx context.Context, in *RegisterRequest, opts ...http.CallOption) (*RegisterResponse, error) {
 	var out RegisterResponse
-	pattern := "/register"
+	pattern := "/v1/register"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/api.shop.service.v1.Shop/Register"))
 	opts = append(opts, http.PathTemplate(pattern))

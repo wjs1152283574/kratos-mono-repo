@@ -16,7 +16,7 @@
     "application/json"
   ],
   "paths": {
-    "/login": {
+    "/v1/login": {
       "post": {
         "operationId": "Shop_Login",
         "responses": {
@@ -48,7 +48,29 @@
         ]
       }
     },
-    "/register": {
+    "/v1/me": {
+      "get": {
+        "operationId": "Shop_GetUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apishopservicev1GetUserReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Shop"
+        ]
+      }
+    },
+    "/v1/register": {
       "post": {
         "operationId": "Shop_Register",
         "responses": {
@@ -82,6 +104,18 @@
     }
   },
   "definitions": {
+    "apishopservicev1GetUserReply": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "format": "int64"
+        },
+        "data": {
+          "$ref": "#/definitions/v1GetUserReplyData"
+        }
+      }
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -109,6 +143,14 @@
           "items": {
             "$ref": "#/definitions/protobufAny"
           }
+        }
+      }
+    },
+    "v1GetUserReplyData": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
         }
       }
     },

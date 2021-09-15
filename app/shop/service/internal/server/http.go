@@ -4,10 +4,11 @@ import (
 	v1 "casso/api/shop/service/v1"
 	"casso/app/shop/service/internal/conf"
 	"casso/app/shop/service/internal/service"
+	"casso/pkg/util/contextkey"
 	"casso/pkg/util/token"
 	"context"
-	"fmt"
 
+	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
@@ -29,7 +30,7 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 				tracing.Server(tracing.WithTracerProvider(tp)),
 				logging.Server(logger),
 				AuthMiddleware,
-			).Prefix("/auth.", "/v1/auth.").Build(),
+			).Path("/api.shop.service.v1.Shop/GetUser").Build(),
 		),
 	}
 	if c.Http.Network != "" {
@@ -47,25 +48,24 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 	return srv
 }
 
-// 自定义类型，用户context赋值
-type Key string
-type Val int
-
 func AuthMiddleware(handler middleware.Handler) middleware.Handler {
 	return func(ctx context.Context, req interface{}) (reply interface{}, err error) {
 		reply, err = handler(ctx, req)
 		if tr, ok := transport.FromServerContext(ctx); ok {
-			// 断言成HTTP的Transport可以拿到特殊信息
-			if ht, ok := tr.(*http.Transport); ok && ht.Request().Header.Get("Authorization") != "" {
-				uinfos, errs := token.NewJWT().ParseToken(ht.Request().Header.Get("Authorization"))
-				if errs != nil {
-					fmt.Println(errs)
-				}
-				var key Key = "userID"
-				var val Val = Val(uinfos.ID)
-				etxs := context.WithValue(ctx, key, val)
-				reply, err = handler(etxs, req)
+			ht, ok := tr.(*http.Transport)
+			if !ok && ht.Request().Header.Get("Authorization") == "" {
+				return nil, errors.New(400, "token not exit", "need token")
+
 			}
+
+			uinfos, parserErr := token.NewJWT().ParseToken(ht.Request().Header.Get("Authorization"))
+			if parserErr != nil {
+				return nil, errors.New(400, "token invalid", parserErr.Error())
+			}
+
+			var key = contextkey.Key("userID")
+			etxs := context.WithValue(ctx, key, uinfos.ID)
+			reply, err = handler(etxs, req)
 		}
 		return
 	}
