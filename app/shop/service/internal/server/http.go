@@ -12,6 +12,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
+	"github.com/go-kratos/kratos/v2/middleware/selector"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport"
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
@@ -23,10 +24,12 @@ import (
 func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvider, s *service.ShopService) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
-			recovery.Recovery(),
-			tracing.Server(tracing.WithTracerProvider(tp)),
-			logging.Server(logger),
-			AuthMiddleware,
+			selector.Server(
+				recovery.Recovery(),
+				tracing.Server(tracing.WithTracerProvider(tp)),
+				logging.Server(logger),
+				AuthMiddleware,
+			).Path("/hello.Update/UpdateUser", "/hello.kratos/SayHello").Regex(`/test.hello/Get[0-9]+`).Prefix("/kratos.", "/go-kratos.", "/helloworld.Greeter/").Build(),
 		),
 	}
 	if c.Http.Network != "" {
@@ -44,6 +47,10 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 	return srv
 }
 
+// 自定义类型，用户context赋值
+type Key string
+type Val int
+
 func AuthMiddleware(handler middleware.Handler) middleware.Handler {
 	return func(ctx context.Context, req interface{}) (reply interface{}, err error) {
 		reply, err = handler(ctx, req)
@@ -55,9 +62,11 @@ func AuthMiddleware(handler middleware.Handler) middleware.Handler {
 			if ht, ok := tr.(*http.Transport); ok && ht.Request().Header.Get("Authorization") != "" {
 				uinfos, errs := token.NewJWT().ParseToken(ht.Request().Header.Get("Authorization"))
 				if errs != nil {
-					fmt.Println(err)
+					fmt.Println(errs)
 				}
-				etxs := context.WithValue(ctx, "uid", uinfos.ID)
+				var key Key = "userID"
+				var val Val = Val(uinfos.ID)
+				etxs := context.WithValue(ctx, key, val)
 				reply, err = handler(etxs, req)
 			}
 		}
