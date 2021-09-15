@@ -29,7 +29,7 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 				tracing.Server(tracing.WithTracerProvider(tp)),
 				logging.Server(logger),
 				AuthMiddleware,
-			).Path("/hello.Update/UpdateUser", "/hello.kratos/SayHello").Regex(`/test.hello/Get[0-9]+`).Prefix("/kratos.", "/go-kratos.", "/helloworld.Greeter/").Build(),
+			).Prefix("/auth.", "/v1/auth.").Build(),
 		),
 	}
 	if c.Http.Network != "" {
@@ -55,9 +55,6 @@ func AuthMiddleware(handler middleware.Handler) middleware.Handler {
 	return func(ctx context.Context, req interface{}) (reply interface{}, err error) {
 		reply, err = handler(ctx, req)
 		if tr, ok := transport.FromServerContext(ctx); ok {
-			kind := tr.Kind().String()
-			operation := tr.Operation()
-			fmt.Println(kind, operation)
 			// 断言成HTTP的Transport可以拿到特殊信息
 			if ht, ok := tr.(*http.Transport); ok && ht.Request().Header.Get("Authorization") != "" {
 				uinfos, errs := token.NewJWT().ParseToken(ht.Request().Header.Get("Authorization"))
