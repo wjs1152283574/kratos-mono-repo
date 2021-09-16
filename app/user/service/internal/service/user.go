@@ -17,12 +17,15 @@ func (s *UserService) CreateUser(ctx context.Context, req *pb.CreateUserRequest)
 		Age:      res.Age,
 	}, err
 }
+
 func (s *UserService) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb.UpdateUserReply, error) {
 	return &pb.UpdateUserReply{}, nil
 }
+
 func (s *UserService) DeleteUser(ctx context.Context, req *pb.DeleteUserRequest) (*pb.DeleteUserReply, error) {
 	return &pb.DeleteUserReply{}, nil
 }
+
 func (s *UserService) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserReply, error) {
 	res, _ := s.uc.Get(ctx, req.Id)
 
@@ -30,6 +33,7 @@ func (s *UserService) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.
 		NickName: res.Name,
 	}, nil
 }
+
 func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserRequest) (*pb.ListUserReply, error) {
 	return &pb.ListUserReply{}, nil
 }
