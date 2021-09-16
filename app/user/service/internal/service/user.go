@@ -9,12 +9,12 @@ import (
 )
 
 func (s *UserService) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserReply, error) {
-	res, err := s.uc.Create(ctx, &biz.User{Mobile: req.Mobile, Pass: req.Pass, Name: req.NickName, Age: req.Age})
+	user, err := s.uc.Create(ctx, &biz.User{Mobile: req.Mobile, Pass: req.Pass, Name: req.NickName, Age: req.Age})
 	return &pb.CreateUserReply{
-		Id:       res.ID,
-		Mobile:   res.Mobile,
-		NickName: res.Name,
-		Age:      res.Age,
+		Id:       user.ID,
+		Mobile:   user.Mobile,
+		NickName: user.Name,
+		Age:      user.Age,
 	}, err
 }
 
@@ -27,10 +27,10 @@ func (s *UserService) DeleteUser(ctx context.Context, req *pb.DeleteUserRequest)
 }
 
 func (s *UserService) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserReply, error) {
-	res, _ := s.uc.Get(ctx, req.Id)
+	user, _ := s.uc.Get(ctx, req.Id)
 
 	return &pb.GetUserReply{
-		NickName: res.Name,
+		NickName: user.Name,
 	}, nil
 }
 

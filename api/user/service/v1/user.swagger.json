@@ -17,6 +17,21 @@
   ],
   "paths": {},
   "definitions": {
+    "ListUserReplyUser": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "mobile": {
+          "type": "string"
+        },
+        "nickName": {
+          "type": "string"
+        }
+      }
+    },
     "apiuserservicev1GetUserReply": {
       "type": "object",
       "properties": {
@@ -33,32 +48,6 @@
         "age": {
           "type": "string",
           "format": "int64"
-        }
-      }
-    },
-    "apiuserservicev1ListUserReply": {
-      "type": "object",
-      "properties": {
-        "users": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/apiuserservicev1ListUserReplyUser"
-          }
-        }
-      }
-    },
-    "apiuserservicev1ListUserReplyUser": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "int64"
-        },
-        "mobile": {
-          "type": "string"
-        },
-        "nickName": {
-          "type": "string"
         }
       }
     },
@@ -124,6 +113,17 @@
       "properties": {
         "token": {
           "type": "string"
+        }
+      }
+    },
+    "v1ListUserReply": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ListUserReplyUser"
+          }
         }
       }
     },

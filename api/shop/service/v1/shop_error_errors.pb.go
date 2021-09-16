@@ -37,3 +37,21 @@ func IsDuplicateEntry(err error) bool {
 func ErrorDuplicateEntry(format string, args ...interface{}) *errors.Error {
 	return errors.New(400, ShopServiceErrorReason_DUPLICATE_ENTRY.String(), fmt.Sprintf(format, args...))
 }
+
+func IsPermitionDenied(err error) bool {
+	e := errors.FromError(err)
+	return e.Reason == ShopServiceErrorReason_PERMITION_DENIED.String() && e.Code == 401
+}
+
+func ErrorPermitionDenied(format string, args ...interface{}) *errors.Error {
+	return errors.New(401, ShopServiceErrorReason_PERMITION_DENIED.String(), fmt.Sprintf(format, args...))
+}
+
+func IsInvalidToken(err error) bool {
+	e := errors.FromError(err)
+	return e.Reason == ShopServiceErrorReason_INVALID_TOKEN.String() && e.Code == 401
+}
+
+func ErrorInvalidToken(format string, args ...interface{}) *errors.Error {
+	return errors.New(401, ShopServiceErrorReason_INVALID_TOKEN.String(), fmt.Sprintf(format, args...))
+}

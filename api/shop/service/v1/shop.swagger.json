@@ -201,8 +201,7 @@
           "type": "string",
           "format": "int64"
         }
-      },
-      "title": "[(validate.rules).string.email = true]"
+      }
     },
     "v1RegisterResponse": {
       "type": "object",

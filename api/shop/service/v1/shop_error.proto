@@ -6,7 +6,7 @@ import "errors/errors.proto";
 option go_package = "casso/api/shop/service/v1;v1";
 
 enum ShopServiceErrorReason {
-    option (errors.default_code) = 200;
+    option (errors.default_code) = 500;
 
     RECORD_NOT_FOUND = 0 [(errors.code) = 404];
     CONTENT_MISSING = 1 [(errors.code) = 400];

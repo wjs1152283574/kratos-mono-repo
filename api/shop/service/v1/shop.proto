@@ -29,16 +29,12 @@ service Shop {
     }
 }
 
-// [(validate.rules).string.email = true]
 message RegisterRequest {
     string mobile = 1 [(validate.rules).string.len = 11];
     string pass = 2 [(validate.rules).string = {min_len: 6, max_len: 18}];
     string nick_name = 3;
     int64 age = 4;
 }
-
-
-
 message RegisterResponse {
     int64 id = 1;
     string mobile = 2;
@@ -60,7 +56,6 @@ message LoginReply {
 
 message GetUserRequest {
 }
-
 message GetUserReply {
     int64 code = 1;
     message Data {
