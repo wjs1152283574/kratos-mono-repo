@@ -26,6 +26,8 @@ BFF 层，BFF 校验 Token 完整性后把身份信息
     1. 使用`wire`维护依赖注入 (`/service/cmd/server/wire.go`)
     2. 可以观察`/service/cmd/server/wire_gen.go` 中的代码。 看到各个依赖之间的调用顺序
 
+---
+
 ##### 模块权责
 * `.vscode`
     1. 个人配置喜好，已经添加到`.gitignore`，只上传首次 
@@ -63,7 +65,8 @@ BFF 层，BFF 校验 Token 完整性后把身份信息
     1. 整个项目根目录的`Makefile`
     2. 维护一些全局的`Makefile` 命令，很实用
 
-## 其他目录自行了解
+* 其他目录自行了解
+
 ---
 
 #### 其他
