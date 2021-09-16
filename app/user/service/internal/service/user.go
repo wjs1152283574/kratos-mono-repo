@@ -5,7 +5,7 @@ import (
 
 	pb "casso/api/user/service/v1"
 	"casso/app/user/service/internal/biz"
-	"casso/pkg/util/errreason"
+	"casso/pkg/errors/normal"
 )
 
 func (s *UserService) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserReply, error) {
@@ -36,7 +36,7 @@ func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserRequest) (*p
 
 func (s *UserService) GetToken(ctx context.Context, req *pb.GetTokenRequest) (*pb.GetTokenReply, error) {
 	if req.Mobile == "" || req.Pass == "" {
-		return &pb.GetTokenReply{Token: ""}, pb.ErrorContentMissing(errreason.INVALID_PARAMS)
+		return &pb.GetTokenReply{Token: ""}, normal.InvalidParams
 	}
 	token, err := s.uc.Login(ctx, &biz.UserForToken{Mobile: req.Mobile, Pass: req.Pass, ID: 2})
 	if err != nil {

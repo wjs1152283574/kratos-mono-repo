@@ -4,11 +4,11 @@ import (
 	v1 "casso/api/shop/service/v1"
 	"casso/app/shop/service/internal/conf"
 	"casso/app/shop/service/internal/service"
+	"casso/pkg/errors/auth"
 	"casso/pkg/util/contextkey"
 	"casso/pkg/util/token"
 	"context"
 
-	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
@@ -54,13 +54,13 @@ func AuthMiddleware(handler middleware.Handler) middleware.Handler {
 		if tr, ok := transport.FromServerContext(ctx); ok {
 			ht, ok := tr.(*http.Transport)
 			if !ok && ht.Request().Header.Get("Authorization") == "" {
-				return nil, errors.New(400, "token not exit", "need token")
+				return nil, auth.ErrAuthFail
 
 			}
 
 			uinfos, parserErr := token.NewJWT().ParseToken(ht.Request().Header.Get("Authorization"))
 			if parserErr != nil {
-				return nil, errors.New(400, "token invalid", parserErr.Error())
+				return nil, auth.ErrAuthFail
 			}
 
 			var key = contextkey.Key("userID")

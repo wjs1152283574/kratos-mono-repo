@@ -1,10 +1,9 @@
 package data
 
 import (
-	v1 "casso/api/user/service/v1"
 	"casso/app/user/service/internal/biz"
 	"casso/app/user/service/internal/pkg/utill/passmd5"
-	"casso/pkg/util/errreason"
+	"casso/pkg/errors/normal"
 	"casso/pkg/util/pagination"
 	"casso/pkg/util/token"
 	"context"
@@ -109,18 +108,17 @@ func (r *UserRepo) GetToken(ctx context.Context, u *biz.UserForToken) (string, e
 	var user User
 	result := r.data.db.WithContext(ctx).Where("mobile = ?", u.Mobile).First(&user)
 	if result.Error != nil {
-		return "", v1.ErrorRecordNotFound(errreason.USER_NOT_EXIT)
+		return "", normal.RecordNotFound
 	}
 	if user.Pass != passmd5.Base64Md5(u.Pass) {
-		// return "", errors.New(400, "INVALID_PARAMS", errreason.INVALID_PARAMS) // EOF
-		return "", v1.ErrorInvalidPass(errreason.INVALID_PASS) // PASS
+		return "", normal.InvalidParams
 	}
 	t, err := token.NewJWT().CreateToken(token.CustomClaims{
 		Mobile: u.Mobile,
 		ID:     int(user.ID),
 	})
 	if err != nil {
-		return "", v1.ErrorMakeTokenError(errreason.MAKE_TOKEN_ERROR)
+		return "", normal.MakeTokenFaild
 	}
 	return t, nil
 }

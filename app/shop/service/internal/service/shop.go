@@ -4,8 +4,8 @@ import (
 	pb "casso/api/shop/service/v1"
 	v1 "casso/api/user/service/v1"
 	"casso/app/shop/service/internal/biz"
+	"casso/pkg/errors/normal"
 	"casso/pkg/util/contextkey"
-	"casso/pkg/util/errreason"
 	"context"
 
 	"github.com/go-kratos/kratos/v2/errors"
@@ -59,7 +59,7 @@ func (s *ShopService) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.
 	var key = contextkey.Key("userID")
 	id := ctx.Value(key)
 	if id == nil {
-		return nil, pb.ErrorContentMissing(errreason.INVALID_PARAMS)
+		return nil, normal.InvalidParams
 	}
 
 	res, err := s.sc.GetUser(ctx, &v1.GetUserRequest{
