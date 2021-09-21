@@ -69,8 +69,8 @@ message ListUserReply {
 }
 
 message GetTokenRequest {
-    string mobile = 1;
-    string pass = 2;
+    string mobile = 1 [(validate.rules).string.len = 11];
+    string pass = 2 [(validate.rules).string.min_len =  10];
 }
 message GetTokenReply {
     string token = 1;

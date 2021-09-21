@@ -797,9 +797,20 @@ func (m *GetTokenRequest) Validate() error {
 		return nil
 	}
 
-	// no validation rules for Mobile
+	if utf8.RuneCountInString(m.GetMobile()) != 11 {
+		return GetTokenRequestValidationError{
+			field:  "Mobile",
+			reason: "value length must be 11 runes",
+		}
 
-	// no validation rules for Pass
+	}
+
+	if utf8.RuneCountInString(m.GetPass()) < 10 {
+		return GetTokenRequestValidationError{
+			field:  "Pass",
+			reason: "value length must be at least 10 runes",
+		}
+	}
 
 	return nil
 }
