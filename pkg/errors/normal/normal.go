@@ -8,4 +8,6 @@ var InvalidParams = errors.New(400, "InvalidParams", "Missing Params")
 var RecordNotFound = errors.New(404, "RecordNotFound", "Record Not Found")
 
 // 服务端错误
+var UnknownError = errors.New(500, "UnknownError", "Unknown Errors")
+
 var MakeTokenFaild = errors.New(500, "MakeTokenFaild", "Make Token Faild")
