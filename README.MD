@@ -3,7 +3,7 @@
 #### 启动
 1. `cd deploy/docker-compose && docker-compose up -d`
 2. `cd /app/{service_name}/service && make wire && make run`
-3. 以上`yaml`文件经过测试可以顺利运行单例（2021/08/06），路径不对的自行切换
+3. 以上`yaml`文件经过测试可以顺利运行单例，路径不对的自行切换
 
 #### 服务拆分 （按照业务拆分，每个服务需要实现前后端的BFF）
 1. 实例服务紧包含一个`user`服务
