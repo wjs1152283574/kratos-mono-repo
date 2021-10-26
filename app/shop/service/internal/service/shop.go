@@ -2,7 +2,6 @@ package service
 
 import (
 	pb "casso/api/shop/service/v1"
-	v1 "casso/api/user/service/v1"
 	"casso/app/shop/service/internal/biz"
 	"casso/pkg/errors/normal"
 	"casso/pkg/util/contextkey"
@@ -26,33 +25,20 @@ func NewShopService(sc *biz.ShopUseCase, logger log.Logger) *ShopService {
 }
 
 func (s *ShopService) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterResponse, error) {
-	u, err := s.sc.Register(ctx, &v1.CreateUserRequest{Mobile: req.Mobile, Pass: req.Pass, Age: req.Age, NickName: req.NickName})
+	res, err := s.sc.Register(ctx, req)
 	if err != nil {
 		return &pb.RegisterResponse{}, pb.ErrorDuplicateEntry(err.Error())
 	}
-	return &pb.RegisterResponse{
-		Id:       u.Id,
-		Mobile:   u.Mobile,
-		NickName: u.NickName,
-		Age:      u.Age,
-	}, nil
+	return res, nil
 }
 
 func (s *ShopService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
-	token, err := s.sc.Login(ctx, &v1.GetTokenRequest{
-		Mobile: req.Mobile,
-		Pass:   req.Pass,
-	})
+	res, err := s.sc.Login(ctx, req)
 	if err != nil {
 		e := errors.FromError(err)
 		return nil, errors.New(int(e.Code), e.Reason, e.Message)
 	}
-	return &pb.LoginReply{
-		Code: 200,
-		Data: &pb.LoginReply_Data{
-			Token: token.Token,
-		},
-	}, nil
+	return res, nil
 }
 
 func (s *ShopService) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserReply, error) {
@@ -62,17 +48,10 @@ func (s *ShopService) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.
 		return nil, normal.InvalidParams
 	}
 
-	res, err := s.sc.GetUser(ctx, &v1.GetUserRequest{
-		Id: int64(id.(int)),
-	})
+	res, err := s.sc.GetUser(ctx, id.(int64))
 	if err != nil {
 		e := errors.FromError(err)
 		return nil, errors.New(int(e.Code), e.Reason, e.Message)
 	}
-	return &pb.GetUserReply{
-		Code: 200,
-		Data: &pb.GetUserReply_Data{
-			Name: res.NickName,
-		},
-	}, nil
+	return res, nil
 }
