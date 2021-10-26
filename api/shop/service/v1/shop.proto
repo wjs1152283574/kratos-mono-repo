@@ -57,7 +57,7 @@ message LoginReply {
 message GetUserRequest {
 }
 message GetUserReply {
-    int64 code = 1;
+    int64 code = 1; // 是否有必要自定义responeCode,还是直接使用http标准的responseCode
     message Data {
         string Name = 1;
     }
