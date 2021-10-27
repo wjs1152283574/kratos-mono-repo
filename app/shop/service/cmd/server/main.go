@@ -1,3 +1,11 @@
+/*
+ * @PackageName: main
+ * @Description: shop服务主程
+ * @Author: Casso-Wong
+ * @Date: 2021-10-27 17:46:15
+ * @Last Modified by: Casso-Wong
+ * @Last Modified time: 2021-10-27 17:46:15
+ */
 package main
 
 import (
