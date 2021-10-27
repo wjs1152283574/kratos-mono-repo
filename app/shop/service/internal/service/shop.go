@@ -48,7 +48,7 @@ func (s *ShopService) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.
 		return nil, normal.InvalidParams
 	}
 
-	res, err := s.sc.GetUser(ctx, id.(int64))
+	res, err := s.sc.GetUser(ctx, int64(id.(int)))
 	if err != nil {
 		e := errors.FromError(err)
 		return nil, errors.New(int(e.Code), e.Reason, e.Message)
