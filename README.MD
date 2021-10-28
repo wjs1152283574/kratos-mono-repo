@@ -5,6 +5,10 @@
 2. `cd /app/{service_name}/service && make wire && make run`
 3. 以上`yaml`文件经过测试可以顺利运行单例，路径不对的自行切换
 
+#### 新增服务
+* 新增`payment`服务:
+1. 生成`proto`服务模版:`kratos proto add api/payment/service/v1/payment.proto`
+
 #### 服务拆分 （按照业务拆分，每个服务需要实现前后端的BFF）
 1. 实例服务紧包含一个`user`服务
 2. `shop`服务充当BFF
