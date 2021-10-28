@@ -7,9 +7,9 @@
 
 #### 新增服务
 * 新增`payment`服务:
-1. 生成`proto`服务模版:`kratos proto add api/payment/service/v1/payment.proto`
-2. 根据生成的`proto`文件生成GO代码:`make api`(这个命令会将`api`目录下所有`proto`编译为GO) 或者 `kratos proto client api/payment/service/v1/payment.proto`
-3. 生成`app`部分：`make newapp APPNAME=payment`
+1. `kratos proto add api/payment/service/v1/payment.proto`
+2. `make api` 或者 `kratos proto client api/payment/service/v1/payment.proto`
+3. `make newapp APPNAME=payment`
 4. 必须生成`api`部分才可以生成`app`部分，也就是按照顺序来执行命令即可
 ```
 以上脚本仅仅帮助我们创建目录，具体的go文件需要我们自己处理，官方也并不提供相关的工具.
