@@ -36,7 +36,7 @@ message RegisterRequest {
     int64 age = 4;
 }
 message RegisterResponse {
-    int64 id = 1;
+    int64 id = 1; 
     string mobile = 2;
     string nick_name = 3;
     int64 age = 4; 

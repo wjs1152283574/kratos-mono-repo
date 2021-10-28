@@ -317,7 +317,7 @@ type GetUserReply struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Code int64              `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Code int64              `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"` // 是否有必要自定义responeCode,还是直接使用http标准的responseCode
 	Data *GetUserReply_Data `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
 }
 
