@@ -8,6 +8,9 @@
 #### 新增服务
 * 新增`payment`服务:
 1. 生成`proto`服务模版:`kratos proto add api/payment/service/v1/payment.proto`
+2. 根据生成的`proto`文件生成GO代码:`make api`(这个命令会将`api`目录下所有`proto`编译为GO) 或者 `kratos proto client api/payment/service/v1/payment.proto`
+
+
 
 #### 服务拆分 （按照业务拆分，每个服务需要实现前后端的BFF）
 1. 实例服务紧包含一个`user`服务
