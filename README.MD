@@ -9,6 +9,37 @@
 * 新增`payment`服务:
 1. 生成`proto`服务模版:`kratos proto add api/payment/service/v1/payment.proto`
 2. 根据生成的`proto`文件生成GO代码:`make api`(这个命令会将`api`目录下所有`proto`编译为GO) 或者 `kratos proto client api/payment/service/v1/payment.proto`
+3. 生成`app`部分：
+```
+cd app &&
+mkdir payment &&
+cd ./payment &&
+mkdir service &&
+cd ./service && 
+
+mkdir cmd &&
+mkdir ./cmd/server &&
+mkdir configs &&
+mkdir internal && 
+
+cd internal &&
+mkdir biz &&
+mkdir conf &&
+mkdir data &&
+mkdir server &&
+mkdir service &&
+cd .. &&
+touch .gitignore &&
+touch generate.go &&
+echo "package generate" >> ./generate.go &&
+touch Makefile &&
+echo "include ../../../app_makefile" >> ./Makefile &&
+touch README.MD &&
+cd ../../../ &&
+kratos proto server api/payment/service/v1/payment.proto -t app/payment/service/internal/service
+以上脚本仅仅帮助我们创建目录，具体的go文件需要我们自己处理，官方也并不提供相关的工具.
+关于每个目录的作用，可以参考user || shop 服务,临时的脚本，后面再优化
+```
 
 
 

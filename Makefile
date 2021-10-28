@@ -2,6 +2,7 @@ GOPATH:=$(shell go env GOPATH)
 VERSION=$(shell git describe --tags --always)
 INTERNAL_PROTO_FILES=$(shell find app -name *.proto)
 API_PROTO_FILES=$(shell find api -name *.proto)
+appname=demo
 
 .PHONY: init
 # init env
@@ -54,6 +55,15 @@ all:
 	make api;
 	make errors;
 	make config;
+
+.PHONY: newapp
+# newapp
+newapp:
+	cd app && mkdir $(appname) && cd ./$(appname) && mkdir service && cd ./service && mkdir cmd && mkdir ./cmd/server && \
+	mkdir configs && mkdir internal && cd internal && mkdir biz && mkdir conf && mkdir data && \
+	mkdir server && mkdir service && cd .. && touch .gitignore && touch generate.go && echo "package generate" >> ./generate.go && \
+	touch Makefile && echo "include ../../../app_makefile" >> ./Makefile && touch README.MD && cd ../../../ && \
+	kratos proto server api/$(appname)/service/v1/$(appname).proto -t app/$(appname)/service/internal/service
 
 # show help
 help:
