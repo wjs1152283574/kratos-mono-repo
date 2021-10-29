@@ -52,6 +52,7 @@ message LoginReply {
         string token = 1;
     }
     Data data = 2;
+    string msg = 3;
 }
 
 message GetUserRequest {

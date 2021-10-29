@@ -51,10 +51,11 @@ func (s *ShopUseCase) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Logi
 	}
 
 	return &pb.LoginReply{
-		Code: 20000,
+		Code: 200,
 		Data: &pb.LoginReply_Data{
 			Token: res.Token,
 		},
+		Msg: "",
 	}, nil
 }
 

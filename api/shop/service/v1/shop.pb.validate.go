@@ -289,6 +289,8 @@ func (m *LoginReply) Validate() error {
 		}
 	}
 
+	// no validation rules for Msg
+
 	return nil
 }
 

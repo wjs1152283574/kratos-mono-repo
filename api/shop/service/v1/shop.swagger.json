@@ -163,6 +163,9 @@
         },
         "data": {
           "$ref": "#/definitions/v1LoginReplyData"
+        },
+        "msg": {
+          "type": "string"
         }
       }
     },
