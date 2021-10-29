@@ -33,6 +33,7 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 			).Path("/api.shop.service.v1.Shop/GetUser").Build(),
 		),
 	}
+
 	if c.Http.Network != "" {
 		opts = append(opts, http.Network(c.Http.Network))
 	}
@@ -42,6 +43,9 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 	if c.Http.Timeout != nil {
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
+
+	// 自定义返回数据编码方式
+	// opts = append(opts, http.ResponseEncoder(response.CustomRespone))
 
 	srv := http.NewServer(opts...)
 	v1.RegisterShopHTTPServer(srv, s)
