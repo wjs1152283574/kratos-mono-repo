@@ -4,6 +4,7 @@ import "github.com/go-kratos/kratos/v2/errors"
 
 // 客户端错误
 var InvalidParams = errors.New(400, "InvalidParams", "Missing Params")
+var UserNotExit = errors.New(400, "UserNotExit", "User Not Exit")
 
 var RecordNotFound = errors.New(404, "RecordNotFound", "Record Not Found")
 

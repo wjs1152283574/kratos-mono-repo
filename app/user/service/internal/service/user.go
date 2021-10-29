@@ -44,7 +44,7 @@ func (s *UserService) GetToken(ctx context.Context, req *pb.GetTokenRequest) (*p
 	}
 	token, err := s.uc.Login(ctx, &biz.UserForToken{Mobile: req.Mobile, Pass: req.Pass, ID: 2})
 	if err != nil {
-		return &pb.GetTokenReply{}, err
+		return &pb.GetTokenReply{}, normal.UserNotExit
 	}
 	return &pb.GetTokenReply{Token: token}, nil
 }
