@@ -30,7 +30,7 @@ service Shop {
 }
 
 message RegisterRequest {
-    string mobile = 1 [(validate.rules).string.len = 11];
+    string mobile = 1 [(validate.rules).string.len = 11]; 
     string pass = 2 [(validate.rules).string = {min_len: 6, max_len: 18}];
     string nick_name = 3;
     int64 age = 4;
@@ -47,7 +47,7 @@ message LoginRequest {
     string pass = 2 [(validate.rules).string = {min_len: 6, max_len: 18}];
 }
 message LoginReply {
-    int64 code = 1;
+    int32 code = 1;  // 这里需要注意int64前端接收到的是字符串，int32才是数值
     message Data {
         string token = 1;
     }
@@ -58,7 +58,7 @@ message LoginReply {
 message GetUserRequest {
 }
 message GetUserReply {
-    int64 code = 1; // 是否有必要自定义responeCode,还是直接使用http标准的responseCode
+    int32 code = 1;
     message Data {
         string Name = 1;
     }

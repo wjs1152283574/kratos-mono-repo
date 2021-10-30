@@ -36,8 +36,8 @@ func (s *ShopService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Logi
 	res, err := s.sc.Login(ctx, req)
 	if err != nil {
 		e := errors.FromError(err)
-		
-		res.Code = int64(e.Code)
+
+		res.Code = e.Code
 		res.Msg = e.Message
 		return res, nil //errors.New(int(e.Code), e.Reason, e.Message)
 	}

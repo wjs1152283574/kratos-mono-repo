@@ -108,8 +108,8 @@
       "type": "object",
       "properties": {
         "code": {
-          "type": "string",
-          "format": "int64"
+          "type": "integer",
+          "format": "int32"
         },
         "data": {
           "$ref": "#/definitions/v1GetUserReplyData"
@@ -158,8 +158,8 @@
       "type": "object",
       "properties": {
         "code": {
-          "type": "string",
-          "format": "int64"
+          "type": "integer",
+          "format": "int32"
         },
         "data": {
           "$ref": "#/definitions/v1LoginReplyData"
