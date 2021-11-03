@@ -8,7 +8,7 @@ option go_package = "casso/api/shop/service/v1;v1";
 
 service Shop {
 
-    rpc Register (RegisterRequest) returns (RegisterResponse){
+    rpc Register (RegisterRequest) returns (RegisterReply){
         option (google.api.http) = {
             post: "/v1/register",
             body:"*"
@@ -35,7 +35,7 @@ message RegisterRequest {
     string nick_name = 3;
     int64 age = 4;
 }
-message RegisterResponse {
+message RegisterReply {
     int64 id = 1; 
     string mobile = 2;
     string nick_name = 3;
