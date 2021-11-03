@@ -24,10 +24,10 @@ func NewShopService(sc *biz.ShopUseCase, logger log.Logger) *ShopService {
 		log: log.NewHelper(log.With(logger, "module", "service/shop"))}
 }
 
-func (s *ShopService) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterResponse, error) {
+func (s *ShopService) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterReply, error) {
 	res, err := s.sc.Register(ctx, req)
 	if err != nil {
-		return &pb.RegisterResponse{}, pb.ErrorDuplicateEntry(err.Error())
+		return &pb.RegisterReply{}, pb.ErrorDuplicateEntry(err.Error())
 	}
 	return res, nil
 }

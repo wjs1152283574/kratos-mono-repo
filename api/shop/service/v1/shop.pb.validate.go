@@ -117,10 +117,10 @@ var _ interface {
 	ErrorName() string
 } = RegisterRequestValidationError{}
 
-// Validate checks the field values on RegisterResponse with the rules defined
-// in the proto definition for this message. If any rules are violated, an
-// error is returned.
-func (m *RegisterResponse) Validate() error {
+// Validate checks the field values on RegisterReply with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *RegisterReply) Validate() error {
 	if m == nil {
 		return nil
 	}
@@ -136,9 +136,9 @@ func (m *RegisterResponse) Validate() error {
 	return nil
 }
 
-// RegisterResponseValidationError is the validation error returned by
-// RegisterResponse.Validate if the designated constraints aren't met.
-type RegisterResponseValidationError struct {
+// RegisterReplyValidationError is the validation error returned by
+// RegisterReply.Validate if the designated constraints aren't met.
+type RegisterReplyValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -146,22 +146,22 @@ type RegisterResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e RegisterResponseValidationError) Field() string { return e.field }
+func (e RegisterReplyValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e RegisterResponseValidationError) Reason() string { return e.reason }
+func (e RegisterReplyValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e RegisterResponseValidationError) Cause() error { return e.cause }
+func (e RegisterReplyValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e RegisterResponseValidationError) Key() bool { return e.key }
+func (e RegisterReplyValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e RegisterResponseValidationError) ErrorName() string { return "RegisterResponseValidationError" }
+func (e RegisterReplyValidationError) ErrorName() string { return "RegisterReplyValidationError" }
 
 // Error satisfies the builtin error interface
-func (e RegisterResponseValidationError) Error() string {
+func (e RegisterReplyValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -173,14 +173,14 @@ func (e RegisterResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sRegisterResponse.%s: %s%s",
+		"invalid %sRegisterReply.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = RegisterResponseValidationError{}
+var _ error = RegisterReplyValidationError{}
 
 var _ interface {
 	Field() string
@@ -188,7 +188,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = RegisterResponseValidationError{}
+} = RegisterReplyValidationError{}
 
 // Validate checks the field values on LoginRequest with the rules defined in
 // the proto definition for this message. If any rules are violated, an error

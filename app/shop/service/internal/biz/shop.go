@@ -25,16 +25,16 @@ func NewShopUseCase(repo ShopRepo, logger log.Logger, uc v1.UserClient) *ShopUse
 	return &ShopUseCase{repo: repo, log: log.NewHelper(log.With(logger, "module", "usecase/shop")), uc: uc}
 }
 
-func (s *ShopUseCase) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterResponse, error) {
+func (s *ShopUseCase) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterReply, error) {
 	// 业务组装
 	res, err := s.uc.CreateUser(ctx, &v1.CreateUserRequest{
 		NickName: req.NickName,
 	})
 	if err != nil {
-		return &pb.RegisterResponse{}, err
+		return &pb.RegisterReply{}, err
 	}
 
-	return &pb.RegisterResponse{
+	return &pb.RegisterReply{
 		Id:       res.Id,
 		NickName: res.NickName,
 	}, nil

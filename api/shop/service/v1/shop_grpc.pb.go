@@ -18,7 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ShopClient interface {
-	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
+	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterReply, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error)
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserReply, error)
 }
@@ -31,8 +31,8 @@ func NewShopClient(cc grpc.ClientConnInterface) ShopClient {
 	return &shopClient{cc}
 }
 
-func (c *shopClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error) {
-	out := new(RegisterResponse)
+func (c *shopClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterReply, error) {
+	out := new(RegisterReply)
 	err := c.cc.Invoke(ctx, "/api.shop.service.v1.Shop/Register", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ func (c *shopClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...gr
 // All implementations must embed UnimplementedShopServer
 // for forward compatibility
 type ShopServer interface {
-	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
+	Register(context.Context, *RegisterRequest) (*RegisterReply, error)
 	Login(context.Context, *LoginRequest) (*LoginReply, error)
 	GetUser(context.Context, *GetUserRequest) (*GetUserReply, error)
 	mustEmbedUnimplementedShopServer()
@@ -72,7 +72,7 @@ type ShopServer interface {
 type UnimplementedShopServer struct {
 }
 
-func (UnimplementedShopServer) Register(context.Context, *RegisterRequest) (*RegisterResponse, error) {
+func (UnimplementedShopServer) Register(context.Context, *RegisterRequest) (*RegisterReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
 }
 func (UnimplementedShopServer) Login(context.Context, *LoginRequest) (*LoginReply, error) {

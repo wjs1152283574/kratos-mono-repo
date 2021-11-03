@@ -20,7 +20,7 @@ const _ = http.SupportPackageIsVersion1
 type ShopHTTPServer interface {
 	GetUser(context.Context, *GetUserRequest) (*GetUserReply, error)
 	Login(context.Context, *LoginRequest) (*LoginReply, error)
-	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
+	Register(context.Context, *RegisterRequest) (*RegisterReply, error)
 }
 
 func RegisterShopHTTPServer(s *http.Server, srv ShopHTTPServer) {
@@ -44,7 +44,7 @@ func _Shop_Register0_HTTP_Handler(srv ShopHTTPServer) func(ctx http.Context) err
 		if err != nil {
 			return err
 		}
-		reply := out.(*RegisterResponse)
+		reply := out.(*RegisterReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -90,7 +90,7 @@ func _Shop_GetUser0_HTTP_Handler(srv ShopHTTPServer) func(ctx http.Context) erro
 type ShopHTTPClient interface {
 	GetUser(ctx context.Context, req *GetUserRequest, opts ...http.CallOption) (rsp *GetUserReply, err error)
 	Login(ctx context.Context, req *LoginRequest, opts ...http.CallOption) (rsp *LoginReply, err error)
-	Register(ctx context.Context, req *RegisterRequest, opts ...http.CallOption) (rsp *RegisterResponse, err error)
+	Register(ctx context.Context, req *RegisterRequest, opts ...http.CallOption) (rsp *RegisterReply, err error)
 }
 
 type ShopHTTPClientImpl struct {
@@ -127,8 +127,8 @@ func (c *ShopHTTPClientImpl) Login(ctx context.Context, in *LoginRequest, opts .
 	return &out, err
 }
 
-func (c *ShopHTTPClientImpl) Register(ctx context.Context, in *RegisterRequest, opts ...http.CallOption) (*RegisterResponse, error) {
-	var out RegisterResponse
+func (c *ShopHTTPClientImpl) Register(ctx context.Context, in *RegisterRequest, opts ...http.CallOption) (*RegisterReply, error) {
+	var out RegisterReply
 	pattern := "/v1/register"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/api.shop.service.v1.Shop/Register"))

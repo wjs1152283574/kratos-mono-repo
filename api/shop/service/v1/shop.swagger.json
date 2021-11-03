@@ -77,7 +77,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1RegisterResponse"
+              "$ref": "#/definitions/v1RegisterReply"
             }
           },
           "default": {
@@ -188,13 +188,14 @@
         }
       }
     },
-    "v1RegisterRequest": {
+    "v1RegisterReply": {
       "type": "object",
       "properties": {
-        "mobile": {
-          "type": "string"
+        "id": {
+          "type": "string",
+          "format": "int64"
         },
-        "pass": {
+        "mobile": {
           "type": "string"
         },
         "nickName": {
@@ -206,14 +207,13 @@
         }
       }
     },
-    "v1RegisterResponse": {
+    "v1RegisterRequest": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "format": "int64"
-        },
         "mobile": {
+          "type": "string"
+        },
+        "pass": {
           "type": "string"
         },
         "nickName": {
