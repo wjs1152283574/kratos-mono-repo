@@ -5,7 +5,7 @@ services:
     image: mysql:5.7.22
     container_name: mysql_5.7
     ports:
-      - 3307:3306
+      - 3307:3306   # 使用3307是因为防止本级默认启动mysql而抛出端口占用错误
     environment:
       TZ: Asia/Shanghai
       MYSQL_ROOT_PASSWORD: "password"   # defaultUser : root
