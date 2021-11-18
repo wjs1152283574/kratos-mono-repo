@@ -114,8 +114,7 @@ func (r *UserRepo) GetToken(ctx context.Context, u *biz.UserForToken) (string, e
 		return "", normal.InvalidParams
 	}
 	t, err := token.NewJWT().CreateToken(token.CustomClaims{
-		Mobile: u.Mobile,
-		ID:     int(user.ID),
+		ID: int(user.ID),
 	})
 	if err != nil {
 		return "", normal.MakeTokenFaild
