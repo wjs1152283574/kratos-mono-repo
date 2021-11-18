@@ -1,3 +1,11 @@
+/*
+ * @Author: Casso
+ * @Date: 2021-11-17 16:24:19
+ * @LastEditors: Casso
+ * @LastEditTime: 2021-11-18 19:45:44
+ * @Description: file content
+ * @FilePath: /kratos-mono-repo/pkg/util/token/token.go
+ */
 package token
 
 import (
@@ -8,14 +16,11 @@ import (
 )
 
 // Parse token
-
-// TokenExpired 一些常量
 var (
-	TokenExpired     error  = errors.New("Token is expired")
-	TokenNotValidYet error  = errors.New("Token not active yet")
-	TokenMalformed   error  = errors.New("That's not even a token")
-	TokenInvalid     error  = errors.New("Couldn't handle this token:")
-	SignKey          string = "cassoWong"
+	InvalidErr     error         = errors.New("Couldn't handle this token:")
+	SignKey        string        = "cassoWong"
+	ExpiredTime    time.Duration = time.Minute * 60
+	AddExpiredTime time.Duration = time.Minute * 60
 )
 
 // JWT 签名结构
@@ -51,7 +56,7 @@ func SetSignKey(key string) string {
 // CreateToken 生成一个token
 func (j *JWT) CreateToken(claims CustomClaims) (string, error) {
 	// 设置自定义token过期时间
-	claims.StandardClaims.ExpiresAt = time.Now().Add(time.Minute * 60).Unix() // 测试时60S过期 : time.Second * 60
+	claims.StandardClaims.ExpiresAt = time.Now().Add(ExpiredTime).Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(j.SigningKey)
 }
@@ -62,23 +67,12 @@ func (j *JWT) ParseToken(tokenString string) (*CustomClaims, error) {
 		return j.SigningKey, nil
 	})
 	if err != nil {
-		if ve, ok := err.(*jwt.ValidationError); ok {
-			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
-				return nil, TokenMalformed
-			} else if ve.Errors&jwt.ValidationErrorExpired != 0 {
-				// Token is expired
-				return nil, TokenExpired
-			} else if ve.Errors&jwt.ValidationErrorNotValidYet != 0 {
-				return nil, TokenNotValidYet
-			} else {
-				return nil, TokenInvalid
-			}
-		}
+		return nil, InvalidErr
 	}
 	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
 		return claims, nil
 	}
-	return nil, TokenInvalid
+	return nil, InvalidErr
 }
 
 // RefreshToken 更新token
@@ -94,8 +88,8 @@ func (j *JWT) RefreshToken(tokenString string) (string, error) {
 	}
 	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
 		jwt.TimeFunc = time.Now
-		claims.StandardClaims.ExpiresAt = time.Now().Add(1 * time.Hour).Unix()
+		claims.StandardClaims.ExpiresAt = time.Now().Add(AddExpiredTime).Unix()
 		return j.CreateToken(*claims)
 	}
-	return "", TokenInvalid
+	return "", InvalidErr
 }
