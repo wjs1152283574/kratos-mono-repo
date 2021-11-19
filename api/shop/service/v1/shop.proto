@@ -7,11 +7,11 @@ import "google/api/annotations.proto";
 option go_package = "casso/api/shop/service/v1;v1";
 
 service Shop {
-
+    // body:"*" 表示：请求数据全部从请求体映射，可以指定需要映射的字段
     rpc Register (RegisterRequest) returns (RegisterReply){
         option (google.api.http) = {
             post: "/v1/register",
-            body:"*"
+            body:"*"  
         };
     }
 
@@ -25,6 +25,13 @@ service Shop {
     rpc GetUser (GetUserRequest) returns (GetUserReply){
         option (google.api.http) = {
             get: "/v1/me"
+        };
+    }
+
+    rpc Demo (DemoRequest) returns (DemoResponse){
+        option (google.api.http) = {
+            put: "/v1/me/{id}",
+            body:"nick_name"
         };
     }
 }
@@ -63,4 +70,13 @@ message GetUserReply {
         string Name = 1;
     }
     Data data = 2;
+}
+
+message DemoRequest {
+    string id = 1; // 从URL上映射
+    string nick_name = 2; // 从body映射
+}
+message DemoResponse {
+    string id = 1;
+    string nick_name = 2;
 }

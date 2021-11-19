@@ -1,3 +1,11 @@
+/*
+ * @Author: Casso
+ * @Date: 2021-11-17 16:24:19
+ * @LastEditors: Casso
+ * @LastEditTime: 2021-11-19 15:01:36
+ * @Description: file content
+ * @FilePath: /kratos-mono-repo/app/shop/service/internal/server/http.go
+ */
 package server
 
 import (
@@ -45,7 +53,7 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 	}
 
 	// 自定义返回数据编码方式
-	// opts = append(opts, http.ResponseEncoder(response.CustomRespone))
+	// opts = append(opts, http.ResponseEncoder(response.CustomResponeDeco))
 
 	srv := http.NewServer(opts...)
 	v1.RegisterShopHTTPServer(srv, s)
