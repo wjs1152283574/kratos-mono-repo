@@ -3,6 +3,7 @@ module casso
 go 1.15
 
 require (
+	github.com/bwmarrin/snowflake v0.3.0
 	github.com/envoyproxy/protoc-gen-validate v0.1.0
 	github.com/go-kratos/kratos/v2 v2.0.3
 	github.com/go-kratos/nacos v0.1.0
