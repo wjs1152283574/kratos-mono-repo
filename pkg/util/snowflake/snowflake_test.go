@@ -2,11 +2,11 @@
  * @Author: Casso
  * @Date: 2021-11-18 19:52:20
  * @LastEditors: Casso
- * @LastEditTime: 2021-11-18 19:54:40
+ * @LastEditTime: 2021-11-19 10:33:26
  * @Description: file content
- * @FilePath: /kratos-mono-repo/pkg/util/snow/snow_test.go
+ * @FilePath: /kratos-mono-repo/pkg/util/snowflake/snowflake_test.go
  */
-package snow
+package snowflake
 
 import (
 	"fmt"
@@ -14,5 +14,5 @@ import (
 )
 
 func TestNewSnow(t *testing.T) {
-	fmt.Println(NewSnowFlake())
+	fmt.Println(RandomUID())
 }
