@@ -60,6 +60,8 @@ all:
 .PHONY: newapp
 # newapp
 newapp:
+	kratos proto add api/$(APPNAME)/service/v1/$(APPNAME).proto && \
+	kratos proto client api/$(APPNAME)/service/v1/$(APPNAME).proto && \
 	cd app && mkdir $(APPNAME) && cd ./$(APPNAME) && mkdir service && cd ./service && mkdir cmd && mkdir ./cmd/server && \
 	mkdir configs && mkdir internal && cd internal && mkdir biz && mkdir conf && mkdir data && \
 	mkdir server && mkdir service && cd .. && touch .gitignore && touch generate.go && echo "package generate" >> ./generate.go && \
@@ -73,7 +75,7 @@ initdb:
 
 .PHONY: runserver
 # runserver
-initdb:
+runserver:
 	cd app/${SERVER}/service && make run
 
 # show help

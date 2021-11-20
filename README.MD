@@ -1,16 +1,17 @@
 ### cars-shop-microservice
 
-#### 启动(新增makefile指令)
-1. `cd deploy/docker-compose && docker-compose up -d`
-2. `cd /app/{service_name}/service && make wire && make run`
-3. 以上`yaml`文件经过测试可以顺利运行单例，路径不对的自行切换
+#### 启动
+```
+在项目根目录下，确保docker  docker-compose 已经正确安装
+```
+1. `make initdb`  // 初始化环境 
+2. `make runserver SERVER=你的服务名称` // 运行服务，服务需要先搭建完毕才能启动
+3. `docker`文件位于`/deply`目录下，路径不对的自行切换
 
 #### 新增服务
 * 新增`payment`服务:
-1. `kratos proto add api/payment/service/v1/payment.proto`
-2. `make api` 或者 `kratos proto client api/payment/service/v1/payment.proto`
-3. `make newapp APPNAME=payment`
-4. 必须生成`api`部分才可以生成`app`部分，也就是按照顺序来执行命令即可
+`make newapp APPNAME=yourServerName`
+
 ```
 以上脚本仅仅帮助我们创建目录，具体的go文件需要我们自己处理，官方也并不提供相关的工具.
 关于每个目录的作用，可以参考user || shop 服务,临时的脚本，后面再优化
