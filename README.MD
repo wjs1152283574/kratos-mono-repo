@@ -74,6 +74,7 @@ BFF 层，BFF 校验 Token 完整性后把身份信息
 
 * `third_party`
     1. 存放三方依赖，目前是一些`proto`文件
+    2. 查看`third_party/google/app/http.proto`可以了解到接口的配置跟参数匹配机制
 
 * `app_makefile`
     1. `app`目录下每个服务根路径都会有一个`Makefile`文件，内部 `include ../../../app_makefile`
