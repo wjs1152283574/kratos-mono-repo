@@ -3,6 +3,7 @@ VERSION=$(shell git describe --tags --always)
 INTERNAL_PROTO_FILES=$(shell find app -name *.proto)
 API_PROTO_FILES=$(shell find api -name *.proto)
 APPNAME=demo
+SERVER=demo
 
 .PHONY: init
 # init env
@@ -64,6 +65,16 @@ newapp:
 	mkdir server && mkdir service && cd .. && touch .gitignore && touch generate.go && echo "package generate" >> ./generate.go && \
 	touch Makefile && echo "include ../../../app_makefile" >> ./Makefile && touch README.MD && cd ../../../ && \
 	kratos proto server api/$(APPNAME)/service/v1/$(APPNAME).proto -t app/$(APPNAME)/service/internal/service
+
+.PHONY: initdb
+# initdb
+initdb:
+	cd deploy/docker-compose && docker-compose up -d
+
+.PHONY: runserver
+# runserver
+initdb:
+	cd app/${SERVER}/service && make run
 
 # show help
 help:

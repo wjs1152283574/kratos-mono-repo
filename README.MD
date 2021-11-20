@@ -1,6 +1,6 @@
 ### cars-shop-microservice
 
-#### 启动
+#### 启动(新增makefile指令)
 1. `cd deploy/docker-compose && docker-compose up -d`
 2. `cd /app/{service_name}/service && make wire && make run`
 3. 以上`yaml`文件经过测试可以顺利运行单例，路径不对的自行切换
