@@ -2,7 +2,7 @@
  * @Author: Casso
  * @Date: 2021-11-17 16:24:19
  * @LastEditors: Casso
- * @LastEditTime: 2021-11-19 15:01:36
+ * @LastEditTime: 2021-11-20 16:32:10
  * @Description: file content
  * @FilePath: /kratos-mono-repo/app/shop/service/internal/server/http.go
  */
