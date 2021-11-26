@@ -1,3 +1,11 @@
+/*
+ * @Author: Casso
+ * @Date: 2021-11-17 16:24:19
+ * @LastEditors: Casso
+ * @LastEditTime: 2021-11-26 12:03:32
+ * @Description: file content
+ * @FilePath: /kratos-mono-repo/app/user/service/internal/data/data.go
+ */
 package data
 
 import (
@@ -5,6 +13,7 @@ import (
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-redis/redis/v8"
 	"github.com/google/wire"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -14,12 +23,23 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewDB, NewUserRepo)
+var ProviderSet = wire.NewSet(NewData, NewDB, NewRd, NewUserRepo)
 
 // Data .
 type Data struct {
+	rd  *redis.Client
 	db  *gorm.DB
 	log *log.Helper
+}
+
+func NewRd(conf *conf.Data, logger log.Logger) *redis.Client {
+	log.NewHelper(log.With(logger, "module", "user-service/data/redis"))
+	opts := redis.Options{
+		Addr:     "",
+		Password: "",
+		Username: "",
+	}
+	return redis.NewClient(&opts)
 }
 
 func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB {
@@ -47,10 +67,11 @@ func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB {
 }
 
 // NewData .
-func NewData(db *gorm.DB, logger log.Logger) (*Data, func(), error) {
+func NewData(db *gorm.DB, rd *redis.Client, logger log.Logger) (*Data, func(), error) {
 	log := log.NewHelper(log.With(logger, "module", "user-service/data"))
 
 	d := &Data{
+		rd:  rd,
 		db:  db,
 		log: log,
 	}
