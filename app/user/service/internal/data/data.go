@@ -2,7 +2,7 @@
  * @Author: Casso
  * @Date: 2021-11-17 16:24:19
  * @LastEditors: Casso
- * @LastEditTime: 2021-11-26 12:10:01
+ * @LastEditTime: 2021-11-26 12:12:33
  * @Description: file content
  * @FilePath: /kratos-mono-repo/app/user/service/internal/data/data.go
  */
@@ -32,12 +32,12 @@ type Data struct {
 	log *log.Helper
 }
 
-func NewRd(conf *conf.Data_Redis, logger log.Logger) *redis.Client {
+func NewRd(conf *conf.Data, logger log.Logger) *redis.Client {
 	log.NewHelper(log.With(logger, "module", "user-service/data/redis"))
 	opts := redis.Options{
-		Addr:         conf.Addr,
-		WriteTimeout: conf.WriteTimeout.AsDuration(),
-		ReadTimeout:  conf.GetReadTimeout().AsDuration(),
+		// Addr:         conf.Addr,
+		// WriteTimeout: conf.WriteTimeout.AsDuration(),
+		// ReadTimeout:  conf.GetReadTimeout().AsDuration(),
 	}
 	return redis.NewClient(&opts)
 }
