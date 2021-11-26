@@ -2,7 +2,7 @@
  * @Author: Casso
  * @Date: 2021-11-17 16:24:19
  * @LastEditors: Casso
- * @LastEditTime: 2021-11-22 10:26:16
+ * @LastEditTime: 2021-11-26 18:18:11
  * @Description: file content
  * @FilePath: /kratos-mono-repo/app/shop/service/internal/server/http.go
  */
@@ -22,6 +22,7 @@ import (
 	"casso/app/shop/service/internal/service"
 	"casso/pkg/errors/auth"
 	"casso/pkg/util/contextkey"
+	"casso/pkg/util/resencoder"
 	"casso/pkg/util/token"
 	"context"
 
@@ -59,10 +60,9 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 	if c.Http.Timeout != nil {
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
-
+	opts = append(opts, resencoder.CustomResponeDeco()) // https://mp.weixin.qq.com/s/4ocdoAVXXKTvJ3U65YXltw
 	// 自定义返回数据编码方式
 	// opts = append(opts, http.ResponseEncoder(response.CustomResponeDeco))
-
 	srv := http.NewServer(opts...)
 	v1.RegisterShopHTTPServer(srv, s)
 	return srv
@@ -75,7 +75,6 @@ func AuthMiddleware(handler middleware.Handler) middleware.Handler {
 			ht, ok := tr.(*http.Transport)
 			if !ok && ht.Request().Header.Get("Authorization") == "" {
 				return nil, auth.ErrAuthFail
-
 			}
 
 			uinfos, parserErr := token.NewJWT().ParseToken(ht.Request().Header.Get("Authorization"))
