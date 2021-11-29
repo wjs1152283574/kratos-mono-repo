@@ -2,7 +2,7 @@
  * @Author: Casso
  * @Date: 2021-11-17 16:24:19
  * @LastEditors: Casso
- * @LastEditTime: 2021-11-26 18:18:11
+ * @LastEditTime: 2021-11-29 10:41:45
  * @Description: file content
  * @FilePath: /kratos-mono-repo/app/shop/service/internal/server/http.go
  */
@@ -60,14 +60,16 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 	if c.Http.Timeout != nil {
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
-	opts = append(opts, resencoder.CustomResponeDeco()) // https://mp.weixin.qq.com/s/4ocdoAVXXKTvJ3U65YXltw
+
 	// 自定义返回数据编码方式
-	// opts = append(opts, http.ResponseEncoder(response.CustomResponeDeco))
+	opts = append(opts, http.ResponseEncoder(resencoder.CustomResponeDeco())) // https://mp.weixin.qq.com/s/4ocdoAVXXKTvJ3U65YXltw
+
 	srv := http.NewServer(opts...)
 	v1.RegisterShopHTTPServer(srv, s)
 	return srv
 }
 
+// AuthMiddleware BFF服务内鉴权中间件，这里只是暂时的。实际情况会在gate验证解析token，鉴权信息放入uri到达BFF
 func AuthMiddleware(handler middleware.Handler) middleware.Handler {
 	return func(ctx context.Context, req interface{}) (reply interface{}, err error) {
 		reply, err = handler(ctx, req)
