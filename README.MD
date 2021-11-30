@@ -79,6 +79,7 @@ BFF 层，BFF 校验 Token 完整性后把身份信息
 * `app_makefile`
     1. `app`目录下每个服务根路径都会有一个`Makefile`文件，内部 `include ../../../app_makefile`
     2. 最好不要私自改动`app_makefile`,需要添加功能可以在自己维护的服务内的`Makefile`中添加
+    
 
 * `Makefile`
     1. 整个项目根目录的`Makefile`
@@ -89,7 +90,9 @@ BFF 层，BFF 校验 Token 完整性后把身份信息
 ---
 
 #### 其他
+* 目前有配套后台管理的`consul nacos`
 * 服务注册与发现使用`Nacos`，记录`Nacos`单例模式后台地址:`http://127.0.0.1:8848/nacos/` `login = nacos:nacos`
+* 生产推荐 `gitlab`+`k8s`+`lens`
 
 #### Commit 规范
 
