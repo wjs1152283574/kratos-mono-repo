@@ -2,7 +2,7 @@
  * @Author: Casso
  * @Date: 2021-11-17 16:24:19
  * @LastEditors: Casso
- * @LastEditTime: 2021-11-29 10:41:45
+ * @LastEditTime: 2021-12-08 14:20:05
  * @Description: file content
  * @FilePath: /kratos-mono-repo/app/shop/service/internal/server/http.go
  */
@@ -22,7 +22,6 @@ import (
 	"casso/app/shop/service/internal/service"
 	"casso/pkg/errors/auth"
 	"casso/pkg/util/contextkey"
-	"casso/pkg/util/resencoder"
 	"casso/pkg/util/token"
 	"context"
 
@@ -62,7 +61,7 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 	}
 
 	// 自定义返回数据编码方式
-	opts = append(opts, http.ResponseEncoder(resencoder.CustomResponeDeco())) // https://mp.weixin.qq.com/s/4ocdoAVXXKTvJ3U65YXltw
+	// opts = append(opts, http.ResponseEncoder(resencoder.CustomResponeDeco())) // https://mp.weixin.qq.com/s/4ocdoAVXXKTvJ3U65YXltw
 
 	srv := http.NewServer(opts...)
 	v1.RegisterShopHTTPServer(srv, s)
