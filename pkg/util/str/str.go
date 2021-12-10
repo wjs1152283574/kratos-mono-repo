@@ -11,6 +11,7 @@ package str
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"strconv"
 )
 
 // GetMD5Encode 返回一个32位md5加密后的字符串
@@ -43,4 +44,12 @@ func IsGBK(data []byte) bool {
 		}
 	}
 	return true
+}
+
+func Int64ToStr(num int64) string {
+	return strconv.FormatInt(num, 10)
+}
+
+func IntToStr(num int) string {
+	return strconv.FormatInt(int64(num), 10)
 }
