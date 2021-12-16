@@ -11,6 +11,7 @@ package str
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
 	"strconv"
 )
 
@@ -52,4 +53,12 @@ func Int64ToStr(num int64) string {
 
 func IntToStr(num int) string {
 	return strconv.FormatInt(int64(num), 10)
+}
+
+func Float32ToStr(num float32) string {
+	return fmt.Sprintf("%f", num)
+}
+
+func Float64ToStr(num float64) string {
+	return fmt.Sprintf("%f", num)
 }
