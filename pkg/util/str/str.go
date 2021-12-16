@@ -62,3 +62,7 @@ func Float32ToStr(num float32) string {
 func Float64ToStr(num float64) string {
 	return fmt.Sprintf("%f", num)
 }
+
+func StrToFloat64(str string) (float64, error) {
+	return strconv.ParseFloat(str, 64)
+}
