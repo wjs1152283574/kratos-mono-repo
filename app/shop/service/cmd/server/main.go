@@ -94,7 +94,7 @@ func main() {
 		tracesdk.WithBatcher(exp),
 		tracesdk.WithResource(resource.NewSchemaless(
 			semconv.ServiceNameKey.String(Name),
-			attribute.String("service", "user/service"),
+			attribute.String("service", "shop/service"),
 		)),
 	)
 
