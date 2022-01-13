@@ -41,49 +41,49 @@ BFF 层，BFF 校验 Token 完整性后把身份信息
 ```
 
 * 依赖倒置 
-    1. 使用`wire`维护依赖注入 (`/service/cmd/server/wire.go`)
-    2. 可以观察`/service/cmd/server/wire_gen.go` 中的代码。 看到各个依赖之间的调用顺序
+    * 使用`wire`维护依赖注入 (`/service/cmd/server/wire.go`)
+    * 可以观察`/service/cmd/server/wire_gen.go` 中的代码。 看到各个依赖之间的调用顺序
 
 ---
 
 ##### 模块权责
 * `.vscode`
-    1. 个人配置喜好，已经添加到`.gitignore`，只上传首次 
+    * 个人配置喜好，已经添加到`.gitignore`，只上传首次 
 
 * `/api`
-    1. 与`app`目录的服务一一对应，维护各个服务的`proto`文件与生成的源码
-    2. 内部服务一般只需定义`rpc`接口，BFF 服务则需要定义`option (google.api.http)`
-    3. 也可以去掉`/api`目录，就像`kratos`提供的单例服务`layout`一样，将`api/`放到`app`目录内独立维护
+    * 与`app`目录的服务一一对应，维护各个服务的`proto`文件与生成的源码
+    * 内部服务一般只需定义`rpc`接口，BFF 服务则需要定义`option (google.api.http)`
+    * 也可以去掉`/api`目录，就像`kratos`提供的单例服务`layout`一样，将`api/`放到`app`目录内独立维护
 
 * `/app/${server_name}/service/internel/`
-    1. 需要在不同模块中注入不同的依赖(`ProviderSet`)
-    2. `BIZ`， 业务组装，供`Service`层调用
-    3. `Data`，实现数据库/缓存等能力，供`BIZ`层调用
-    4. `Conf`，解析`../../configs`内的`yaml`配置文件，供`Data  Server`使用（这两个目录会进行一些服务初始化需要用到配置信息）
-    5. `Server`，服务注册，提供服务初始化依赖注入
-    6. `Service`，实现GRPC接口，调用`BIZ`组装好的用例
-    7. 各个模块互相独立，不能乱跨模块调用（破坏架构层级以及弃用依赖注入）
+    * 需要在不同模块中注入不同的依赖(`ProviderSet`)
+    * `BIZ`， 业务组装，供`Service`层调用
+    * `Data`，实现数据库/缓存等能力，供`BIZ`层调用
+    * `Conf`，解析`../../configs`内的`yaml`配置文件，供`Data  Server`使用（这两个目录会进行一些服务初始化需要用到配置信息）
+    * `Server`，服务注册，提供服务初始化依赖注入
+    * `Service`，实现GRPC接口，调用`BIZ`组装好的用例
+    * 各个模块互相独立，不能乱跨模块调用（破坏架构层级以及弃用依赖注入）
 
 * `/deploy`
-    1. 存放一些自动化脚本
-    2. 本地测试使用起来挺方便
+    * 存放一些自动化脚本
+    * 本地测试使用起来挺方便
 
 * `pkg`
-    1. 存放项目下所有服务均可使用的公共代码，这也是集中式管理的好处之一
-    2. 在这里添加公共代码需要按照规范分好目录层级（语意化），不能一坨放一起
+    * 存放项目下所有服务均可使用的公共代码，这也是集中式管理的好处之一
+    * 在这里添加公共代码需要按照规范分好目录层级（语意化），不能一坨放一起
 
 * `third_party`
-    1. 存放三方依赖，目前是一些`proto`文件
-    2. 查看`third_party/google/app/http.proto`可以了解到接口的配置跟参数匹配机制
+    * 存放三方依赖，目前是一些`proto`文件
+    * 查看`third_party/google/app/http.proto`可以了解到接口的配置跟参数匹配机制
 
 * `app_makefile`
-    1. `app`目录下每个服务根路径都会有一个`Makefile`文件，内部 `include ../../../app_makefile`
-    2. 最好不要私自改动`app_makefile`,需要添加功能可以在自己维护的服务内的`Makefile`中添加
+    * `app`目录下每个服务根路径都会有一个`Makefile`文件，内部 `include ../../../app_makefile`
+    * 最好不要私自改动`app_makefile`,需要添加功能可以在自己维护的服务内的`Makefile`中添加
     
 
 * `Makefile`
-    1. 整个项目根目录的`Makefile`
-    2. 维护一些全局的`Makefile` 命令，很实用
+    * 整个项目根目录的`Makefile`
+    * 维护一些全局的`Makefile` 命令，很实用
 
 * 其他目录自行了解
 
