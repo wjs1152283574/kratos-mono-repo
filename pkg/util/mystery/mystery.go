@@ -31,7 +31,6 @@ func RandomDraw(prizes []*Prize) int64 {
 	concatWeightArr := make([]*Prize, 0)
 	aa, _ := json.Marshal(prizes)
 	_ = json.Unmarshal(aa, &concatWeightArr)
-	fmt.Println("concatWeightArr：", concatWeightArr)
 	concatWeightArr = append(concatWeightArr, randomNumTmp) //将随机数加入权重数组
 
 	//将包含随机数的新权重数组按从小到大（升序）排序
@@ -41,10 +40,6 @@ func RandomDraw(prizes []*Prize) int64 {
 	sort.Slice(prizes, func(i, j int) bool {
 		return prizes[i].Weight < prizes[j].Weight
 	})
-
-	for _, v := range prizes {
-		fmt.Println(*v)
-	}
 
 	//索引权重随机数的数组下标
 	var randomNumIndex = -1 //索引随机数在新权重数组中的位置
