@@ -12,6 +12,9 @@ import (
 const _ = errors.SupportPackageIsVersion1
 
 func IsRecordNotFound(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == UserServiceErrorReason_RECORD_NOT_FOUND.String() && e.Code == 404
 }
@@ -21,6 +24,9 @@ func ErrorRecordNotFound(format string, args ...interface{}) *errors.Error {
 }
 
 func IsInvalidPass(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == UserServiceErrorReason_INVALID_PASS.String() && e.Code == 400
 }
@@ -30,6 +36,9 @@ func ErrorInvalidPass(format string, args ...interface{}) *errors.Error {
 }
 
 func IsContentMissing(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == UserServiceErrorReason_CONTENT_MISSING.String() && e.Code == 400
 }
@@ -39,6 +48,9 @@ func ErrorContentMissing(format string, args ...interface{}) *errors.Error {
 }
 
 func IsMakeTokenError(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == UserServiceErrorReason_MAKE_TOKEN_ERROR.String() && e.Code == 500
 }

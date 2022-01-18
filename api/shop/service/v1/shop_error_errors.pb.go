@@ -12,6 +12,9 @@ import (
 const _ = errors.SupportPackageIsVersion1
 
 func IsRecordNotFound(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == ShopServiceErrorReason_RECORD_NOT_FOUND.String() && e.Code == 404
 }
@@ -21,6 +24,9 @@ func ErrorRecordNotFound(format string, args ...interface{}) *errors.Error {
 }
 
 func IsContentMissing(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == ShopServiceErrorReason_CONTENT_MISSING.String() && e.Code == 400
 }
@@ -30,6 +36,9 @@ func ErrorContentMissing(format string, args ...interface{}) *errors.Error {
 }
 
 func IsDuplicateEntry(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == ShopServiceErrorReason_DUPLICATE_ENTRY.String() && e.Code == 400
 }
@@ -39,6 +48,9 @@ func ErrorDuplicateEntry(format string, args ...interface{}) *errors.Error {
 }
 
 func IsPermitionDenied(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == ShopServiceErrorReason_PERMITION_DENIED.String() && e.Code == 401
 }
@@ -48,6 +60,9 @@ func ErrorPermitionDenied(format string, args ...interface{}) *errors.Error {
 }
 
 func IsInvalidToken(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == ShopServiceErrorReason_INVALID_TOKEN.String() && e.Code == 401
 }
