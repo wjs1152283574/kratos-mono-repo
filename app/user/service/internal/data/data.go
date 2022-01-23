@@ -10,6 +10,7 @@ package data
 
 import (
 	"casso/app/user/service/internal/conf"
+	"fmt"
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -79,6 +80,14 @@ func NewData(db *gorm.DB, rd *redis.Client, logger log.Logger) (*Data, func(), e
 		db:  db,
 		log: log,
 	}
+
+	// 监听配置文件并处理
+	go func() {
+		for v := range conf.ConfCh {
+			fmt.Println("初始化自定义配置文件：", v.CassoConf)
+		}
+	}()
+
 	return d, func() {
 
 	}, nil
