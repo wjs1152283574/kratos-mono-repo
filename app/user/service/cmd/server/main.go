@@ -71,6 +71,11 @@ func main() {
 		panic(err)
 	}
 
+	// 监听配置文件
+	if err := conf.LoadConf(c); err != nil {
+		panic(err)
+	}
+
 	var rc conf.Registry // registry.yaml
 	if err := c.Scan(&rc); err != nil {
 		panic(err)
