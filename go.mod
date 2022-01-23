@@ -25,6 +25,7 @@ require (
 
 require (
 	github.com/golang/mock v1.4.4 // indirect
+	github.com/gorilla/handlers v1.5.1
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/kr/text v0.2.0 // indirect

@@ -32,6 +32,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/selector"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport"
+	"github.com/gorilla/handlers"
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
 
 	"github.com/go-kratos/kratos/v2/transport/http"
@@ -60,8 +61,14 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 
-	// 自定义返回数据编码方式
-	// opts = append(opts, http.ResponseEncoder(resencoder.CustomResponeDeco())) // https://mp.weixin.qq.com/s/4ocdoAVXXKTvJ3U65YXltw
+	// 服务内跨域处理
+	opts = append(opts, http.Filter(handlers.CORS(
+		handlers.AllowedOrigins([]string{"*"}),
+		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"}),
+		handlers.AllowedHeaders([]string{"DNT", "X-Mx-ReqToken", "Keep-Alive", "User-Agent", "X-Requested-With", "If-Modified-Since", "Cache-Control", "Content-Type", "Authorization", "udid", "appkey", "version", "authenticated", "cookie", "token"}),
+		handlers.ExposedHeaders([]string{"DNT", "X-Mx-ReqToken", "Keep-Alive", "User-Agent", "X-Requested-With", "If-Modified-Since", "Cache-Control", "Content-Type", "Authorization", "udid", "appkey", "version", "authenticated", "cookie", "token"}),
+		handlers.OptionStatusCode(204),
+	)))
 
 	srv := http.NewServer(opts...)
 	v1.RegisterShopHTTPServer(srv, s)
