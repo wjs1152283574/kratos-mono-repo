@@ -35,9 +35,13 @@ type Data struct {
 func NewRd(conf *conf.Data, logger log.Logger) *redis.Client {
 	log.NewHelper(log.With(logger, "module", "user-service/data/redis"))
 	opts := redis.Options{
-		// Addr:         conf.Addr,
-		// WriteTimeout: conf.WriteTimeout.AsDuration(),
-		// ReadTimeout:  conf.GetReadTimeout().AsDuration(),
+		Addr:         conf.Redis.Addr,
+		Username:     conf.Redis.Auth,
+		Password:     conf.Redis.Password,
+		ReadTimeout:  conf.Redis.ReadTimeout.AsDuration(),
+		WriteTimeout: conf.Redis.WriteTimeout.AsDuration(),
+		PoolSize:     int(conf.Redis.Pool),
+		DB:           0,
 	}
 	return redis.NewClient(&opts)
 }
