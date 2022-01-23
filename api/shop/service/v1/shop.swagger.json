@@ -70,8 +70,47 @@
         ]
       }
     },
+    "/v1/me/{id}": {
+      "put": {
+        "operationId": "Shop_Demo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DemoResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Shop"
+        ]
+      }
+    },
     "/v1/register": {
       "post": {
+        "summary": "body:\"*\" 表示：请求数据全部从请求体映射，可以指定需要映射的字段",
         "operationId": "Shop_Register",
         "responses": {
           "200": {
@@ -143,6 +182,17 @@
           "items": {
             "$ref": "#/definitions/protobufAny"
           }
+        }
+      }
+    },
+    "v1DemoResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "nickName": {
+          "type": "string"
         }
       }
     },

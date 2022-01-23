@@ -490,6 +490,144 @@ var _ interface {
 	ErrorName() string
 } = GetUserReplyValidationError{}
 
+// Validate checks the field values on DemoRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *DemoRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	// no validation rules for NickName
+
+	return nil
+}
+
+// DemoRequestValidationError is the validation error returned by
+// DemoRequest.Validate if the designated constraints aren't met.
+type DemoRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DemoRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DemoRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DemoRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DemoRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DemoRequestValidationError) ErrorName() string { return "DemoRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e DemoRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDemoRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DemoRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DemoRequestValidationError{}
+
+// Validate checks the field values on DemoResponse with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *DemoResponse) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	// no validation rules for NickName
+
+	return nil
+}
+
+// DemoResponseValidationError is the validation error returned by
+// DemoResponse.Validate if the designated constraints aren't met.
+type DemoResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DemoResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DemoResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DemoResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DemoResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DemoResponseValidationError) ErrorName() string { return "DemoResponseValidationError" }
+
+// Error satisfies the builtin error interface
+func (e DemoResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDemoResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DemoResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DemoResponseValidationError{}
+
 // Validate checks the field values on LoginReply_Data with the rules defined
 // in the proto definition for this message. If any rules are violated, an
 // error is returned.
