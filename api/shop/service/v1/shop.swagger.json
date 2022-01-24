@@ -261,17 +261,21 @@
       "type": "object",
       "properties": {
         "mobile": {
-          "type": "string"
+          "type": "string",
+          "title": "用户手机号码 （在此注释生成的swagger.json倒入apifox可自动生成注释）"
         },
         "pass": {
-          "type": "string"
+          "type": "string",
+          "title": "密码"
         },
         "nickName": {
-          "type": "string"
+          "type": "string",
+          "title": "昵称"
         },
         "age": {
           "type": "string",
-          "format": "int64"
+          "format": "int64",
+          "title": "年龄"
         }
       }
     }

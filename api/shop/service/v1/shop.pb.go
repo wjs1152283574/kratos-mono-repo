@@ -27,10 +27,14 @@ type RegisterRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Mobile   string `protobuf:"bytes,1,opt,name=mobile,proto3" json:"mobile,omitempty"`
-	Pass     string `protobuf:"bytes,2,opt,name=pass,proto3" json:"pass,omitempty"`
+	// 用户手机号码 （在此注释生成的swagger.json倒入apifox可自动生成注释）
+	Mobile string `protobuf:"bytes,1,opt,name=mobile,proto3" json:"mobile,omitempty"`
+	// 密码
+	Pass string `protobuf:"bytes,2,opt,name=pass,proto3" json:"pass,omitempty"`
+	// 昵称
 	NickName string `protobuf:"bytes,3,opt,name=nick_name,json=nickName,proto3" json:"nick_name,omitempty"`
-	Age      int64  `protobuf:"varint,4,opt,name=age,proto3" json:"age,omitempty"`
+	// 年龄
+	Age int64 `protobuf:"varint,4,opt,name=age,proto3" json:"age,omitempty"`
 }
 
 func (x *RegisterRequest) Reset() {
