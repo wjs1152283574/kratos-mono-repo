@@ -95,9 +95,6 @@ func _Shop_Demo0_HTTP_Handler(srv ShopHTTPServer) func(ctx http.Context) error {
 		if err := ctx.Bind(&in.NickName); err != nil {
 			return err
 		}
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}

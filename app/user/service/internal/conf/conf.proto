@@ -40,6 +40,9 @@ message Data {
     string addr = 2;
     google.protobuf.Duration read_timeout = 3;
     google.protobuf.Duration write_timeout = 4;
+    int64 pool = 5;
+    string auth = 6;
+    string password = 7;
   }
   Database database = 1;
   Redis redis = 2;
