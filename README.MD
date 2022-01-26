@@ -102,7 +102,7 @@ BFF 层，BFF 校验 Token 完整性后把身份信息
 * 例：`fead(type)`:本次提交概述
 * `type`: 本次 commit 的类型，诸如 bugfix docs style 等，参考如下:   
 
-    * `fead`：添加新功能
+    * `feat`：添加新功能
     * `fix`：修补缺陷
     * `docs`：修改文档
     * `style`：修改格式
