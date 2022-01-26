@@ -1,14 +1,19 @@
 package biz
 
 import (
+	user_proto "casso/api/user/service/v1"
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"gorm.io/gorm"
 )
 
 type User struct {
-	Name, Mobile, Pass string
-	Age                int64
+	gorm.Model
+	Mobile string `gorm:"unique"`
+	Pass   string
+	Name   string
+	Age    int64
 }
 
 type UserReply struct {
@@ -24,10 +29,15 @@ type UserForToken struct {
 
 // 在此实现对data层的数据操作
 type UserRepo interface {
-	CreateUser(ctx context.Context, c *User) (*UserReply, error)
-	GetUser(ctx context.Context, id int64) (*User, error)
-	UpdateUser(ctx context.Context, c *User) (*User, error)
-	DeleteUser(ctx context.Context, c *User) (*User, error)
+	// 新建用户
+	Create(ctx context.Context, c *User) (*User, error)
+	// 获取用户信息
+	Get(ctx context.Context, id int64) (*User, error)
+	// 编辑用户信息
+	Update(ctx context.Context, c *User) (*User, error)
+	// 删除
+	Delete(ctx context.Context, id int64) (*User, error)
+
 	ListUser(ctx context.Context, pageNum, pageSize int64) ([]*User, error)
 	GetToken(ctx context.Context, u *UserForToken) (token string, err error)
 	GetUserByName(ctx context.Context, name string) (*User, error)
@@ -43,21 +53,58 @@ func NewUserUseCase(repo UserRepo, logger log.Logger) *UserUseCase {
 }
 
 // ********* 以下实现业务组装，实现service需求 ***********
-
-func (uc *UserUseCase) Create(ctx context.Context, u *User) (*UserReply, error) {
-	return uc.repo.CreateUser(ctx, u)
+func (uc *UserUseCase) CreateUser(ctx context.Context, u *User) (*user_proto.CreateUserReply, error) {
+	res, err := uc.repo.Create(ctx, u)
+	if err != nil {
+		return &user_proto.CreateUserReply{}, err
+	}
+	return &user_proto.CreateUserReply{
+		Id:       int64(res.ID),
+		Mobile:   res.Mobile,
+		NickName: res.Name,
+		Age:      res.Age,
+	}, nil
 }
 
-func (uc *UserUseCase) Get(ctx context.Context, id int64) (*User, error) {
-	return uc.repo.GetUser(ctx, id)
+func (uc *UserUseCase) GetUser(ctx context.Context, id int64) (*user_proto.GetUserReply, error) {
+	res, err := uc.repo.Get(ctx, id)
+	if err != nil {
+		return &user_proto.GetUserReply{}, err
+	}
+	return &user_proto.GetUserReply{
+		Id:       int64(res.ID),
+		Mobile:   res.Mobile,
+		NickName: res.Mobile,
+		Age:      res.Age,
+	}, nil
 }
 
-func (uc *UserUseCase) Delete(ctx context.Context, u *User) (*User, error) {
-	return uc.repo.UpdateUser(ctx, u)
+func (uc *UserUseCase) DeleteUser(ctx context.Context, id int64) (*user_proto.DeleteUserReply, error) {
+	_, err := uc.repo.Delete(ctx, id)
+	if err != nil {
+		return &user_proto.DeleteUserReply{
+			Ok: false,
+		}, nil
+	}
+	return &user_proto.DeleteUserReply{
+		Ok: true,
+	}, nil
 }
 
-func (uc *UserUseCase) Update(ctx context.Context, u *User) (*User, error) {
-	return uc.repo.UpdateUser(ctx, u)
+func (uc *UserUseCase) UpdateUser(ctx context.Context, req *user_proto.UpdateUserRequest) (*user_proto.UpdateUserReply, error) {
+	var user User
+	user.ID = uint(req.Id)
+	user.Age = req.Age
+	user.Name = req.NickName
+	res, err := uc.repo.Update(ctx, &user)
+	if err != nil {
+		return &user_proto.UpdateUserReply{}, err
+	}
+	return &user_proto.UpdateUserReply{
+		Mobile:   res.Mobile,
+		NickName: res.Name,
+		Age:      res.Age,
+	}, nil
 }
 
 func (uc *UserUseCase) List(ctx context.Context, pageNum, pageSize int64) ([]*User, error) {

@@ -9,29 +9,39 @@ import (
 )
 
 func (s *UserService) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserReply, error) {
-	user, err := s.uc.Create(ctx, &biz.User{Mobile: req.Mobile, Pass: req.Pass, Name: req.NickName, Age: req.Age})
-	return &pb.CreateUserReply{
-		Id:       user.ID,
-		Mobile:   user.Mobile,
-		NickName: user.Name,
-		Age:      user.Age,
-	}, err
-}
-
-func (s *UserService) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb.UpdateUserReply, error) {
-	return &pb.UpdateUserReply{}, nil
-}
-
-func (s *UserService) DeleteUser(ctx context.Context, req *pb.DeleteUserRequest) (*pb.DeleteUserReply, error) {
-	return &pb.DeleteUserReply{}, nil
+	// 数据校验
+	if req.NickName == "" || req.Mobile == "" {
+		return &pb.CreateUserReply{}, normal.InvalidParams
+	}
+	// 调用业务用例
+	return s.uc.CreateUser(ctx, &biz.User{Mobile: req.Mobile, Pass: req.Pass, Name: req.NickName, Age: req.Age})
 }
 
 func (s *UserService) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserReply, error) {
-	user, _ := s.uc.Get(ctx, req.Id)
+	// 数据校验
+	if req.Id == 0 {
+		return &pb.GetUserReply{}, normal.InvalidParams
+	}
+	// 调用业务用例
+	return s.uc.GetUser(ctx, req.Id)
+}
 
-	return &pb.GetUserReply{
-		NickName: user.Name,
-	}, nil
+func (s *UserService) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb.UpdateUserReply, error) {
+	// 数据校验
+	if req.Id == 0 {
+		return &pb.UpdateUserReply{}, normal.InvalidParams
+	}
+	// 调用业务用例
+	return s.uc.UpdateUser(ctx, req)
+}
+
+func (s *UserService) DeleteUser(ctx context.Context, req *pb.DeleteUserRequest) (*pb.DeleteUserReply, error) {
+	// 数据校验
+	if req.Id == 0 {
+		return &pb.DeleteUserReply{}, normal.InvalidParams
+	}
+	// 调用业务用例
+	return s.uc.DeleteUser(ctx, req.Id)
 }
 
 func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserRequest) (*pb.ListUserReply, error) {
@@ -39,12 +49,5 @@ func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserRequest) (*p
 }
 
 func (s *UserService) GetToken(ctx context.Context, req *pb.GetTokenRequest) (*pb.GetTokenReply, error) {
-	if req.Mobile == "" || req.Pass == "" {
-		return &pb.GetTokenReply{Token: ""}, normal.InvalidParams
-	}
-	token, err := s.uc.Login(ctx, &biz.UserForToken{Mobile: req.Mobile, Pass: req.Pass, ID: 2})
-	if err != nil {
-		return &pb.GetTokenReply{}, normal.UserNotExit
-	}
-	return &pb.GetTokenReply{Token: token}, nil
+	return &pb.GetTokenReply{Token: ""}, nil
 }

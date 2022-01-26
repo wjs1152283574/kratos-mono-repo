@@ -13,7 +13,7 @@
 `make newapp APPNAME=yourServerName`
 
 ```
-以上脚本仅仅帮助我们创建目录，具体的go文件需要我们自己处理，官方也并不提供相关的工具.
+以上脚本仅仅帮助我们创建目录，具体的go文件需要我们自己处理，官方也并不提供相关的工具
 关于每个目录的作用，可以参考user || shop 服务,临时的脚本，后面再优化
 ```
 
@@ -57,11 +57,11 @@ BFF 层，BFF 校验 Token 完整性后把身份信息
 
 * `/app/${server_name}/service/internel/`
     * 需要在不同模块中注入不同的依赖(`ProviderSet`)
-    * `BIZ`， 定义数据操作方法，业务组装，供`Service`层调用
+    * `BIZ`， 业务组装，定义数据操作方法，供`Service`层调用
     * `Data`，实现数据库/缓存等能力，实现`Biz`定义的接口，供`BIZ`层调用
-    * `Conf`，解析`../../configs`内的`yaml`配置文件，供`Data  Server`使用（这两个目录会进行一些服务初始化需要用到配置信息）
+    * `Conf`，解析`../../configs`内的`yaml`配置文件，供`Data  Server`使用（这两个目录会进行一些服务初始化需要用到配置信息，内含监听配置文件简单用法）
     * `Server`，服务注册，提供服务初始化依赖注入
-    * `Service`，实现GRPC接口，调用`BIZ`组装好的用例
+    * `Service`，校验数据，调用`BIZ`组装好的用例，实现GRPC接口
     * 各个模块不能乱跨模块调用: `Service`实现RPC ==> `Biz`定义数据操作方法并组装业务 ==> `Data`数据操作
 
 * `/deploy`
