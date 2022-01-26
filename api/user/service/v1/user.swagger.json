@@ -78,6 +78,14 @@
         }
       }
     },
+    "v1CreateTestUserReply": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "boolean"
+        }
+      }
+    },
     "v1CreateUserReply": {
       "type": "object",
       "properties": {

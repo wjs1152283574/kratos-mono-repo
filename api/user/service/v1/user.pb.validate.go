@@ -35,6 +35,216 @@ var (
 	_ = sort.Sort
 )
 
+// Validate checks the field values on CreateTestUserRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CreateTestUserRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateTestUserRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CreateTestUserRequestMultiError, or nil if none found.
+func (m *CreateTestUserRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateTestUserRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for NickName
+
+	// no validation rules for Pass
+
+	if len(errors) > 0 {
+		return CreateTestUserRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateTestUserRequestMultiError is an error wrapping multiple validation
+// errors returned by CreateTestUserRequest.ValidateAll() if the designated
+// constraints aren't met.
+type CreateTestUserRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateTestUserRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateTestUserRequestMultiError) AllErrors() []error { return m }
+
+// CreateTestUserRequestValidationError is the validation error returned by
+// CreateTestUserRequest.Validate if the designated constraints aren't met.
+type CreateTestUserRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateTestUserRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateTestUserRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateTestUserRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateTestUserRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateTestUserRequestValidationError) ErrorName() string {
+	return "CreateTestUserRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateTestUserRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateTestUserRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateTestUserRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateTestUserRequestValidationError{}
+
+// Validate checks the field values on CreateTestUserReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CreateTestUserReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateTestUserReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CreateTestUserReplyMultiError, or nil if none found.
+func (m *CreateTestUserReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateTestUserReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Result
+
+	if len(errors) > 0 {
+		return CreateTestUserReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateTestUserReplyMultiError is an error wrapping multiple validation
+// errors returned by CreateTestUserReply.ValidateAll() if the designated
+// constraints aren't met.
+type CreateTestUserReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateTestUserReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateTestUserReplyMultiError) AllErrors() []error { return m }
+
+// CreateTestUserReplyValidationError is the validation error returned by
+// CreateTestUserReply.Validate if the designated constraints aren't met.
+type CreateTestUserReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateTestUserReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateTestUserReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateTestUserReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateTestUserReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateTestUserReplyValidationError) ErrorName() string {
+	return "CreateTestUserReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateTestUserReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateTestUserReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateTestUserReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateTestUserReplyValidationError{}
+
 // Validate checks the field values on CreateUserRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.

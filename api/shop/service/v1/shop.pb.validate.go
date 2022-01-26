@@ -755,19 +755,53 @@ var _ interface {
 } = GetUserReplyValidationError{}
 
 // Validate checks the field values on DemoRequest with the rules defined in
-// the proto definition for this message. If any rules are violated, an error
-// is returned.
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
 func (m *DemoRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DemoRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in DemoRequestMultiError, or
+// nil if none found.
+func (m *DemoRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DemoRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
+
+	var errors []error
 
 	// no validation rules for Id
 
 	// no validation rules for NickName
 
+	if len(errors) > 0 {
+		return DemoRequestMultiError(errors)
+	}
+
 	return nil
 }
+
+// DemoRequestMultiError is an error wrapping multiple validation errors
+// returned by DemoRequest.ValidateAll() if the designated constraints aren't met.
+type DemoRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DemoRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DemoRequestMultiError) AllErrors() []error { return m }
 
 // DemoRequestValidationError is the validation error returned by
 // DemoRequest.Validate if the designated constraints aren't met.
@@ -824,19 +858,53 @@ var _ interface {
 } = DemoRequestValidationError{}
 
 // Validate checks the field values on DemoResponse with the rules defined in
-// the proto definition for this message. If any rules are violated, an error
-// is returned.
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
 func (m *DemoResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DemoResponse with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in DemoResponseMultiError, or
+// nil if none found.
+func (m *DemoResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DemoResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
+
+	var errors []error
 
 	// no validation rules for Id
 
 	// no validation rules for NickName
 
+	if len(errors) > 0 {
+		return DemoResponseMultiError(errors)
+	}
+
 	return nil
 }
+
+// DemoResponseMultiError is an error wrapping multiple validation errors
+// returned by DemoResponse.ValidateAll() if the designated constraints aren't met.
+type DemoResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DemoResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DemoResponseMultiError) AllErrors() []error { return m }
 
 // DemoResponseValidationError is the validation error returned by
 // DemoResponse.Validate if the designated constraints aren't met.

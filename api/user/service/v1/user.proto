@@ -11,6 +11,15 @@ service User {
     rpc GetUser (GetUserRequest) returns (GetUserReply);
     rpc ListUser (ListUserRequest) returns (ListUserReply);
     rpc GetToken (GetTokenRequest) returns (GetTokenReply);
+    rpc CreateTestUser (CreateTestUserRequest) returns (CreateTestUserReply);
+}
+
+message CreateTestUserRequest{
+    string nick_name = 1;
+    string pass = 2;
+}
+message CreateTestUserReply{
+    bool result = 1;
 }
 
 message CreateUserRequest {

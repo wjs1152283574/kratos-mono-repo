@@ -28,6 +28,7 @@ type UserClient interface {
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserReply, error)
 	ListUser(ctx context.Context, in *ListUserRequest, opts ...grpc.CallOption) (*ListUserReply, error)
 	GetToken(ctx context.Context, in *GetTokenRequest, opts ...grpc.CallOption) (*GetTokenReply, error)
+	CreateTestUser(ctx context.Context, in *CreateTestUserRequest, opts ...grpc.CallOption) (*CreateTestUserReply, error)
 }
 
 type userClient struct {
@@ -92,6 +93,15 @@ func (c *userClient) GetToken(ctx context.Context, in *GetTokenRequest, opts ...
 	return out, nil
 }
 
+func (c *userClient) CreateTestUser(ctx context.Context, in *CreateTestUserRequest, opts ...grpc.CallOption) (*CreateTestUserReply, error) {
+	out := new(CreateTestUserReply)
+	err := c.cc.Invoke(ctx, "/api.user.service.v1.User/CreateTestUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -102,6 +112,7 @@ type UserServer interface {
 	GetUser(context.Context, *GetUserRequest) (*GetUserReply, error)
 	ListUser(context.Context, *ListUserRequest) (*ListUserReply, error)
 	GetToken(context.Context, *GetTokenRequest) (*GetTokenReply, error)
+	CreateTestUser(context.Context, *CreateTestUserRequest) (*CreateTestUserReply, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -126,6 +137,9 @@ func (UnimplementedUserServer) ListUser(context.Context, *ListUserRequest) (*Lis
 }
 func (UnimplementedUserServer) GetToken(context.Context, *GetTokenRequest) (*GetTokenReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetToken not implemented")
+}
+func (UnimplementedUserServer) CreateTestUser(context.Context, *CreateTestUserRequest) (*CreateTestUserReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateTestUser not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -248,6 +262,24 @@ func _User_GetToken_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_CreateTestUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateTestUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).CreateTestUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.user.service.v1.User/CreateTestUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).CreateTestUser(ctx, req.(*CreateTestUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -278,6 +310,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetToken",
 			Handler:    _User_GetToken_Handler,
+		},
+		{
+			MethodName: "CreateTestUser",
+			Handler:    _User_CreateTestUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

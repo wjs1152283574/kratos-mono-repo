@@ -121,3 +121,7 @@ func (r *UserRepo) GetToken(ctx context.Context, u *biz.UserForToken) (string, e
 	}
 	return t, nil
 }
+
+func (r *UserRepo) GetUserByName(ctx context.Context, name string) (*biz.User, error) {
+	return &biz.User{}, nil
+}

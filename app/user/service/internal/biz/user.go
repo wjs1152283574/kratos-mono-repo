@@ -22,6 +22,7 @@ type UserForToken struct {
 	ID     int
 }
 
+// 在此实现对data层的数据操作
 type UserRepo interface {
 	CreateUser(ctx context.Context, c *User) (*UserReply, error)
 	GetUser(ctx context.Context, id int64) (*User, error)
@@ -29,6 +30,7 @@ type UserRepo interface {
 	DeleteUser(ctx context.Context, c *User) (*User, error)
 	ListUser(ctx context.Context, pageNum, pageSize int64) ([]*User, error)
 	GetToken(ctx context.Context, u *UserForToken) (token string, err error)
+	GetUserByName(ctx context.Context, name string) (*User, error)
 }
 
 type UserUseCase struct {
@@ -39,6 +41,8 @@ type UserUseCase struct {
 func NewUserUseCase(repo UserRepo, logger log.Logger) *UserUseCase {
 	return &UserUseCase{repo: repo, log: log.NewHelper(log.With(logger, "module", "usecase/user"))}
 }
+
+// ********* 以下实现业务组装，实现service需求 ***********
 
 func (uc *UserUseCase) Create(ctx context.Context, u *User) (*UserReply, error) {
 	return uc.repo.CreateUser(ctx, u)
