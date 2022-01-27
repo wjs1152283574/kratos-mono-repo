@@ -56,4 +56,8 @@ services:
       TZ: Asia/Shanghai
     ports: 
       - 6379:6379
-    command: redis-server 
+    volumes:
+      - ./docker/redis/redis_data:/data/
+      - ./docker/redis/redis_logs:/var/log/redis/
+      - ./docker/redis/redis_conf:/data/redis/
+    command: redis-server /data/redis/redis.conf  

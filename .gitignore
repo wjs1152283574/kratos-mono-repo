@@ -134,3 +134,4 @@ standalone-logs
 
 # *.vscode
 # End of https://www.toptal.com/developers/gitignore/api/go,jetbrains,vscode
+.DS_Store
