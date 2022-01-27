@@ -40,12 +40,10 @@ type UserRepo interface {
 	Update(ctx context.Context, c *User) (*User, error)
 	// 删除
 	Delete(ctx context.Context, id int64) (*User, error)
-
-	ListUser(ctx context.Context, pageNum, pageSize int64) ([]*User, error)
+	// 列表
+	List(ctx context.Context, pageNum, pageSize int64) ([]*User, error)
 	// 通过电话获取用户
 	GetUserByMobile(ctx context.Context, mobile string) (user *User, err error)
-
-	GetUserByName(ctx context.Context, name string) (*User, error)
 }
 
 type UserUseCase struct {
@@ -112,8 +110,22 @@ func (uc *UserUseCase) UpdateUser(ctx context.Context, req *user_proto.UpdateUse
 	}, nil
 }
 
-func (uc *UserUseCase) List(ctx context.Context, pageNum, pageSize int64) ([]*User, error) {
-	return uc.repo.ListUser(ctx, pageNum, pageSize)
+func (uc *UserUseCase) UserList(ctx context.Context, pageNum, pageSize int64) (*user_proto.ListUserReply, error) {
+	var res []*user_proto.ListUserReply_User
+	list, err := uc.repo.List(ctx, pageNum, pageSize)
+	if err != nil {
+		return &user_proto.ListUserReply{}, err
+	}
+
+	// 拼接数据
+	for _, v := range list {
+		res = append(res, &user_proto.ListUserReply_User{
+			Id:       int64(v.ID),
+			Mobile:   v.Mobile,
+			NickName: v.Name,
+		})
+	}
+	return &user_proto.ListUserReply{Users: res}, nil
 }
 
 func (uc *UserUseCase) Login(ctx context.Context, u *user_proto.GetTokenRequest) (res *user_proto.GetTokenReply, err error) {

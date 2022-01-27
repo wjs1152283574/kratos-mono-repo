@@ -45,7 +45,12 @@ func (s *UserService) DeleteUser(ctx context.Context, req *pb.DeleteUserRequest)
 }
 
 func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserRequest) (*pb.ListUserReply, error) {
-	return &pb.ListUserReply{}, nil
+	// 数据校验
+	if req.Page == 0 || req.Limit == 0 {
+		return &pb.ListUserReply{}, normal.InvalidParams
+	}
+	// 调用业务用例
+	return s.uc.UserList(ctx, req.Page, req.Limit)
 }
 
 func (s *UserService) GetToken(ctx context.Context, req *pb.GetTokenRequest) (*pb.GetTokenReply, error) {

@@ -61,22 +61,17 @@ func (r *UserRepo) Delete(ctx context.Context, id int64) (*biz.User, error) {
 	return &user, nil
 }
 
-func (r *UserRepo) ListUser(ctx context.Context, pageNum, pageSize int64) ([]*biz.User, error) {
-	var userList []biz.User
+func (r *UserRepo) List(ctx context.Context, pageNum, pageSize int64) ([]*biz.User, error) {
+	var userList []*biz.User
 	result := r.data.db.WithContext(ctx).
 		Limit(int(pageSize)).
 		Offset(int(pagination.GetPageOffset(pageNum, pageSize))).
 		Find(&userList)
 	if result.Error != nil {
-		return nil, result.Error
+		return nil, normal.UnknownError
 	}
-	rv := make([]*biz.User, 0)
-	for _, user := range userList {
-		rv = append(rv, &biz.User{
-			Name: user.Name,
-		})
-	}
-	return rv, nil
+
+	return userList, nil
 }
 
 // GetToken check user exit and return token
@@ -86,8 +81,4 @@ func (r *UserRepo) GetUserByMobile(ctx context.Context, mobile string) (user *bi
 	}
 
 	return
-}
-
-func (r *UserRepo) GetUserByName(ctx context.Context, name string) (*biz.User, error) {
-	return &biz.User{}, nil
 }
