@@ -49,5 +49,10 @@ func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserRequest) (*p
 }
 
 func (s *UserService) GetToken(ctx context.Context, req *pb.GetTokenRequest) (*pb.GetTokenReply, error) {
-	return &pb.GetTokenReply{Token: ""}, nil
+	// 数据校验
+	if req.Mobile == "" || req.Pass == "" {
+		return &pb.GetTokenReply{}, normal.InvalidParams
+	}
+	// 调用业务用例
+	return s.uc.Login(ctx, req)
 }

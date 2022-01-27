@@ -2,6 +2,9 @@ package biz
 
 import (
 	user_proto "casso/api/user/service/v1"
+	"casso/app/user/service/internal/pkg/utill/passmd5"
+	"casso/pkg/errors/normal"
+	"casso/pkg/util/token"
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -39,7 +42,9 @@ type UserRepo interface {
 	Delete(ctx context.Context, id int64) (*User, error)
 
 	ListUser(ctx context.Context, pageNum, pageSize int64) ([]*User, error)
-	GetToken(ctx context.Context, u *UserForToken) (token string, err error)
+	// 通过电话获取用户
+	GetUserByMobile(ctx context.Context, mobile string) (user *User, err error)
+
 	GetUserByName(ctx context.Context, name string) (*User, error)
 }
 
@@ -111,6 +116,22 @@ func (uc *UserUseCase) List(ctx context.Context, pageNum, pageSize int64) ([]*Us
 	return uc.repo.ListUser(ctx, pageNum, pageSize)
 }
 
-func (uc *UserUseCase) Login(ctx context.Context, u *UserForToken) (token string, err error) {
-	return uc.repo.GetToken(ctx, u)
+func (uc *UserUseCase) Login(ctx context.Context, u *user_proto.GetTokenRequest) (res *user_proto.GetTokenReply, err error) {
+	user, err := uc.repo.GetUserByMobile(ctx, u.Mobile)
+	if err != nil {
+		return res, err
+	}
+
+	if user.Pass != passmd5.Base64Md5(u.Pass) {
+		return res, normal.InvalidParams
+	}
+
+	t, err := token.NewJWT().CreateToken(token.CustomClaims{
+		ID: int(user.ID),
+	})
+
+	if err != nil {
+		return res, normal.MakeTokenFaild
+	}
+	return &user_proto.GetTokenReply{Token: t}, nil
 }

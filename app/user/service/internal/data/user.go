@@ -5,7 +5,6 @@ import (
 	"casso/app/user/service/internal/pkg/utill/passmd5"
 	"casso/pkg/errors/normal"
 	"casso/pkg/util/pagination"
-	"casso/pkg/util/token"
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -81,22 +80,12 @@ func (r *UserRepo) ListUser(ctx context.Context, pageNum, pageSize int64) ([]*bi
 }
 
 // GetToken check user exit and return token
-func (r *UserRepo) GetToken(ctx context.Context, u *biz.UserForToken) (string, error) {
-	var user biz.User
-	result := r.data.db.WithContext(ctx).Where("mobile = ?", u.Mobile).First(&user)
-	if result.Error != nil {
-		return "", normal.RecordNotFound
+func (r *UserRepo) GetUserByMobile(ctx context.Context, mobile string) (user *biz.User, err error) {
+	if err = r.data.db.WithContext(ctx).Where("mobile = ?", mobile).First(&user).Error; err != nil {
+		return &biz.User{}, normal.RecordNotFound
 	}
-	if user.Pass != passmd5.Base64Md5(u.Pass) {
-		return "", normal.InvalidParams
-	}
-	t, err := token.NewJWT().CreateToken(token.CustomClaims{
-		ID: int(user.ID),
-	})
-	if err != nil {
-		return "", normal.MakeTokenFaild
-	}
-	return t, nil
+
+	return
 }
 
 func (r *UserRepo) GetUserByName(ctx context.Context, name string) (*biz.User, error) {
