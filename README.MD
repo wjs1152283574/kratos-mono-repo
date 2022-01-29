@@ -1,9 +1,10 @@
 ### Kratos-Mono-Repo
 
+####  前置条件
+* [`Kratos`](https://go-kratos.dev/en/docs/getting-started/start/)正确安装
+* 在项目根目录下，确保 `docker  docker-compose` 已经正确安装
+
 #### 启动
-```
-在项目根目录下，确保docker  docker-compose 已经正确安装
-```
 1. `make initdb`  // 初始化环境 
 2. `make runserver SERVER=你的服务名称` // 运行服务，服务需要先搭建完毕才能启动
 3. `docker`文件位于`/deply`目录下，路径不对的自行切换
