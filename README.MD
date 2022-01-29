@@ -1,8 +1,7 @@
 ### Kratos-Mono-Repo
 
 ####  前置条件
-* [`Kratos`](https://go-kratos.dev/en/docs/getting-started/start/)正确安装
-* 在项目根目录下，确保 `docker  docker-compose` 已经正确安装
+* [`Kratos`](https://go-kratos.dev/en/docs/getting-started/start/) `docker  docker-compose` 正确安装
 
 #### 启动
 1. `make initdb`  // 初始化环境 
