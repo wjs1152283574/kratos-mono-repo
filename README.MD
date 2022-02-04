@@ -99,7 +99,7 @@ BFF 层，BFF 校验 Token 完整性后把身份信息
 
 ###### 格式如下
 
-* 例：`fead(type)`:本次提交概述
+* 例：`type(scope)`:本次提交概述 `git commit -m "docs(README.md):添加编码规范"`
 * `type`: 本次 commit 的类型，诸如 bugfix docs style 等，参考如下:   
 
     * `feat`：添加新功能
