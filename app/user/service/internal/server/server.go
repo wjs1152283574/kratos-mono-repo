@@ -1,3 +1,11 @@
+/*
+ * @PackageName: server
+ * @Description: server register
+ * @Author: Casso
+ * @Date: 2021-08-05 11:22:07
+ * @LastModifiedBy: Casso
+ * @LastEditTime: 2022-02-05 16:33:52
+ */
 package server
 
 import (
