@@ -37,7 +37,7 @@ type UserRepo interface {
 	// 获取用户信息
 	Get(ctx context.Context, id int64) (*User, error)
 	// 编辑用户信息
-	Update(ctx context.Context, c *User) (*User, error)
+	Update(ctx context.Context, u *User) (*User, error)
 	// 删除
 	Delete(ctx context.Context, id int64) (*User, error)
 	// 列表
