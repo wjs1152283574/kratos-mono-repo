@@ -13,7 +13,7 @@ require (
 	github.com/google/wire v0.5.0
 	github.com/nacos-group/nacos-sdk-go v1.0.8
 	go.opentelemetry.io/otel v1.0.0
-	go.opentelemetry.io/otel/exporters/jaeger v1.0.0-RC2
+	go.opentelemetry.io/otel/exporters/jaeger v1.0.0
 	go.opentelemetry.io/otel/sdk v1.0.0
 	google.golang.org/genproto v0.0.0-20210805201207-89edb61ffb67
 	google.golang.org/grpc v1.42.0

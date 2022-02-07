@@ -3,7 +3,7 @@ services:
   shop_db:
     restart: always
     image: mysql/mysql-server
-    container_name: mysql_server
+    container_name: mysql_server_kratos
     ports:
       - 3307:3306   # 使用3307是因为防止本机默认启动mysql而抛出端口占用错误
     environment:
@@ -22,7 +22,7 @@ services:
       - ./docker-db:/var/lib/mysql
   nacos:
     image: nacos/nacos-server:${NACOS_VERSION}
-    container_name: nacos-standalone
+    container_name: nacos-standalone_kratos
     environment:
     - PREFER_HOST_MODE=hostname
     - MODE=standalone
@@ -33,7 +33,7 @@ services:
     - "8848:8848"
     - "9848:9848"
   prometheus:
-    container_name: prometheus
+    container_name: prometheus_kratos
     image: prom/prometheus:latest
     volumes:
       - ./prometheus/prometheus-standalone.yaml:/etc/prometheus/prometheus.yml
@@ -43,13 +43,13 @@ services:
       - nacos
     restart: on-failure
   grafana:
-    container_name: grafana
+    container_name: grafana_kratos
     image: grafana/grafana:latest
     ports:
       - 3000:3000
     restart: on-failure
   redis:
-    container_name: redis
+    container_name: redis_kratos
     image: redis
     restart: always
     environment:
