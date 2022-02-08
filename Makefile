@@ -63,8 +63,16 @@ newapp:
 	kratos proto add api/$(APPNAME)/service/v1/$(APPNAME).proto && \
 	kratos proto client api/$(APPNAME)/service/v1/$(APPNAME).proto && \
 	cd app && mkdir $(APPNAME) && cd ./$(APPNAME) && mkdir service && cd ./service && mkdir cmd && mkdir ./cmd/server && \
-	mkdir configs && mkdir internal && cd internal && mkdir biz && mkdir conf && mkdir data && \
-	mkdir server && mkdir service && cd .. && touch .gitignore && touch generate.go && echo "package generate" >> ./generate.go && \
+	cd ./cmd/server touch main.go && echo "package main" >> ./main.go && cd .. && cd .. \
+	mkdir configs && mkdir internal && cd internal && mkdir biz && \
+	cd biz && touch biz.go && echo "package biz" >> ./biz.go && cd .. && \
+	mkdir conf && mkdir data && \
+	cd data && touch data.go && echo "package data" >> ./data.go && cd .. && \
+	mkdir server && \
+	cd server && touch server.go && echo "package server" >> ./server.go && cd .. && \
+	mkdir service && cd service && \
+	touch service.go && echo "package service" >> ./service.go && cd .. && \
+	cd .. && touch .gitignore && touch generate.go && echo "package generate" >> ./generate.go && \
 	touch Makefile && echo "include ../../../app_makefile" >> ./Makefile && touch README.MD && cd ../../../ && \
 	kratos proto server api/$(APPNAME)/service/v1/$(APPNAME).proto -t app/$(APPNAME)/service/internal/service
 
