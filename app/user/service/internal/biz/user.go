@@ -8,27 +8,7 @@ import (
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
-	"gorm.io/gorm"
 )
-
-type User struct {
-	gorm.Model
-	Mobile string `gorm:"unique"`
-	Pass   string
-	Name   string
-	Age    int64
-}
-
-type UserReply struct {
-	Name, Mobile string
-	Age, ID      int64
-}
-
-type UserForToken struct {
-	Mobile string
-	Pass   string
-	ID     int
-}
 
 // 在此实现对data层的数据操作
 type UserRepo interface {
