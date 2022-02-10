@@ -1,3 +1,11 @@
+/*
+ * @PackageName: service
+ * @Description: shop service
+ * @Author: Casso
+ * @Date: 2022-01-17 18:22:45
+ * @LastModifiedBy: Casso
+ * @LastEditTime: 2022-02-10 17:00:21
+ */
 package service
 
 import (
@@ -10,7 +18,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 )
 
-var MockUID int64 = 2233
+var MockUID int64 = 2333
 
 type ShopService struct {
 	pb.UnimplementedShopServer

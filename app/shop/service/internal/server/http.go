@@ -2,7 +2,7 @@
  * @Author: Casso
  * @Date: 2021-11-17 16:24:19
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-02-08 14:11:23
+ * @LastEditTime: 2022-02-10 17:01:36
  * @Description: file content
  * @FilePath: /kratos-mono-repo/app/shop/service/internal/server/http.go
  */
@@ -12,6 +12,7 @@ import (
 	v1 "casso/api/shop/service/v1"
 	"casso/app/shop/service/internal/conf"
 	"casso/app/shop/service/internal/service"
+	"casso/pkg/util/resencoder"
 	"context"
 	"fmt"
 
@@ -52,6 +53,7 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 	}
 
 	// 服务内跨域处理
+	// TODO: 引入网关后在网关处理跨域时，需要删除以下处理跨域的代码
 	opts = append(opts, http.Filter(handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),
 		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"}),
@@ -60,8 +62,11 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 		handlers.OptionStatusCode(204),
 	)))
 
+	// 指定为json编码格式
+	opts = append(opts, http.ResponseEncoder(resencoder.ResponeJsonDeco()))
 	srv := http.NewServer(opts...)
 	v1.RegisterShopHTTPServer(srv, s)
+
 	return srv
 }
 

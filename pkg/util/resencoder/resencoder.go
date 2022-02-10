@@ -8,25 +8,27 @@
  */
 package resencoder
 
-type Res struct {
-	Code int
-	Data interface{}
-	Msg  string
-}
+import (
+	"encoding/json"
+	ht "net/http"
 
-// func CustomResponeDeco() http.EncodeResponseFunc {
-// 	return func(w http.ResponseWriter, r *http.Request, v interface{}) error {
-// 		reply := &Res{ // 将状态码都改为200
-// 			Code: 200,
-// 			Data: v,
-// 		}
-// 		codc := encoding.GetCodec("json")
-// 		data, err := codc.Marshal(reply)
-// 		if err != nil {
-// 			return err
-// 		}
-// 		w.Header().Set("Content-Type", "application/json")
-// 		w.Write(data)
-// 		return nil
-// 	}
-// }
+	"github.com/go-kratos/kratos/v2/transport/http"
+)
+
+func ResponeJsonDeco() http.EncodeResponseFunc {
+	return func(w ht.ResponseWriter, r *ht.Request, v interface{}) error {
+		// codec, _ := http.CodecForRequest(r, "Accept")
+		// data, err := codec.Marshal(v)
+		data, err := json.Marshal(v) // 指定json 序列化方式
+		if err != nil {
+			return err
+		}
+
+		_, err = w.Write(data)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	}
+}
