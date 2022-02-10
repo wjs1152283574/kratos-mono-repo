@@ -60,4 +60,16 @@ services:
       - ./docker/redis/redis_data:/data/
       - ./docker/redis/redis_logs:/var/log/redis/
       - ./docker/redis/redis_conf:/data/redis/
-    command: redis-server /data/redis/redis.conf  
+    command: redis-server /data/redis/redis.conf
+  mongo:
+    image: mongo
+    container_name: mongo_kratos
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - 27017:27017
+    # 数据持久化
+    volumes:
+      - ./docker/mongotest:/data/db  

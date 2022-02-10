@@ -1,16 +1,8 @@
 /*
  * @Author: Casso
  * @Date: 2021-11-17 16:24:19
- * @LastEditors: Casso
- * @LastEditTime: 2021-12-08 14:20:05
- * @Description: file content
- * @FilePath: /kratos-mono-repo/app/shop/service/internal/server/http.go
- */
-/*
- * @Author: Casso
- * @Date: 2021-11-17 16:24:19
- * @LastEditors: Casso
- * @LastEditTime: 2021-11-20 16:32:10
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-08 14:11:23
  * @Description: file content
  * @FilePath: /kratos-mono-repo/app/shop/service/internal/server/http.go
  */
