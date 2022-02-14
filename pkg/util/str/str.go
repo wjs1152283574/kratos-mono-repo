@@ -1,8 +1,8 @@
 /*
  * @Author: Casso
  * @Date: 2021-11-23 17:49:03
- * @LastEditors: Casso
- * @LastEditTime: 2021-12-09 10:12:25
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-14 16:54:18
  * @Description: 字符串处理
  * @FilePath: /kratos-mono-repo/pkg/util/str/str.go
  */
@@ -11,7 +11,9 @@ package str
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"errors"
 	"fmt"
+	"math/big"
 	"strconv"
 )
 
@@ -63,6 +65,10 @@ func Float64ToStr(num float64) string {
 	return fmt.Sprintf("%f", num)
 }
 
-func StrToFloat64(str string) (float64, error) {
-	return strconv.ParseFloat(str, 64)
+func StrToFloat64(str string) (uint64, error) {
+	bint, ok := new(big.Int).SetString(str, 0)
+	if !ok {
+		return 0, errors.New("SetString err")
+	}
+	return bint.Uint64(), nil
 }
