@@ -11,7 +11,9 @@ package str
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"errors"
 	"fmt"
+	"math/big"
 	"strconv"
 )
 
@@ -63,6 +65,10 @@ func Float64ToStr(num float64) string {
 	return fmt.Sprintf("%f", num)
 }
 
-func StrToFloat64(str string) (float64, error) {
-	return strconv.ParseFloat(str, 64)
+func StrToFloat64(str string) (uint64, error) {
+	bint, ok := new(big.Int).SetString(str, 0)
+	if !ok {
+		return 0, errors.New("SetString err")
+	}
+	return bint.Uint64(), nil
 }
