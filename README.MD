@@ -83,7 +83,7 @@ BFF 层，BFF 校验 Token 完整性后把身份信息
 
 * `Makefile`
     * 整个项目根目录的`Makefile`
-    * 维护一些全局的`Makefile` 命令，很实用
+    * 维护一些全局的`Makefile` 命令
 
 * 其他目录自行了解
 
