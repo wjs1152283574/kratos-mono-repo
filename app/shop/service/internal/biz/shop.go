@@ -30,7 +30,7 @@ func (s *ShopUseCase) Register(ctx context.Context, req *pb.RegisterRequest) (*p
 	res, err := s.uc.CreateUser(ctx, &v1.CreateUserRequest{
 		NickName: req.NickName,
 	})
-	if err != nil {
+	if err != nil || !v1.IsRecordNotFound(err) {
 		return &pb.RegisterReply{}, err
 	}
 
