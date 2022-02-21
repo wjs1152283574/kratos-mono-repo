@@ -94,7 +94,9 @@ BFF 层，BFF 校验 Token 完整性后把身份信息
 * 服务注册与发现使用`Nacos`，记录`Nacos`单例模式后台地址:`http://127.0.0.1:8848/nacos/` `login = nacos:nacos`
 * 生产推荐 `gitlab`+`k8s`+`lens`
 
-* `bloomrpc`[测试工具](https://github.com/bloomrpc/bloomrpc)
+* 测试工具
+    * [`bloomrpc`](https://github.com/bloomrpc/bloomrpc)
+    * [`grpcui`](https://github.com/fullstorydev/grpcui#installation) (推荐)
 #### Commit 规范
 
 ###### 格式如下
