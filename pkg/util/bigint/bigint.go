@@ -15,3 +15,8 @@ func ParserPrice(price float64) string {
 	var c, _ = new(big.Rat).SetString(a.String())
 	return c.RatString()
 }
+
+// PrecisionPrice 转6位大数
+func PrecisionPrice6(price uint64) string {
+	return new(big.Int).Mul(big.NewInt(1e+6), new(big.Int).SetUint64(price)).String()
+}
