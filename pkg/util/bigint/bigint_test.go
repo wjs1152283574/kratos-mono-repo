@@ -12,3 +12,9 @@ func TestParserPrice(t *testing.T) {
 		}
 	}
 }
+
+func TestPrecisionPrice6(t *testing.T) {
+	if PrecisionPrice6(1) != "1000000" {
+		t.Errorf("want: %s,got %s", "1000000", PrecisionPrice6(1))
+	}
+}
