@@ -35,3 +35,12 @@ func Commisssion(total string, commiss float64) (string, error) {
 	result := f1.Sub(f3, yk)
 	return result.String(), err
 }
+
+//StringToBigInt string to bigint
+func StringToBigInt(amount string) (*big.Int, bool) {
+	var ok bool
+	bigIntAmount := new(big.Int)
+	bigIntAmount, ok = bigIntAmount.SetString(amount, 10)
+
+	return bigIntAmount, ok
+}
