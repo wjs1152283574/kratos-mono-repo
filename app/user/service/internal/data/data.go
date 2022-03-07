@@ -1,8 +1,8 @@
 /*
  * @Author: Casso
  * @Date: 2021-11-17 16:24:19
- * @LastEditors: Casso
- * @LastEditTime: 2021-11-26 12:12:33
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-07 15:29:32
  * @Description: file content
  * @FilePath: /kratos-mono-repo/app/user/service/internal/data/data.go
  */
@@ -88,6 +88,9 @@ func NewData(db *gorm.DB, rd *redis.Client, logger log.Logger) (*Data, func(), e
 			fmt.Println("初始化自定义配置文件：", v.CassoConf)
 		}
 	}()
+
+	// 启动定时任务
+	go InitTimer(*d)
 
 	return d, func() {
 
