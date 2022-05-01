@@ -7,6 +7,8 @@ import (
 	"math/rand"
 	"sort"
 	"time"
+
+	wr "github.com/mroth/weightedrand"
 )
 
 type Prize struct {
@@ -79,4 +81,39 @@ func GetPrice(boxNum, avalable int64, prize []*Prize) map[int64]int64 {
 		}
 	}
 	return prizeRes
+}
+
+// ******** 方案2 (推荐) ******
+
+// GetRandPrize 随机获奖 输入盲盒数量，输出中奖ID:数量
+func GetRandPrize(boxNum int64, prize []Prize) map[int64]int64 {
+	p := make(map[int64]int64, boxNum)
+
+	for i := 0; i < int(boxNum); i++ {
+		// 解析将池
+		var wrs []wr.Choice
+		for _, v := range prize {
+			wrs = append(wrs, wr.Choice{
+				Item:   v.PlayerId,
+				Weight: uint(v.Weight),
+			})
+		}
+		result := RandPick(wrs)
+		p[result] += 1
+		// 更新将池
+		for i, v := range prize {
+			if v.PlayerId == result {
+				prize[i].Weight -= 1
+			}
+		}
+	}
+
+	return p
+}
+
+// RandPick 传入将池，返回中奖item
+func RandPick(wrs []wr.Choice) int64 {
+	rand.Seed(time.Now().UTC().UnixNano())
+	chooser, _ := wr.NewChooser(wrs...)
+	return chooser.Pick().(int64)
 }
