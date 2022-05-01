@@ -9,8 +9,8 @@
 package data
 
 import (
-	"casso/app/user/service/internal/biz"
 	"casso/app/user/service/internal/conf"
+	"casso/app/user/service/internal/model"
 	"fmt"
 	"time"
 
@@ -66,7 +66,7 @@ func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB {
 	sqlDB.SetMaxOpenConns(100)          // 最大链接数
 	sqlDB.SetConnMaxLifetime(time.Hour) // 最大可复用时间
 
-	if err := db.AutoMigrate(&biz.User{}); err != nil {
+	if err := db.AutoMigrate(&model.User{}); err != nil {
 		log.Fatal(err)
 	}
 	return db

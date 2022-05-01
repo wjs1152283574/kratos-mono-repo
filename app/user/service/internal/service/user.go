@@ -4,7 +4,7 @@ import (
 	"context"
 
 	pb "casso/api/user/service/v1"
-	"casso/app/user/service/internal/biz"
+	"casso/app/user/service/internal/model"
 	"casso/pkg/errors/normal"
 )
 
@@ -14,7 +14,7 @@ func (s *UserService) CreateUser(ctx context.Context, req *pb.CreateUserRequest)
 		return &pb.CreateUserReply{}, normal.InvalidParams
 	}
 	// 调用业务用例
-	return s.uc.CreateUser(ctx, &biz.User{Mobile: req.Mobile, Pass: req.Pass, Name: req.NickName, Age: req.Age})
+	return s.uc.CreateUser(ctx, &model.User{Mobile: req.Mobile, Pass: req.Pass, Name: req.NickName, Age: req.Age})
 }
 
 func (s *UserService) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserReply, error) {
