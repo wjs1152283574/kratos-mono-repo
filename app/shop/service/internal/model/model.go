@@ -1,6 +1,9 @@
 package model
 
 // shop model
+var (
+	ShopLogTableName = "shop_log"
+)
 
 type ShopLog struct {
 	ID      uint   `gorm:"primarykey"`
@@ -9,4 +12,8 @@ type ShopLog struct {
 	UpdatedTime int64 `gorm:"type:bigint(20);COMMENT:最后修改时间"`
 	CreatedTime int64 `gorm:"type:bigint(20);COMMENT:创建时间"`
 	DeleteTime  int64 `gorm:"type:bigint(20);COMMENT:删除时间"`
+}
+
+func (s *ShopLog) TableName() string {
+	return ShopLogTableName
 }
