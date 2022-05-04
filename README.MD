@@ -5,12 +5,12 @@
 
 #### 启动
 1. `make initdb`  // 初始化环境 
-2. `make runserver SERVER=你的服务名称` // 运行服务，服务需要先搭建完毕才能启动
+2. `make run app=yourServerName` // 运行服务，服务需要先搭建完毕才能启动
 3. `docker`文件位于`/deply`目录下，路径不对的自行切换
 
 #### 新增服务
 * 新增`payment`服务:
-`make newapp APPNAME=yourServerName`
+`make app name=yourServerName`
 
 ```
 以上脚本仅仅帮助我们创建目录，具体的go文件需要我们自己处理，官方也并不提供相关的工具

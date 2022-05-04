@@ -2,8 +2,8 @@ GOPATH:=$(shell go env GOPATH)
 VERSION=$(shell git describe --tags --always)
 INTERNAL_PROTO_FILES=$(shell find app -name *.proto)
 API_PROTO_FILES=$(shell find api -name *.proto)
-APPNAME=demo
-SERVER=demo
+name=demo
+app=demo
 
 .PHONY: init
 # init env
@@ -57,12 +57,12 @@ all:
 	make errors;
 	make config;
 
-.PHONY: newapp
+.PHONY: app
 # newapp
-newapp:
-	kratos proto add api/$(APPNAME)/service/v1/$(APPNAME).proto && \
-	kratos proto client api/$(APPNAME)/service/v1/$(APPNAME).proto && \
-	cd app && mkdir $(APPNAME) && cd ./$(APPNAME) && mkdir service && cd ./service && mkdir cmd && mkdir ./cmd/server && \
+app:
+	kratos proto add api/$(name)/service/v1/$(name).proto && \
+	kratos proto client api/$(name)/service/v1/$(name).proto && \
+	cd app && mkdir $(name) && cd ./$(name) && mkdir service && cd ./service && mkdir cmd && mkdir ./cmd/server && \
 	cd ./cmd/server touch main.go && echo "package main" >> ./main.go && cd .. && cd .. \
 	mkdir configs && mkdir internal && cd internal && mkdir biz && \
 	cd biz && touch biz.go && echo "package biz" >> ./biz.go && cd .. && \
@@ -74,17 +74,17 @@ newapp:
 	touch service.go && echo "package service" >> ./service.go && cd .. && \
 	cd .. && touch .gitignore && touch generate.go && echo "package generate" >> ./generate.go && \
 	touch Makefile && echo "include ../../../app_makefile" >> ./Makefile && touch README.MD && cd ../../../ && \
-	kratos proto server api/$(APPNAME)/service/v1/$(APPNAME).proto -t app/$(APPNAME)/service/internal/service
+	kratos proto server api/$(name)/service/v1/$(name).proto -t app/$(name)/service/internal/service
 
 .PHONY: initdb
 # initdb
 initdb:
 	cd deploy/docker-compose && docker-compose up -d
 
-.PHONY: runserver
-# runserver
-runserver:
-	cd app/${SERVER}/service && make run
+.PHONY: run
+# run
+run:
+	cd app/${app}/service && make run
 
 # show help
 help:
