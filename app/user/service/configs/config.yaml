@@ -23,3 +23,9 @@ data:
     cluster: "default"
     namespace: ["load.json","service.json"]
     secret: "7308b9cee8764784aa226bdf0c1ca48d"
+  kafka:
+    addr: ["127.0.0.1:9092"]
+    send_topic: ["create_msg"]
+    recive_topic: []
+    group: []
+    mode: 2 
