@@ -44,8 +44,23 @@ message Data {
     string auth = 6;
     string password = 7;
   }
+  message Apollo {
+    string addr = 1;
+    string app_id = 2;
+    string cluster = 3;
+    repeated string namespace = 4;
+    string screct = 5;
+  }
+  message Kafka {
+    repeated string addr = 1;
+    repeated string send_topic = 2;
+    repeated string recive_topic = 3;
+    repeated string group = 4;
+  }
   Database database = 1;
   Redis redis = 2;
+  Apollo apollo = 3;
+  Kafka kafka = 4;
 }
 
 message Registry {
