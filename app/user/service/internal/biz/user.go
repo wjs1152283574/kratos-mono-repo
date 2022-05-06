@@ -2,6 +2,7 @@ package biz
 
 import (
 	user_proto "casso/api/user/service/v1"
+	"casso/app/user/service/internal/model"
 	"casso/app/user/service/internal/pkg/utill/passmd5"
 	"casso/pkg/errors/normal"
 	"casso/pkg/util/token"
@@ -13,17 +14,17 @@ import (
 // 在此实现对data层的数据操作
 type UserRepo interface {
 	// 新建用户
-	Create(ctx context.Context, c *User) (*User, error)
+	Create(ctx context.Context, c *model.User) (*model.User, error)
 	// 获取用户信息
-	Get(ctx context.Context, id int64) (*User, error)
+	Get(ctx context.Context, id int64) (*model.User, error)
 	// 编辑用户信息
-	Update(ctx context.Context, u *User) (*User, error)
+	Update(ctx context.Context, u *model.User) (*model.User, error)
 	// 删除
-	Delete(ctx context.Context, id int64) (*User, error)
+	Delete(ctx context.Context, id int64) (*model.User, error)
 	// 列表
-	List(ctx context.Context, pageNum, pageSize int64) ([]*User, error)
+	List(ctx context.Context, pageNum, pageSize int64) ([]*model.User, error)
 	// 通过电话获取用户
-	GetUserByMobile(ctx context.Context, mobile string) (user *User, err error)
+	GetUserByMobile(ctx context.Context, mobile string) (user *model.User, err error)
 }
 
 type UserUseCase struct {
@@ -36,7 +37,7 @@ func NewUserUseCase(repo UserRepo, logger log.Logger) *UserUseCase {
 }
 
 // ********* 以下实现业务组装，实现service需求 ***********
-func (uc *UserUseCase) CreateUser(ctx context.Context, u *User) (*user_proto.CreateUserReply, error) {
+func (uc *UserUseCase) CreateUser(ctx context.Context, u *model.User) (*user_proto.CreateUserReply, error) {
 	res, err := uc.repo.Create(ctx, u)
 	if err != nil {
 		return &user_proto.CreateUserReply{}, err
@@ -75,7 +76,7 @@ func (uc *UserUseCase) DeleteUser(ctx context.Context, id int64) (*user_proto.De
 }
 
 func (uc *UserUseCase) UpdateUser(ctx context.Context, req *user_proto.UpdateUserRequest) (*user_proto.UpdateUserReply, error) {
-	var user User
+	var user model.User
 	user.ID = uint(req.Id)
 	user.Age = req.Age
 	user.Name = req.NickName

@@ -42,6 +42,8 @@ func LoadConf(conf config.Config) (err error) {
 			panic(err)
 		}
 	}
+
 	ConfCh <- &UConf // 项目启动送往通道
+
 	return conf.Scan(&UConf)
 }
