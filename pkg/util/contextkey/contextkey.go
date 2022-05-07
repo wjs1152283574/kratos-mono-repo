@@ -8,7 +8,7 @@ var (
 	UserID = "userid"
 )
 
-// NewKey return Key with value
+// NewKey return Key with key name
 func NewKey() Key {
 	return Key(UserID)
 }
