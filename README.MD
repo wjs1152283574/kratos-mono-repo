@@ -6,7 +6,7 @@
 #### 启动
 1. `make initdb`  // 初始化环境 
 2. `make run app=yourServerName` // 运行服务，服务需要先搭建完毕才能启动
-3. `docker`文件位于`/deply`目录下，路径不对的自行切换
+3. `docker`文件位于`/deploy`目录下，路径不对的自行切换
 
 #### 新增服务
 * 新增`payment`服务:

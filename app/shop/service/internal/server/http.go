@@ -2,7 +2,7 @@
  * @Author: Casso
  * @Date: 2021-11-17 16:24:19
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-02-10 17:01:36
+ * @LastEditTime: 2022-05-06 14:58:09
  * @Description: file content
  * @FilePath: /kratos-mono-repo/app/shop/service/internal/server/http.go
  */
@@ -12,6 +12,7 @@ import (
 	v1 "casso/api/shop/service/v1"
 	"casso/app/shop/service/internal/conf"
 	"casso/app/shop/service/internal/service"
+	"casso/pkg/util/contextkey"
 	"casso/pkg/util/resencoder"
 	"context"
 	"fmt"
@@ -76,9 +77,11 @@ func AuthMiddleware(handler middleware.Handler) middleware.Handler {
 		reply, err = handler(ctx, req)
 		if tr, ok := transport.FromServerContext(ctx); ok {
 			ht, _ := tr.(*http.Transport)
-			if len(ht.Request().URL.Query()["userid"]) > 0 {
-				fmt.Println("登陆uid:", ht.Request().URL.Query()["userid"][0])
-				etxs := context.WithValue(ctx, "userid", ht.Request().URL.Query()["userid"][0])
+			if len(ht.Request().URL.Query()[contextkey.UserID]) > 0 {
+				k := contextkey.NewKey
+				v := ht.Request().URL.Query()[contextkey.UserID][0]
+				fmt.Printf("登陆uid:%s", v)
+				etxs := context.WithValue(ctx, k, v)
 				reply, err = handler(etxs, req)
 			}
 		}
