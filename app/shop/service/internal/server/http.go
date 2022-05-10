@@ -40,6 +40,7 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 				logging.Server(logger),
 				AuthMiddleware,
 			).Path("/api.shop.service.v1.Shop/GetUser").Build(),
+			logging.Client(logger), // 添加全局日志中间件
 		),
 	}
 

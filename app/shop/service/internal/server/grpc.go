@@ -38,6 +38,7 @@ func NewGRPCServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 			tracing.Server(
 				tracing.WithTracerProvider(tp)),
 			logging.Server(logger),
+			logging.Client(logger),
 		),
 	}
 	if c.Grpc.Network != "" {
