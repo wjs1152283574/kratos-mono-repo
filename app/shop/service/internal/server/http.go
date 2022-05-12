@@ -2,7 +2,7 @@
  * @Author: Casso
  * @Date: 2021-11-17 16:24:19
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-06 14:58:09
+ * @LastEditTime: 2022-05-12 15:23:30
  * @Description: file content
  * @FilePath: /kratos-mono-repo/app/shop/service/internal/server/http.go
  */
@@ -20,6 +20,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
+	"github.com/go-kratos/kratos/v2/middleware/ratelimit"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/selector"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
@@ -41,6 +42,7 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 				AuthMiddleware,
 			).Path("/api.shop.service.v1.Shop/GetUser").Build(),
 			logging.Client(logger), // 添加全局日志中间件
+			ratelimit.Server(),
 		),
 	}
 
