@@ -2,7 +2,7 @@
  * @Author: Casso
  * @Date: 2021-11-17 16:24:19
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-12 15:23:30
+ * @LastEditTime: 2022-05-16 16:47:39
  * @Description: file content
  * @FilePath: /kratos-mono-repo/app/shop/service/internal/server/http.go
  */
@@ -42,7 +42,7 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, tp *tracesdk.TracerProvide
 				AuthMiddleware,
 			).Path("/api.shop.service.v1.Shop/GetUser").Build(),
 			logging.Client(logger), // 添加全局日志中间件
-			ratelimit.Server(),
+			ratelimit.Server(),     // 启用过载保护（默认一个时间窗口 100 pass）
 		),
 	}
 
