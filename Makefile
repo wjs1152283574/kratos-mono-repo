@@ -50,6 +50,11 @@ api:
 build:
 	mkdir -p bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./...
 
+.PHONY: builds
+# generate builds
+builds:
+	cd app/${app}/service && make build
+
 .PHONY: all
 # generate all
 all:
