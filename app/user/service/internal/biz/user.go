@@ -4,7 +4,7 @@ import (
 	user_proto "casso/api/user/service/v1"
 	"casso/app/user/service/internal/model"
 	"casso/app/user/service/internal/pkg/utill/passmd5"
-	"casso/pkg/errors/normal"
+	"casso/pkg/errors"
 	"casso/pkg/util/token"
 	"context"
 )
@@ -89,7 +89,7 @@ func (uc *UserUseCase) Login(ctx context.Context, u *user_proto.GetTokenRequest)
 	}
 
 	if user.Pass != passmd5.Base64Md5(u.Pass) {
-		return res, normal.InvalidParams
+		return res, errors.InvalidParams
 	}
 
 	t, err := token.NewJWT().CreateToken(token.CustomClaims{
@@ -97,7 +97,7 @@ func (uc *UserUseCase) Login(ctx context.Context, u *user_proto.GetTokenRequest)
 	})
 
 	if err != nil {
-		return res, normal.MakeTokenFaild
+		return res, errors.MakeTokenFaild
 	}
 	return &user_proto.GetTokenReply{Token: t}, nil
 }

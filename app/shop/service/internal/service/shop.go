@@ -4,14 +4,14 @@
  * @Author: Casso
  * @Date: 2022-01-17 18:22:45
  * @LastModifiedBy: Casso
- * @LastEditTime: 2022-02-10 17:00:21
+ * @LastEditTime: 2022-05-19 11:48:30
  */
 package service
 
 import (
 	pb "casso/api/shop/service/v1"
 	"casso/app/shop/service/internal/biz"
-	"casso/pkg/errors/normal"
+	"casso/pkg/errors"
 	"context"
 	"strconv"
 
@@ -49,7 +49,7 @@ func (s *ShopService) GetUserID(ctx context.Context) int64 {
 func (s *ShopService) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterReply, error) {
 	// 数据校验
 	if req.Mobile == "" {
-		return &pb.RegisterReply{}, normal.InvalidParams
+		return &pb.RegisterReply{}, errors.InvalidParams
 	}
 	// 调用业务用例
 	return s.sc.Register(ctx, req)
@@ -58,7 +58,7 @@ func (s *ShopService) Register(ctx context.Context, req *pb.RegisterRequest) (*p
 func (s *ShopService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
 	// 数据校验
 	if req.Mobile == "" {
-		return &pb.LoginReply{}, normal.InvalidParams
+		return &pb.LoginReply{}, errors.InvalidParams
 	}
 	// 调用业务用例
 	return s.sc.Login(ctx, req)
