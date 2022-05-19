@@ -2,7 +2,7 @@
  * @Author: Casso
  * @Date: 2021-11-17 16:24:19
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-07 15:29:32
+ * @LastEditTime: 2022-05-19 10:32:08
  * @Description: file content
  * @FilePath: /kratos-mono-repo/app/user/service/internal/data/data.go
  */
@@ -32,20 +32,6 @@ type Data struct {
 	rd  *redis.Client
 	db  *gorm.DB
 	log *log.Helper
-}
-
-func NewRd(conf *conf.Data, logger log.Logger) *redis.Client {
-	log.NewHelper(log.With(logger, "module", "user-service/data/redis"))
-	opts := redis.Options{
-		Addr:         conf.Redis.Addr,
-		Username:     conf.Redis.Auth,
-		Password:     conf.Redis.Password,
-		ReadTimeout:  conf.Redis.ReadTimeout.AsDuration(),
-		WriteTimeout: conf.Redis.WriteTimeout.AsDuration(),
-		PoolSize:     int(conf.Redis.Pool),
-		DB:           0,
-	}
-	return redis.NewClient(&opts)
 }
 
 func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB {
