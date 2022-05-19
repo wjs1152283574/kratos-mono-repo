@@ -7,34 +7,7 @@ import (
 	"casso/pkg/errors/normal"
 	"casso/pkg/util/token"
 	"context"
-
-	"github.com/go-kratos/kratos/v2/log"
 )
-
-// 在此实现对data层的数据操作
-type UserRepo interface {
-	// 新建用户
-	Create(ctx context.Context, c *model.User) (*model.User, error)
-	// 获取用户信息
-	Get(ctx context.Context, id int64) (*model.User, error)
-	// 编辑用户信息
-	Update(ctx context.Context, u *model.User) (*model.User, error)
-	// 删除
-	Delete(ctx context.Context, id int64) (*model.User, error)
-	// 列表
-	List(ctx context.Context, pageNum, pageSize int64) ([]*model.User, error)
-	// 通过电话获取用户
-	GetUserByMobile(ctx context.Context, mobile string) (user *model.User, err error)
-}
-
-type UserUseCase struct {
-	repo UserRepo
-	log  *log.Helper
-}
-
-func NewUserUseCase(repo UserRepo, logger log.Logger) *UserUseCase {
-	return &UserUseCase{repo: repo, log: log.NewHelper(log.With(logger, "module", "usecase/user"))}
-}
 
 // ********* 以下实现业务组装，实现service需求 ***********
 func (uc *UserUseCase) CreateUser(ctx context.Context, u *model.User) (*user_proto.CreateUserReply, error) {
