@@ -4,23 +4,7 @@ import (
 	pb "casso/api/shop/service/v1"
 	v1 "casso/api/user/service/v1"
 	"context"
-
-	"github.com/go-kratos/kratos/v2/log"
 )
-
-type ShopRepo interface {
-}
-
-type ShopUseCase struct {
-	repo ShopRepo
-	log  *log.Helper
-
-	uc v1.UserClient
-}
-
-func NewShopUseCase(repo ShopRepo, logger log.Logger, uc v1.UserClient) *ShopUseCase {
-	return &ShopUseCase{repo: repo, log: log.NewHelper(log.With(logger, "module", "usecase/shop")), uc: uc}
-}
 
 func (s *ShopUseCase) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterReply, error) {
 	// 业务组装
