@@ -146,26 +146,19 @@
     "apishopservicev1GetUserReply": {
       "type": "object",
       "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "data": {
-          "$ref": "#/definitions/v1GetUserReplyData"
+        "Name": {
+          "type": "string"
         }
       }
     },
     "protobufAny": {
       "type": "object",
       "properties": {
-        "typeUrl": {
+        "@type": {
           "type": "string"
-        },
-        "value": {
-          "type": "string",
-          "format": "byte"
         }
-      }
+      },
+      "additionalProperties": {}
     },
     "rpcStatus": {
       "type": "object",
@@ -196,30 +189,7 @@
         }
       }
     },
-    "v1GetUserReplyData": {
-      "type": "object",
-      "properties": {
-        "Name": {
-          "type": "string"
-        }
-      }
-    },
     "v1LoginReply": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "data": {
-          "$ref": "#/definitions/v1LoginReplyData"
-        },
-        "msg": {
-          "type": "string"
-        }
-      }
-    },
-    "v1LoginReplyData": {
       "type": "object",
       "properties": {
         "token": {

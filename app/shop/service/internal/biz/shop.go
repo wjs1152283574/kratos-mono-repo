@@ -32,11 +32,7 @@ func (s *ShopUseCase) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Logi
 	}
 
 	return &pb.LoginReply{
-		Code: 20000,
-		Data: &pb.LoginReply_Data{
-			Token: res.Token,
-		},
-		Msg: "",
+		Token: res.Token,
 	}, nil
 }
 
@@ -50,9 +46,6 @@ func (s *ShopUseCase) GetUser(ctx context.Context, id int64) (*pb.GetUserReply, 
 	}
 
 	return &pb.GetUserReply{
-		Code: 20000,
-		Data: &pb.GetUserReply_Data{
-			Name: res.NickName,
-		},
+		Name: res.NickName,
 	}, nil
 }

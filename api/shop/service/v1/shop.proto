@@ -58,22 +58,13 @@ message LoginRequest {
     string pass = 2 [(validate.rules).string = {min_len: 6, max_len: 18}];
 }
 message LoginReply {
-    int32 code = 1;  // 这里需要注意int64前端接收到的是字符串，int32才是数值
-    message Data {
-        string token = 1;
-    }
-    Data data = 2;
-    string msg = 3;
+    string token = 1;
 }
 
 message GetUserRequest {
 }
 message GetUserReply {
-    int32 code = 1;
-    message Data {
-        string Name = 1;
-    }
-    Data data = 2;
+    string Name = 1;
 }
 
 message DemoRequest {
