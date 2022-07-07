@@ -44,7 +44,7 @@ func NewData(db *gorm.DB, rd *redis.Client, logger log.Logger) (*Data, func(), e
 	// 监听配置文件并处理
 	go func() {
 		for v := range conf.ConfCh {
-			fmt.Println("初始化自定义配置文件：", v.CassoConf)
+			fmt.Println("初始化自定义配置文件：", v.CassoConf[0].ID, v.CassoConf[0].Addr)
 		}
 	}()
 
@@ -52,6 +52,17 @@ func NewData(db *gorm.DB, rd *redis.Client, logger log.Logger) (*Data, func(), e
 	go InitTimer(*d)
 
 	return d, func() {
+		sqlDB, err := d.db.DB()
+		if err != nil {
+			d.log.Errorf("get db fail : %v", err)
+		}
 
+		if err := sqlDB.Close(); err != nil {
+			d.log.Errorf("closing the data resources fail : %v", err)
+		}
+
+		if err := rd.Close(); err != nil {
+			d.log.Errorf("closing the redis resources fail : %v", err)
+		}
 	}, nil
 }
