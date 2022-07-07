@@ -31,7 +31,7 @@ func LoadConf(conf config.Config) (err error) {
 	for _, key := range keys {
 		err = conf.Watch(key, func(key string, value config.Value) {
 			switch key {
-			case "temp":
+			case "casso_conf":
 				err = value.Scan(&UConf) // conf.Scan(&UConf)
 				ConfCh <- &UConf         // 每次改定会继续送往通道
 			default:
