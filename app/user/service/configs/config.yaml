@@ -21,7 +21,7 @@ data:
     addr: "http://127.0.0.1:8080"
     app_id: "ktaros-mono-repo"
     cluster: "default"
-    namespace: ["load.json","service.json"]
+    namespace: "load.json","service.json"
     secret: "7308b9cee8764784aa226bdf0c1ca48d"
   kafka:
     addr: ["127.0.0.1:9092"]

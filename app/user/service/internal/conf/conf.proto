@@ -48,7 +48,7 @@ message Data {
     string addr = 1;
     string app_id = 2;
     string cluster = 3;
-    repeated string namespace = 4;
+    string namespace = 4;
     string screct = 5;
   }
   message Kafka {
