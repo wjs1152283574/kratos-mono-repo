@@ -1,3 +1,3 @@
 casso_conf: 
-    id: 12
-    addr: china
+    - id: 12
+      addr: china
