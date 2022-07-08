@@ -38,6 +38,5 @@ func Commisssion(total string, commiss float64) (string, error) {
 
 //StringToBigInt string to bigint
 func StringToBigInt(amount string) (*big.Int, bool) {
-	bigIntAmount := new(big.Int)
-	return bigIntAmount.SetString(amount, 10)
+	return new(big.Int).SetString(amount, 10)
 }
