@@ -52,17 +52,19 @@ func NewData(db *gorm.DB, rd *redis.Client, logger log.Logger) (*Data, func(), e
 	go InitTimer(*d)
 
 	return d, func() {
-		sqlDB, err := d.db.DB()
+		// 程序退出，释放资源
+		sqldb, err := d.db.DB()
 		if err != nil {
-			d.log.Errorf("get db fail : %v", err)
+			log.Errorf("sqldb resource got fail: %v", err)
+		}
+		if err := sqldb.Close(); err != nil {
+			log.Errorf("sqldb closing resource got fail: %v", err)
 		}
 
-		if err := sqlDB.Close(); err != nil {
-			d.log.Errorf("closing the data resources fail : %v", err)
+		if err := d.rd.Close(); err != nil {
+			log.Errorf("redis closing resource got fail: %v", err)
 		}
 
-		if err := rd.Close(); err != nil {
-			d.log.Errorf("closing the redis resources fail : %v", err)
-		}
+		log.Info("resource close successed !")
 	}, nil
 }
