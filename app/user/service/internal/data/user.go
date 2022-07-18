@@ -47,6 +47,7 @@ func (r *UserRepo) Get(ctx context.Context, id int64) (*model.User, error) {
 	user := model.User{}
 	err := r.data.db.WithContext(ctx).First(&user, id).Error
 	if err != nil {
+		r.data.log.Errorf("[Get] fail: %v", err)
 		return &model.User{}, errors.RecordNotFound
 	}
 	return &user, nil
@@ -55,6 +56,7 @@ func (r *UserRepo) Get(ctx context.Context, id int64) (*model.User, error) {
 func (r *UserRepo) Update(ctx context.Context, b *model.User) (*model.User, error) {
 	user := model.User{}
 	if err := r.data.db.Updates(b).First(&user).Error; err != nil {
+		r.data.log.Errorf("[Update] fail: %v", err)
 		return &model.User{}, errors.UnknownError
 	}
 	return &user, nil
@@ -63,8 +65,9 @@ func (r *UserRepo) Update(ctx context.Context, b *model.User) (*model.User, erro
 func (r *UserRepo) Delete(ctx context.Context, id int64) (*model.User, error) {
 	user := model.User{}
 	user.ID = uint(id)
-	result := r.data.db.WithContext(ctx).First(&user).Delete(&user, id).Error
-	if result != nil {
+	err := r.data.db.WithContext(ctx).First(&user).Delete(&user, id).Error
+	if err != nil {
+		r.data.log.Errorf("[Delete] fail: %v", err)
 		return &model.User{}, errors.UnknownError
 	}
 	return &user, nil
@@ -72,11 +75,12 @@ func (r *UserRepo) Delete(ctx context.Context, id int64) (*model.User, error) {
 
 func (r *UserRepo) List(ctx context.Context, pageNum, pageSize int64) ([]*model.User, error) {
 	var userList []*model.User
-	result := r.data.db.WithContext(ctx).
+	err := r.data.db.WithContext(ctx).
 		Limit(int(pageSize)).
 		Offset(int(pagination.GetPageOffset(pageNum, pageSize))).
-		Find(&userList)
-	if result.Error != nil {
+		Find(&userList).Error
+	if err != nil {
+		r.data.log.Error("Get [List] fail: %v", err)
 		return nil, errors.UnknownError
 	}
 
@@ -85,6 +89,7 @@ func (r *UserRepo) List(ctx context.Context, pageNum, pageSize int64) ([]*model.
 
 func (r *UserRepo) GetUserByMobile(ctx context.Context, mobile string) (user *model.User, err error) {
 	if err = r.data.db.WithContext(ctx).Where("mobile = ?", mobile).First(&user).Error; err != nil {
+		r.data.log.Errorf("[GetUserByMobile] fail: %v", err)
 		return &model.User{}, errors.RecordNotFound
 	}
 
