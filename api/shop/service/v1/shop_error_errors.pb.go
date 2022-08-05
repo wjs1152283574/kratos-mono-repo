@@ -11,62 +11,62 @@ import (
 // is compatible with the kratos package it is being compiled against.
 const _ = errors.SupportPackageIsVersion1
 
-func IsRecordNotFound(err error) bool {
+func IsShopRecordNotFound(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == ShopServiceErrorReason_RECORD_NOT_FOUND.String() && e.Code == 404
+	return e.Reason == ShopServiceErrorReason_SHOP_RECORD_NOT_FOUND.String() && e.Code == 404
 }
 
-func ErrorRecordNotFound(format string, args ...interface{}) *errors.Error {
-	return errors.New(404, ShopServiceErrorReason_RECORD_NOT_FOUND.String(), fmt.Sprintf(format, args...))
+func ErrorShopRecordNotFound(format string, args ...interface{}) *errors.Error {
+	return errors.New(404, ShopServiceErrorReason_SHOP_RECORD_NOT_FOUND.String(), fmt.Sprintf(format, args...))
 }
 
-func IsContentMissing(err error) bool {
+func IsShopContentMissing(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == ShopServiceErrorReason_CONTENT_MISSING.String() && e.Code == 400
+	return e.Reason == ShopServiceErrorReason_SHOP_CONTENT_MISSING.String() && e.Code == 400
 }
 
-func ErrorContentMissing(format string, args ...interface{}) *errors.Error {
-	return errors.New(400, ShopServiceErrorReason_CONTENT_MISSING.String(), fmt.Sprintf(format, args...))
+func ErrorShopContentMissing(format string, args ...interface{}) *errors.Error {
+	return errors.New(400, ShopServiceErrorReason_SHOP_CONTENT_MISSING.String(), fmt.Sprintf(format, args...))
 }
 
-func IsDuplicateEntry(err error) bool {
+func IsShopDuplicateEntry(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == ShopServiceErrorReason_DUPLICATE_ENTRY.String() && e.Code == 400
+	return e.Reason == ShopServiceErrorReason_SHOP_DUPLICATE_ENTRY.String() && e.Code == 400
 }
 
-func ErrorDuplicateEntry(format string, args ...interface{}) *errors.Error {
-	return errors.New(400, ShopServiceErrorReason_DUPLICATE_ENTRY.String(), fmt.Sprintf(format, args...))
+func ErrorShopDuplicateEntry(format string, args ...interface{}) *errors.Error {
+	return errors.New(400, ShopServiceErrorReason_SHOP_DUPLICATE_ENTRY.String(), fmt.Sprintf(format, args...))
 }
 
-func IsPermitionDenied(err error) bool {
+func IsShopPermitionDenied(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == ShopServiceErrorReason_PERMITION_DENIED.String() && e.Code == 401
+	return e.Reason == ShopServiceErrorReason_SHOP_PERMITION_DENIED.String() && e.Code == 401
 }
 
-func ErrorPermitionDenied(format string, args ...interface{}) *errors.Error {
-	return errors.New(401, ShopServiceErrorReason_PERMITION_DENIED.String(), fmt.Sprintf(format, args...))
+func ErrorShopPermitionDenied(format string, args ...interface{}) *errors.Error {
+	return errors.New(401, ShopServiceErrorReason_SHOP_PERMITION_DENIED.String(), fmt.Sprintf(format, args...))
 }
 
-func IsInvalidToken(err error) bool {
+func IsShopInvalidToken(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == ShopServiceErrorReason_INVALID_TOKEN.String() && e.Code == 401
+	return e.Reason == ShopServiceErrorReason_SHOP_INVALID_TOKEN.String() && e.Code == 401
 }
 
-func ErrorInvalidToken(format string, args ...interface{}) *errors.Error {
-	return errors.New(401, ShopServiceErrorReason_INVALID_TOKEN.String(), fmt.Sprintf(format, args...))
+func ErrorShopInvalidToken(format string, args ...interface{}) *errors.Error {
+	return errors.New(401, ShopServiceErrorReason_SHOP_INVALID_TOKEN.String(), fmt.Sprintf(format, args...))
 }

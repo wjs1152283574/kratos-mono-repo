@@ -11,50 +11,62 @@ import (
 // is compatible with the kratos package it is being compiled against.
 const _ = errors.SupportPackageIsVersion1
 
-func IsRecordNotFound(err error) bool {
+func IsUserInvalidParams(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == UserServiceErrorReason_RECORD_NOT_FOUND.String() && e.Code == 404
+	return e.Reason == UserServiceErrorReason_USER_INVALID_PARAMS.String() && e.Code == 400
 }
 
-func ErrorRecordNotFound(format string, args ...interface{}) *errors.Error {
-	return errors.New(404, UserServiceErrorReason_RECORD_NOT_FOUND.String(), fmt.Sprintf(format, args...))
+func ErrorUserInvalidParams(format string, args ...interface{}) *errors.Error {
+	return errors.New(400, UserServiceErrorReason_USER_INVALID_PARAMS.String(), fmt.Sprintf(format, args...))
 }
 
-func IsInvalidPass(err error) bool {
+func IsUserRecordNotFound(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == UserServiceErrorReason_INVALID_PASS.String() && e.Code == 400
+	return e.Reason == UserServiceErrorReason_USER_RECORD_NOT_FOUND.String() && e.Code == 404
 }
 
-func ErrorInvalidPass(format string, args ...interface{}) *errors.Error {
-	return errors.New(400, UserServiceErrorReason_INVALID_PASS.String(), fmt.Sprintf(format, args...))
+func ErrorUserRecordNotFound(format string, args ...interface{}) *errors.Error {
+	return errors.New(404, UserServiceErrorReason_USER_RECORD_NOT_FOUND.String(), fmt.Sprintf(format, args...))
 }
 
-func IsContentMissing(err error) bool {
+func IsUserInvalidPass(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == UserServiceErrorReason_CONTENT_MISSING.String() && e.Code == 400
+	return e.Reason == UserServiceErrorReason_USER_INVALID_PASS.String() && e.Code == 400
 }
 
-func ErrorContentMissing(format string, args ...interface{}) *errors.Error {
-	return errors.New(400, UserServiceErrorReason_CONTENT_MISSING.String(), fmt.Sprintf(format, args...))
+func ErrorUserInvalidPass(format string, args ...interface{}) *errors.Error {
+	return errors.New(400, UserServiceErrorReason_USER_INVALID_PASS.String(), fmt.Sprintf(format, args...))
 }
 
-func IsMakeTokenError(err error) bool {
+func IsUserContentMissing(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == UserServiceErrorReason_MAKE_TOKEN_ERROR.String() && e.Code == 500
+	return e.Reason == UserServiceErrorReason_USER_CONTENT_MISSING.String() && e.Code == 400
 }
 
-func ErrorMakeTokenError(format string, args ...interface{}) *errors.Error {
-	return errors.New(500, UserServiceErrorReason_MAKE_TOKEN_ERROR.String(), fmt.Sprintf(format, args...))
+func ErrorUserContentMissing(format string, args ...interface{}) *errors.Error {
+	return errors.New(400, UserServiceErrorReason_USER_CONTENT_MISSING.String(), fmt.Sprintf(format, args...))
+}
+
+func IsUserMakeTokenError(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == UserServiceErrorReason_USER_MAKE_TOKEN_ERROR.String() && e.Code == 500
+}
+
+func ErrorUserMakeTokenError(format string, args ...interface{}) *errors.Error {
+	return errors.New(500, UserServiceErrorReason_USER_MAKE_TOKEN_ERROR.String(), fmt.Sprintf(format, args...))
 }

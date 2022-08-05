@@ -2,6 +2,7 @@ package errors
 
 import "github.com/go-kratos/kratos/v2/errors"
 
+// 如果无需客户端做多语言兼容,可以在此定义固定的Reason 跟 Message
 var (
 	InvalidParams  = errors.New(400, "InvalidParams", "Missing Params")
 	UserNotExit    = errors.New(400, "UserNotExit", "User Not Exit")

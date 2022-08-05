@@ -4,13 +4,15 @@ package api.shop.service.v1;
 import "errors/errors.proto";
 
 option go_package = "casso/api/shop/service/v1;v1";
-
+// 前端可根据唯一的错误 Raeson 来作为错误提示展示
+// 除了使用proto来枚举错误之外,也可以自己使用kratos的errors 包直接定义kratos错误
+// 注意: kratos 错误在服务间传递时,如果状态码为200则不会被视为错误,从而不能直接返回给客户端原始错误
 enum ShopServiceErrorReason {
     option (errors.default_code) = 500;
 
-    RECORD_NOT_FOUND = 0 [(errors.code) = 404];
-    CONTENT_MISSING = 1 [(errors.code) = 400];
-    DUPLICATE_ENTRY = 2 [(errors.code) = 400];
-    PERMITION_DENIED = 3 [(errors.code) = 401];
-    INVALID_TOKEN = 4 [(errors.code) = 401];
+    SHOP_RECORD_NOT_FOUND = 0 [(errors.code) = 404];
+    SHOP_CONTENT_MISSING = 1 [(errors.code) = 400];
+    SHOP_DUPLICATE_ENTRY = 2 [(errors.code) = 400];
+    SHOP_PERMITION_DENIED = 3 [(errors.code) = 401];
+    SHOP_INVALID_TOKEN = 4 [(errors.code) = 401];
 }
