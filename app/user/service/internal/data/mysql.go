@@ -8,11 +8,14 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
-func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB {
-	log := log.NewHelper(log.With(logger, "module", "user-service/data/gorm"))
-	db, err := gorm.Open(mysql.Open(conf.Database.Source), &gorm.Config{})
+func NewDB(conf *conf.Data, loggers log.Logger) *gorm.DB {
+	log := log.NewHelper(log.With(loggers, "module", "user-service/data/gorm"))
+	db, err := gorm.Open(mysql.Open(conf.Database.Source), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info), // 以Infos 形式输出SQL语句
+	})
 
 	if err != nil {
 		log.Fatalf("failed opening connection to mysql: %v", err)
