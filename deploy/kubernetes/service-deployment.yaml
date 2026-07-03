@@ -1,0 +1,53 @@
+# 基础服务 Deployment 模板（gRPC + MySQL/Redis + Nacos 注册）
+# 用法：复制此文件，替换 <SERVICE> 为服务名
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <SERVICE>-service
+  labels:
+    app: <SERVICE>-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: <SERVICE>-service
+  template:
+    metadata:
+      labels:
+        app: <SERVICE>-service
+    spec:
+      containers:
+        - name: <SERVICE>-service
+          image: casso/<SERVICE>-service:latest
+          ports:
+            - containerPort: 9000
+          env:
+            - name: CONF_PATH
+              value: /data/conf
+          volumeMounts:
+            - name: config
+              mountPath: /data/conf
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+      volumes:
+        - name: config
+          configMap:
+            name: <SERVICE>-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: <SERVICE>-service
+spec:
+  selector:
+    app: <SERVICE>-service
+  ports:
+    - name: grpc
+      port: 9000
+      targetPort: 9000
+  type: ClusterIP

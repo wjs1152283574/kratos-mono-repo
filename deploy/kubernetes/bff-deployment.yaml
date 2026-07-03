@@ -1,0 +1,59 @@
+# BFF 服务 Deployment 模板（HTTP + gRPC + Nacos 发现）
+# 用法：复制此文件，替换 <SERVICE> 为服务名
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <SERVICE>-bff
+  labels:
+    app: <SERVICE>-bff
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: <SERVICE>-bff
+  template:
+    metadata:
+      labels:
+        app: <SERVICE>-bff
+    spec:
+      containers:
+        - name: <SERVICE>-bff
+          image: casso/<SERVICE>-bff:latest
+          ports:
+            - name: http
+              containerPort: 8000
+            - name: grpc
+              containerPort: 9000
+          env:
+            - name: CONF_PATH
+              value: /data/conf
+          volumeMounts:
+            - name: config
+              mountPath: /data/conf
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+      volumes:
+        - name: config
+          configMap:
+            name: <SERVICE>-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: <SERVICE>-bff
+spec:
+  selector:
+    app: <SERVICE>-bff
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+    - name: grpc
+      port: 9000
+      targetPort: 9000
+  type: ClusterIP

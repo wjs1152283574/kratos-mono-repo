@@ -1,14 +1,13 @@
-version: '3'
 services:
-  shop_db:
+  mysql:
     restart: always
-    image: mysql/mysql-server
+    image: mysql:8.0
     container_name: mysql_server_kratos
     ports:
-      - 3307:3306   # 使用3307是因为防止本机默认启动mysql而抛出端口占用错误
+      - 3307:3306
     environment:
       TZ: Asia/Shanghai
-      MYSQL_ROOT_PASSWORD: "password"   # defaultUser : root
+      MYSQL_ROOT_PASSWORD: "password"
       MYSQL_DATABASE: "goweb"
     command:
       --character-set-server=utf8mb4
@@ -16,60 +15,30 @@ services:
       --explicit_defaults_for_timestamp=true
       --lower_case_table_names=1
       --max_allowed_packet=128M
-      # --skip-name-resolve
-      # --sql-mode="STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO"
     volumes:
       - ./docker-db:/var/lib/mysql
   nacos:
-    image: nacos/nacos-server:${NACOS_VERSION}
+    image: nacos/nacos-server:v2.2.3
     container_name: nacos-standalone_kratos
     environment:
-    - PREFER_HOST_MODE=hostname
-    - MODE=standalone
+      - PREFER_HOST_MODE=hostname
+      - MODE=standalone
     volumes:
-    - ./standalone-logs/:/home/nacos/logs
-    - ./init.d/custom.properties:/home/nacos/init.d/custom.properties
+      - ./standalone-logs/:/home/nacos/logs
+      - ./init.d/custom.properties:/home/nacos/init.d/custom.properties
     ports:
-    - "8848:8848"
-    - "9848:9848"
-  prometheus:
-    container_name: prometheus_kratos
-    image: prom/prometheus:latest
-    volumes:
-      - ./prometheus/prometheus-standalone.yaml:/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
-    depends_on:
-      - nacos
-    restart: on-failure
-  grafana:
-    container_name: grafana_kratos
-    image: grafana/grafana:latest
-    ports:
-      - 3000:3000
-    restart: on-failure
+      - "8848:8848"
+      - "9848:9848"
   redis:
     container_name: redis_kratos
-    image: redis
+    image: redis:6.2
     restart: always
     environment:
       TZ: Asia/Shanghai
-    ports: 
+    ports:
       - 6379:6379
     volumes:
       - ./docker/redis/redis_data:/data/
       - ./docker/redis/redis_logs:/var/log/redis/
       - ./docker/redis/redis_conf:/data/redis/
-    command: redis-server /data/redis/redis.conf
-  mongo:
-    image: mongo
-    container_name: mongo_kratos
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-    ports:
-      - 27017:27017
-    # 数据持久化
-    volumes:
-      - ./docker/mongotest:/data/db  
+    command: redis-server /data/redis/redis.conf  

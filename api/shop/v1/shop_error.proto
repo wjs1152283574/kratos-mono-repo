@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package api.shop.v1;
+
+import "errors/errors.proto";
+
+option go_package = "casso/gen/shop/v1;v1";
+
+// 前端可根据唯一的错误 Reason 来作为错误提示展示
+enum ShopServiceErrorReason {
+    option (errors.default_code) = 500;
+
+    SHOP_RECORD_NOT_FOUND = 0 [(errors.code) = 404];
+    SHOP_CONTENT_MISSING = 1 [(errors.code) = 400];
+    SHOP_DUPLICATE_ENTRY = 2 [(errors.code) = 400];
+    SHOP_PERMITION_DENIED = 3 [(errors.code) = 401];
+    SHOP_INVALID_TOKEN = 4 [(errors.code) = 401];
+}

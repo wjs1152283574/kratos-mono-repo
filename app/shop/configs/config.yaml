@@ -1,0 +1,10 @@
+trace:
+  endpoint: http://127.0.0.1:9080/v1/trace
+server:
+  http:
+    addr: 0.0.0.0:8000
+    timeout: 1s
+discovery:
+  nacos:
+    address: 127.0.0.1
+    port: 8848

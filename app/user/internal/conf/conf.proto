@@ -1,0 +1,50 @@
+syntax = "proto3";
+package user.api;
+
+option go_package = "casso/app/user/internal/conf;conf";
+
+import "google/protobuf/duration.proto";
+
+message Bootstrap {
+    Trace trace = 1;
+    Server server = 2;
+    Data data = 3;
+    Registry registry = 4;
+}
+
+message Trace {
+    string endpoint = 1;
+}
+
+message Server {
+  message GRPC {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  GRPC grpc = 1;
+}
+
+message Data {
+  message Database {
+    string driver = 1;
+    string source = 2;
+  }
+  message Redis {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration read_timeout = 3;
+    google.protobuf.Duration write_timeout = 4;
+    string password = 5;
+  }
+  Database database = 1;
+  Redis redis = 2;
+}
+
+message Registry {
+  message Nacos {
+    string address = 1;
+    int64 port = 2;
+  }
+  Nacos nacos = 1;
+}

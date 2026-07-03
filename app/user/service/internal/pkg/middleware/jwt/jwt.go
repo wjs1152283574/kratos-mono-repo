@@ -1,3 +1,0 @@
-package jwt
-
-// Auth middleware

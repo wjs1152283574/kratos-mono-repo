@@ -136,3 +136,15 @@ standalone-logs
 # *.vscode
 # End of https://www.toptal.com/developers/gitignore/api/go,jetbrains,vscode
 .DS_Store
+
+# 运行时产物
+deploy/docker-compose/docker-db/
+deploy/docker-compose/standalone-logs/
+deploy/docker-compose/docker/redis/redis_data/
+app/*/bin/
+
+# Proto 生成代码（由 make proto 生成）
+gen/
+
+# 备份文件
+*.bak

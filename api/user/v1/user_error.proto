@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package api.user.v1;
+
+import "errors/errors.proto";
+
+option go_package = "casso/gen/user/v1;v1";
+
+// 前端可根据唯一的错误 Reason 来作为错误提示展示
+enum UserServiceErrorReason {
+    option (errors.default_code) = 500;
+    USER_INVALID_PARAMS = 0 [(errors.code) = 400];
+    USER_RECORD_NOT_FOUND = 1 [(errors.code) = 404];
+    USER_INVALID_PASS = 2 [(errors.code) = 400];
+    USER_CONTENT_MISSING = 3 [(errors.code) = 400];
+    USER_MAKE_TOKEN_ERROR = 4 [(errors.code) = 500];
+}

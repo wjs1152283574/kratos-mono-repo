@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+package api.shop.v1;
+
+import "validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "casso/gen/shop/v1;v1";
+
+// Shop BFF 服务 - 商城前端聚合层
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Shop BFF API";
+    version: "1.0.0";
+    description: "商城前端聚合层 API，提供用户注册、登录、信息查询等接口";
+    contact: {
+      name: "casso";
+    };
+  };
+  host: "localhost:8000";
+  base_path: "";
+  schemes: HTTP;
+  consumes: "application/json";
+  produces: "application/json";
+  security_definitions: {
+    security: {
+      key: "BearerAuth";
+      value: {
+        type: TYPE_API_KEY;
+        in: IN_HEADER;
+        name: "Authorization";
+        description: "JWT Token, 格式: Bearer {token}";
+      };
+    };
+  };
+};
+
+service Shop {
+    // body:"*" 表示：请求数据全部从请求体映射，可以指定需要映射的字段
+    rpc Register (RegisterRequest) returns (RegisterReply){
+        option (google.api.http) = {
+            post: "/v1/register",
+            body:"*"  
+        };
+    }
+
+    rpc Login (LoginRequest) returns (LoginReply){
+        option (google.api.http) = {
+            post: "/v1/login",
+            body:"*"
+        };
+    }
+
+    rpc GetUser (GetUserRequest) returns (GetUserReply){
+        option (google.api.http) = {
+            get: "/v1/me"
+        };
+    }
+
+    rpc Demo (DemoRequest) returns (DemoResponse){
+        option (google.api.http) = {
+            put: "/v1/me/{id}",
+            body:"nick_name"
+        };
+    }
+}
+
+message RegisterRequest {
+    // 用户手机号码
+    string mobile = 1 [(validate.rules).string.len = 11]; 
+    // 密码
+    string pass = 2 [(validate.rules).string = {min_len: 6, max_len: 18}];
+    // 昵称
+    string nick_name = 3;
+    // 年龄
+    int64 age = 4;
+}
+message RegisterReply {
+    int64 id = 1; 
+    string mobile = 2;
+    string nick_name = 3;
+    int64 age = 4; 
+}
+
+message LoginRequest {
+    string mobile = 1 [(validate.rules).string.len = 11];
+    string pass = 2 [(validate.rules).string = {min_len: 6, max_len: 18}];
+}
+message LoginReply {
+    string token = 1;
+}
+
+message GetUserRequest {
+}
+message GetUserReply {
+    string Name = 1;
+}
+
+message DemoRequest {
+    string id = 1; // 从URL上映射
+    string nick_name = 2; // 从body映射
+}
+message DemoResponse {
+    string id = 1;
+    string nick_name = 2;
+}

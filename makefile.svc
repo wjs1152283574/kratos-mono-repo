@@ -1,0 +1,67 @@
+GOPATH := $(shell go env GOPATH)
+
+# 共享服务 Makefile
+# 由各服务的 Makefile include 使用
+#
+# 用法: 在 app/<service>/Makefile 中：
+#   APP_NAME := shop
+#   include ../../makefile.svc
+
+VERSION  := $(shell git describe --tags --always)
+INTERNAL_PROTO_FILES=$(shell find internal -name *.proto)
+
+.PHONY: build
+# build 编译服务
+build:
+	CGO_ENABLED=0 go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./cmd/server/
+
+.PHONY: wire
+# wire 生成依赖注入
+wire:
+	cd cmd/server && go generate
+
+.PHONY: run
+# run 运行服务
+run:
+	CGO_ENABLED=0 go build -o ./bin/server ./cmd/server/ && ./bin/server -conf configs/
+
+.PHONY: proto
+# proto 生成内部配置 proto
+proto:
+	protoc --proto_path=. \
+	       --proto_path=../../../third_party \
+	       --go_out=paths=source_relative:. \
+	       $(INTERNAL_PROTO_FILES)
+
+.PHONY: test
+# test 运行测试
+test:
+	go test -v ./... -cover
+
+.PHONY: docker
+# docker 构建 Docker 镜像
+docker:
+	cd ../.. && docker build -f deploy/docker/Dockerfile \
+		--build-arg APP_NAME=$(APP_NAME) \
+		-t go-kratos/casso-$(APP_NAME):0.1.0 .
+
+.PHONY: clean
+# clean 清理编译产物
+clean:
+	rm -rf ./bin/
+
+.PHONY: help
+help:
+	@echo ''
+	@echo 'App: $(APP_NAME)'
+	@echo ''
+	@echo 'Targets:'
+	@awk '/^[a-zA-Z\-\_0-9]+:/ { \
+		helpMessage = match(lastLine, /^# (.*)/); \
+		if (helpMessage) { \
+			helpCommand = substr($$1, 0, index($$1, ":")-1); \
+			helpMessage = substr(lastLine, RSTART + 2, RLENGTH); \
+			printf "\033[36m%-22s\033[0m %s\n", helpCommand,helpMessage; \
+		} \
+	} \
+	{ lastLine = $$0 }' $(MAKEFILE_LIST)
